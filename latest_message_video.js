@@ -38,7 +38,8 @@ function injectYouTubeIframeAPILoadScript(){
 
 function onYouTubeIframeAPIReady() {    
     console.log("onYouTubeIframeAPIReady() called");
-    dataUrl = "https://raw.githubusercontent.com/taylort7147/amazing-grace-pdx/master/youtube.json";
+    // TODO: Consider passing this as an argument
+    dataUrl = "https://raw.githubusercontent.com/taylort7147/amazing-grace-pdx/master/message_details.json";
     $.getJSON(dataUrl, (data) => { 
         videoDetails = getLatest(data);
         var player = createPlayer(videoDetails);
