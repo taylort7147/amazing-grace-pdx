@@ -38,7 +38,7 @@ function injectYouTubeIframeAPILoadScript(){
 
 function onYouTubeIframeAPIReady() {    
     console.log("onYouTubeIframeAPIReady() called");
-    // TODO: Consider passing this as an argument 
+    // TODO: Consider passing this as an argument
     dataUrl = "https://raw.githubusercontent.com/taylort7147/amazing-grace-pdx/master/message_details.json";
     $.getJSON(dataUrl, (data) => { 
         videoDetails = getLatest(data);
@@ -50,7 +50,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function createPlayer(videoDetails) {
-    var player = new YT.Player('player', {
+    var player = new YT.Player('latest-message-video', {
         height: '390',
         width: '640',
         videoId: videoDetails.videoId,
