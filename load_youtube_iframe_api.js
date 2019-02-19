@@ -13,7 +13,8 @@ if(typeof YouTubeIframeAPIReadyCallbacks === "undefined"){
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
 
-    function onYouTubeIframeAPIReady() {    
+    function onYouTubeIframeAPIReady() {  
+        console.log("onYouTubeIframeAPIReady()");
         YouTubeIframeAPIReadyCallbacks.forEach(callback => callback());
     }
     
