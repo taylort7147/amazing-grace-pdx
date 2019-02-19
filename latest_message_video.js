@@ -1,9 +1,7 @@
-// ************** Utilities ***************
-function getLatest(obj) {
-    var sortedKeys = Object.keys(obj).sort();
-    var maxKey = sortedKeys[sortedKeys.length - 1];
-    return obj[maxKey];
-}
+// Requires 
+//      barrier.js
+//      load_message_details.js
+//      load_youtube_iframe_api.js
 
 // ************** Button control functions ***************
 function initializeButtonCallbacks(player, videoDetails){
@@ -22,33 +20,10 @@ function onPlayerReady(event, player, videoDetails) {
     console.log(`onPlayerReady(${event}, ${videoDetails})`);
 }
 
-// 5. The API calls this function when the player's state changes.
 function onPlayerStateChange(event) {
 }
 
-// ************** Iframe logic ***************
-function injectYouTubeIframeAPILoadScript(){
-    console.log("injectYouTubeIframeAPILoadScript()");
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    tag.type="application/javascript";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-}
-
-function onYouTubeIframeAPIReady() {    
-    console.log("onYouTubeIframeAPIReady() called");
-    // TODO: Consider passing this as an argument
-    dataUrl = "https://raw.githubusercontent.com/taylort7147/amazing-grace-pdx/master/message_details.json";
-    $.getJSON(dataUrl, (data) => { 
-        videoDetails = getLatest(data);
-        var player = createPlayer(videoDetails);
-        $("#latest-message-video").class = "embed-responsive-item";
-        //player.seekTo(videoDetails.messageStart);
-        initializeButtonCallbacks(player, videoDetails);
-    });
-}
-
+// ************** Create a YouTube player *********************
 function createPlayer(videoDetails) {
     var player = new YT.Player('latest-message-video', {
         height: '390',
@@ -68,5 +43,25 @@ function createPlayer(videoDetails) {
   return player;
 }
 
-// Start the process by injecting the YouTube iframe API load script
-injectYouTubeIframeAPILoadScript();
+function getLatestVideo(obj) {
+    var sortedKeys = Object.keys(obj).sort();
+    index = sortedKeys.length - 1;
+    while(index >= 0){
+        key = sortedKeys[index];
+        if(obj[key].videoId && obj[key].videoId.length > 0) { return obj[key]; }
+        --index;
+    }
+}
+
+function onResultsReady(results){
+    console.log("onResultsReady()");
+    data = results["data"];
+    var videoDetails = getLatestVideo(data);
+    var player = createPlayer(videoDetails);
+    $("#latest-message-video").className = "embed-responsive-item";
+    initializeButtonCallbacks(player, videoDetails);
+}
+
+var videoBarrier = new Barrier(["api", "data"], onResultsReady);
+registerMessageDetailsCallback(data => videoBarrier.addResult("data", data));
+registerYouTubeIframeAPIReadyCallback(() => videoBarrier.addResult("api", true));
