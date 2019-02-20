@@ -17,6 +17,4 @@ if(typeof YouTubeIframeAPIReadyCallbacks === "undefined"){
         console.log("onYouTubeIframeAPIReady()");
         YouTubeIframeAPIReadyCallbacks.forEach(callback => callback());
     }
-    
-    injectYouTubeIframeAPILoadScript();
 }

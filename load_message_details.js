@@ -24,6 +24,4 @@ if(typeof MessageDetailsCallbacks === "undefined"){
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
-    
-    injectMessageDetailsLoadScript();
 }
