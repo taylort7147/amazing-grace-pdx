@@ -10,7 +10,7 @@ class Barrier{
         console.log(`addResult(${resultKey}, ...)`);
         this.availableResults[resultKey] = resultValue;
         if(this.expectedResults.every(key => key in this.availableResults)){
-            if(callback){
+            if(this.callback){
                 this.callback(this.availableResults);
                 delete this.callback;
             }
