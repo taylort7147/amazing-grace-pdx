@@ -30,4 +30,3 @@ function appendAudioBlock(tag, link){
 }
 
 registerMessageDetailsCallback(onAudioReady);
-loadMessageDetails();

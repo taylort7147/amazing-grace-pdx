@@ -27,4 +27,3 @@ function appendNotesBlock(tag, link){
 }
 
 registerMessageDetailsCallback(onNotesReady);
-loadMessageDetails();
