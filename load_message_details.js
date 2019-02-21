@@ -1,5 +1,8 @@
 if(typeof MessageDetailsCallbacks === "undefined"){
+    
     var MessageDetailsCallbacks = [];
+    MessageDetailsLoaded = false;
+    
     function registerMessageDetailsCallback(cb){
         MessageDetailsCallbacks.push(cb);
     }
@@ -9,7 +12,9 @@ if(typeof MessageDetailsCallbacks === "undefined"){
         MessageDetailsCallbacks.forEach(cb => cb(data));
     }
     
-    function loadMessageDetails() {    
+    function loadMessageDetails() {  
+        if(MessageDetailsLoaded) { return; }
+        MessageDetailsLoaded = true;
         console.log("loadMessageDetails()");
         // TODO: Consider making this an argument
         dataUrl = "https://raw.githubusercontent.com/taylort7147/amazing-grace-pdx/master/message_details.json";

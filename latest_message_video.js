@@ -65,5 +65,6 @@ function onResultsReady(results){
 var videoBarrier = new Barrier(["api", "data"], onResultsReady);
 registerMessageDetailsCallback(data => videoBarrier.addResult("data", data));
 registerYouTubeIframeAPIReadyCallback(() => videoBarrier.addResult("api", true));
-injectYouTubeIframeAPILoadScript();
+
+loadYouTubeIframeAPI();
 loadMessageDetails();
