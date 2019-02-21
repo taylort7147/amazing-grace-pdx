@@ -22,6 +22,7 @@ function appendAudioBlock(tag, link){
 
     var audioTag = document.createElement('audio');
     audioTag.controls = "controls";
+    audioTag.className = "embed-responsive";
     var sourceTag = document.createElement('source');
     sourceTag.src = link;
     sourceTag.type = "audio/mp3";
