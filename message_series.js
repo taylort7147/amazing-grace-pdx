@@ -22,7 +22,7 @@ function appendMessageBlockHeader(tag, text){
 function appendMessageBlockLink(tag, text, link){
     var buttonTag = document.createElement("a");
     buttonTag.innerHTML = text;
-    buttonTag.className = "btn ag-btn";
+    buttonTag.className = "ag-btn ag-btn-round";
     buttonTag.role = "button";
     if(link && link.length > 0){
         buttonTag.href = link;
