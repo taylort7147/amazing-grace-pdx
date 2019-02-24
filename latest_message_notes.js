@@ -20,7 +20,7 @@ function onNotesReady(data){
 
 function appendNotesBlock(tag, link){
     var notesTag = document.createElement('a');
-    notesTag.className = "button button-round ag-btn";
+    notesTag.className = "ag-btn ag-btn-round";
     notesTag.href = link;
     notesTag.text = "This Week's Sermon Notes & Branches";
     tag.appendChild(notesTag);
