@@ -77,7 +77,7 @@
     border-color: var(--border-color-primary);
 }
 
-button.ag-btn:disabled {
+.ag-btn:disabled {
     background-color: var(--disabled-bg-color);
     color: var(--disabled-fg-color);
 }
