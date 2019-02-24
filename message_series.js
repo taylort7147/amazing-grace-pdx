@@ -27,7 +27,7 @@ function appendMessageBlockLink(tag, text, link){
     if(link && link.length > 0){
         buttonTag.href = link;
     }else{
-        buttonTag.className += " disabled";
+        buttonTag.disabled = true;
     }
     tag.appendChild(buttonTag);
     return buttonTag;
