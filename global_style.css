@@ -51,7 +51,7 @@
     border-style: solid;
     border-color: var(--border-color-primary);
     border-radius: 100px;
-    white-space: wrap;    
+    white-space: normal;    
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     align-items: flex-start;
     flex: 0 1 auto;
