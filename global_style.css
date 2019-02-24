@@ -1,0 +1,92 @@
+
+:root {
+    --bg-color-primary: #F9AF0D;
+    --fg-color-primary: #FFFFFF;
+    --border-color-primary: #00000000;
+    --shadow-color: #F7B00680;
+    --hover-bg-color: #FEE0AC;
+    --active-bg-color: var(--bg-color-primary);
+    --disabled-bg-color: lightgrey;
+    --disabled-fg-color: grey;
+    --disabled-border-color: darkgrey;
+}
+
+.ag-center{
+    text-align: center;
+}
+
+.ag-btn-group {
+    font-size: 0px;
+}
+
+.ag-btn-group > .ag-btn+.ag-btn{
+}
+
+.ag-btn-group > .ag-btn:first-child {
+    margin-left: 0;
+}
+
+.ag-btn-group > .ag-btn:last-child {
+    margin-left: 0;
+}
+
+.ag-btn-round{
+    border-radius: 100px;
+    padding: 13.5px 25px;
+}
+
+.ag-btn{
+    text-transform: uppercase;
+    color: var(--fg-color-primary);
+    font-size: 1rem;
+    line-height: 30px;
+    letter-spacing: 2.05px;
+    font-size: 18px;
+    font-weight: 500;
+    display: inline-block;
+    margin: 0;
+    font-family: inherit;
+    overflow: visible;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--border-color-primary);
+    border-radius: 100px;
+    white-space: wrap;    
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    align-items: flex-start;
+    flex: 0 1 auto;
+}
+
+.ag-btn-group > .ag-btn:not(:last-child){
+	border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 15px;
+}
+
+.ag-btn-group > .ag-btn:not(:first-child){
+	border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 15px;
+}
+
+.ag-btn:not(:disabled){
+    background-color: var(--bg-color-primary);
+    color: var(--fg-color-primary);
+    border-color: var(--border-color-primary);
+}
+
+button.ag-btn:disabled {
+    background-color: var(--disabled-bg-color);
+    color: var(--disabled-fg-color);
+}
+
+.ag-btn:not(:disabled):hover{
+    opacity: 0.8;
+}
+
+.ag-btn:not(:disabled):active{
+    background-color: var(--active-bg-color);
+}
+
+.ag-btn:not(:disabled):active:focus{
+}
