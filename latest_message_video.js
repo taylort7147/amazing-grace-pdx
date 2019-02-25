@@ -24,8 +24,9 @@ function onPlayerStateChange(event) {
 }
 
 // ************** Create a YouTube player *********************
+var player;
 function createPlayer(videoDetails) {
-    var player = new YT.Player('latest-message-video', {
+    player = new YT.Player('latest-message-video', {
         height: '390',
         width: '640',
         videoId: videoDetails.videoId,
@@ -39,8 +40,8 @@ function createPlayer(videoDetails) {
           'onReady': (event) => onPlayerReady(event, player, videoDetails),
           'onStateChange': onPlayerStateChange
         }
-  });
-  return player;
+    });
+    return player;
 }
 
 function getLatestVideo(obj) {
