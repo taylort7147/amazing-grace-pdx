@@ -7,7 +7,7 @@ function getLatestAudio(obj) {
     index = sortedKeys.length - 1;
     while(index >= 0){
         key = sortedKeys[index];
-        if(obj[key].audioLink && obj[key].audioLink.length > 0) { return obj[key]; }
+        if(obj[key].audioDownloadLink && obj[key].audioDownloadLink.length > 0) { return obj[key]; }
         --index;
     }
 }
@@ -15,7 +15,7 @@ function getLatestAudio(obj) {
 function onAudioReady(data){
     console.log("onAudioReady()");
     var messageDetails = getLatestAudio(data);
-    appendAudioBlock($("#latest-message-audio")[0], messageDetails.audioLink)
+    appendAudioBlock($("#latest-message-audio")[0], messageDetails.audioDownloadLink)
 }
 
 function appendAudioBlock(tag, link){
