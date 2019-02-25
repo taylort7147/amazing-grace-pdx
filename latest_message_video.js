@@ -58,7 +58,7 @@ function onResultsReady(results){
     data = results["data"];
     var videoDetails = getLatestVideo(data);
     var player = createPlayer(videoDetails);
-    $("#latest-message-video").className = "ag-embed-responsive";
+    $("#latest-message-video").className = "ag-embed-responsive-item";
     initializeButtonCallbacks(player, videoDetails);
 }
 
