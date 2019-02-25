@@ -24,9 +24,8 @@ function onPlayerStateChange(event) {
 }
 
 // ************** Create a YouTube player *********************
-var player;
 function createPlayer(videoDetails) {
-    player = new YT.Player('latest-message-video', {
+    var player = new YT.Player('latest-message-video', {
         height: '390',
         width: '640',
         videoId: videoDetails.videoId,
