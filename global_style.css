@@ -114,3 +114,11 @@
 .message-block{
     text-align: center;
 }
+
+.card-content h3 {
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 2.7px;
+    text-transform: uppercase;
+    margin: 30px 0;
+}
