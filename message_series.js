@@ -48,8 +48,11 @@ function appendButtonGroup(tag){
 }
 
 function formatDate(dateString){
+    console.log(`Formatting date: ${dateString}`);
     date = new Date(dateString + "T00:00:00");
-    return date.toLocaleDateString('en-US', {month:"long", day:"numeric", year:"numeric"})
+    var formattedDate = date.toLocaleDateString('en-US', {month:"long", day:"numeric", year:"numeric"});
+    console.log(`Formatted date: ${formattedDate}`);
+    return formattedDate;
 }
 
 function getVideoLink(details){
