@@ -115,9 +115,12 @@
     text-align: center;
 }
 
-.card-content h3{
-    font-size: 24px;
+.card-content h3,
+.card-content p{
     letter-spacing: -1px;
-    margin-bottom: 0;
-    margin-top: 3rem;
+    margin: 0;
+}
+
+.message-block h3{
+    font-size: 24px;  
 }

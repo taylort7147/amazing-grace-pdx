@@ -19,6 +19,13 @@ function appendMessageBlockHeader(tag, text){
     return headerTag;
 }
 
+function appendMessageBlockParagraph(tag, text){
+    pTag = document.createElement("p");
+    pTag.innerHtml = text;
+    tag.appendChild(pTag);
+    return pTag;
+}
+
 function appendMessageBlockLink(tag, text, link){
     var buttonTag = document.createElement("a");
     buttonTag.innerHTML = text;
@@ -40,6 +47,11 @@ function appendButtonGroup(tag){
     return buttonGroupTag;
 }
 
+function formatDate(dateString){
+    date = new Date(dateString + "T00:00:00");
+    return date.toLocaleDateString('en-US', {month:"long", day:"numeric", year:"numeric"})
+}
+
 function getVideoLink(details){
     if(details.videoId && details.videoId.length > 0)
         return `https://www.youtube.com/watch?v=${details.videoId}`;
@@ -57,10 +69,11 @@ function getNotesLink(details){
 
 function appendMessageBlock(tag, messageDetails){
     console.log(`appendMessageBlock() called for ${tag.id}`);
-    key = tag.id;
-    details = messageDetails[key];
+    date = tag.id;
+    details = messageDetails[date];
     if(details){
         appendMessageBlockHeader(tag, details.title);
+        appendMessageBlockParagraph(tag, formatDate(date));
         buttonGroupTag = appendButtonGroup(tag);
         appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(details));
         appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(details));
