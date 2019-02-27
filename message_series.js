@@ -73,8 +73,8 @@ function appendMessageBlock(tag, messageDetails){
     date = tag.id;
     details = messageDetails[date];
     if(details){
-        appendMessageBlockHeader(tag, details.title);
         appendMessageBlockParagraph(tag, formatDate(date));
+        appendMessageBlockHeader(tag, details.title);
         buttonGroupTag = appendButtonGroup(tag);
         appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(details));
         appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(details));
