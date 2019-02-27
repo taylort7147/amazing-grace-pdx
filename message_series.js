@@ -21,7 +21,7 @@ function appendMessageBlockHeader(tag, text){
 
 function appendMessageBlockParagraph(tag, text){
     pTag = document.createElement("p");
-    pTag.innerHtml = text;
+    pTag.innerHTML = text;
     tag.appendChild(pTag);
     return pTag;
 }
