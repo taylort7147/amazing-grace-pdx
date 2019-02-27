@@ -118,4 +118,6 @@
 .card-content h3{
     font-size: 24px;
     letter-spacing: -1px;
+    margin-bottom: 0;
+    margin-top: 3rem;
 }
