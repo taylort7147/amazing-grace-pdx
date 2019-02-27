@@ -115,8 +115,8 @@
     text-align: center;
 }
 
-.card-content h3,
-.card-content p{
+.message-block h3,
+.message-block p{
     letter-spacing: -1px;
     margin: 0;
 }
