@@ -11,6 +11,10 @@
     --disabled-border-color: darkgrey;
 }
 
+.hidden{
+    display: none;
+}
+
 .ag-center{
     text-align: center!important;
 }

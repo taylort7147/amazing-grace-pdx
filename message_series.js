@@ -68,13 +68,50 @@ function getNotesLink(details){
         return details.notesLink;
 }
 
+function appendMessageBlockDescription(tag, description){
+    if(!description)
+        return;
+    var descriptionTag = document.createElement("div");
+    descriptionTag.classList.add("message-block-description");
+    descriptionTag.classList.add("ag-center");
+    descriptionTag.innerHTML = description;
+    tag.appendChild(descriptionTag);
+    return descriptionTag;
+}
+
+function appendHiddenDiv(parentTag, activatorTag){
+    var divTag = document.createElement("div");
+    divTag.classList.add("hidden");
+    activatorTag.onmouseover = () => { 
+        console.log("mouseover"); 
+        divTag.classList.remove("hidden");
+    };
+    activatorTag.onmouseout = () => {
+        console.log("mouseout");
+        divTag.classList.add("hidden");
+    };
+    divTag.onmouseover = () => { 
+        console.log("mouseover"); 
+        divTag.classList.remove("hidden");
+    };
+    divTag.onmouseout = () => {
+        console.log("mouseout");
+        divTag.classList.add("hidden");
+    };
+    parentTag.appendChild(divTag);
+    return divTag;
+}
+
 function appendMessageBlock(tag, messageDetails){
     console.log(`appendMessageBlock() called for ${tag.id}`);
     date = tag.id;
     details = messageDetails[date];
     if(details){
-        appendMessageBlockParagraph(tag, formatDate(date));
-        appendMessageBlockHeader(tag, details.title);
+        headerTag = appendMessageBlockHeader(tag, details.title);
+        infoDiv = appendHiddenDiv(tag, headerTag);
+        dateTag = appendMessageBlockParagraph(infoDiv, formatDate(date))
+        dateTag.classList.add("message-block-date");
+        infoTag = appendMessageBlockDescription(infoDiv, details.description);;
         buttonGroupTag = appendButtonGroup(tag);
         appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(details));
         appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(details));
@@ -82,6 +119,7 @@ function appendMessageBlock(tag, messageDetails){
     } else {
         tag.hidden = true;
     }
+    return tag;
 }
 
 function injectMessageDetailsLoadScript(){
