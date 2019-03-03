@@ -86,15 +86,7 @@ function appendHiddenDiv(parentTag, activatorTag){
         console.log("mouseover"); 
         divTag.classList.remove("hidden");
     };
-    activatorTag.onmouseout = () => {
-        console.log("mouseout");
-        divTag.classList.add("hidden");
-    };
-    divTag.onmouseover = () => { 
-        console.log("mouseover"); 
-        divTag.classList.remove("hidden");
-    };
-    divTag.onmouseout = () => {
+    parentTag.onmouseleave = () => {
         console.log("mouseout");
         divTag.classList.add("hidden");
     };
@@ -107,11 +99,16 @@ function appendMessageBlock(tag, messageDetails){
     date = tag.id;
     details = messageDetails[date];
     if(details){
+        // Header
         headerTag = appendMessageBlockHeader(tag, details.title);
+        
+        // Information
         infoDiv = appendHiddenDiv(tag, headerTag);
         dateTag = appendMessageBlockParagraph(infoDiv, formatDate(date))
         dateTag.classList.add("message-block-date");
         infoTag = appendMessageBlockDescription(infoDiv, details.description);;
+        
+        // Button group
         buttonGroupTag = appendButtonGroup(tag);
         appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(details));
         appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(details));
