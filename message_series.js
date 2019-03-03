@@ -82,12 +82,13 @@ function appendMessageBlockDescription(tag, description){
 function appendHiddenDiv(parentTag, activatorTag){
     var divTag = document.createElement("div");
     divTag.classList.add("hidden");
-    activatorTag.onmouseover = () => { 
-        console.log("mouseover"); 
+    activatorTag.onmouseover = () => {
         divTag.classList.remove("hidden");
     };
+    activatorTag.onclick = () => {
+        divTag.classList.add("hidden");
+    };
     parentTag.onmouseleave = () => {
-        console.log("mouseout");
         divTag.classList.add("hidden");
     };
     parentTag.appendChild(divTag);
