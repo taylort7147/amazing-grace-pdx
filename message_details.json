@@ -405,5 +405,82 @@
         "audioLink": "",
         "audioDownloadLink": "",
         "notesLink": ""
+    },
+    "2019-04-28" : {
+        "title": "",
+        "videoId": "",
+        "playlistId": "",
+        "description": "",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-05-05" : {
+        "title": "John 20:19-31",
+        "videoId": "",
+        "playlistId": "",
+        "description": "John 20:19-31",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-05-12" : {
+        "title": "John 21:1-19",
+        "videoId": "",
+        "playlistId": "",
+        "description": "John 21:1-19",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-05-19" : {
+        "title": "Acts 20:17-35",
+        "videoId": "",
+        "playlistId": "",
+        "description": "Acts 20:17-35",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-05-26" : {
+        "title": "John 5:1-14",
+        "videoId": "",
+        "playlistId": "",
+        "description": "John 5:1-14",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-06-02" : {
+        "title": "Ascension",
+        "videoId": "",
+        "playlistId": "",
+        "description": "Acts 1:1-11",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-06-09" : {
+        "title": "Pentecost",
+        "videoId": "",
+        "playlistId": "",
+        "description": "Genesis 11:1-9",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
     }
 }
