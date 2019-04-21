@@ -396,15 +396,15 @@
         "notesLink": ""
     },
     "2019-04-21" : {
-        "title": "Easter",
-        "videoId": "",
-        "playlistId": "",
+        "title": "Easter Jubilee",
+        "videoId": "0jegZsFga1A",
+        "playlistId": "PLfBOebmxfChGacY6aSD_gOc2NdS-S0kkw",
         "description": "",
-        "messageStart": 0,
+        "messageStart": 275,
         "tags" : [],
-        "audioLink": "",
-        "audioDownloadLink": "",
-        "notesLink": ""
+        "audioLink": "https://drive.google.com/open?id=1qVjpxAWvdLWcPSZC0ddP2exxCg19GLXg",
+        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1qVjpxAWvdLWcPSZC0ddP2exxCg19GLXg",
+        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AABIXfs-vRMBlZZdskhacMWDa/Miscellaneous%202019?dl=0&preview=Jubilee+Easter+Branches+Notes.pdf&subfolder_nav_tracking=1"
     },
     "2019-04-28" : {
         "title": "Guest Pastor",
