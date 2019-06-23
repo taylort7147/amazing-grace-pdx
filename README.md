@@ -2,6 +2,12 @@
 
 A set of scripts and resources for amazinggracepdx.com
 
+For tutorials on how to update weekly messages and message series, see the following sections:
+
+[Tutorial: Weekly upload](#Tutorial:-Weekly-upload)
+
+[Tutorial: Adding a new series](#Tutorial:-Adding-a-new-series)
+
 # Data
 
 The data consists of a group of sermon messages. 
