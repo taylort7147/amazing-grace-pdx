@@ -112,6 +112,8 @@ By providing a `:root{}` block in the page's custom CSS section, any one or more
 
 The website that manages amazinggracepdx.com (nucleus.church) provides the ability to inject code into every page. We use this to inject Google Analytics, JQuery, our custom CSS, and a few custom scripts.
 
+![Code injection](tutorial/images/ex_code_injection.png)
+
 This is our code injection block as of writing this:
 
 ```HTML
@@ -163,6 +165,8 @@ This page contains links and embedded media players for the latest message video
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_video.js"></script>
 ```
 
+![Embedded video player](tutorial/images/ex_card_embedded_video_player.png)
+
 ### Audio Block
 
 ```html
@@ -171,6 +175,9 @@ This page contains links and embedded media players for the latest message video
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_audio.js"></script>
 ```
 
+![Embedded video player](tutorial/images/ex_card_embedded_audio_player.png)
+
+
 ### Notes Block
 
 ```html
@@ -178,6 +185,8 @@ This page contains links and embedded media players for the latest message video
 
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_notes.js"></script>
 ```
+
+![Notes button](tutorial/images/ex_card_notes_button.png)
 
 ### Load Block
 
@@ -198,6 +207,8 @@ The end result can be seen here: http://amazinggracepdx.com/messages-1
 ## Message Series Pages
 
 Each message series has its own page. Each message in the series is is represented as a title with links to the video, audio, and notes.
+
+![Message series](tutorial/images/ex_card_message_series.png)
 
 The message series page is made up of two HTML blocks. The first is a section containing one `<div>` element for each message. The `class` must be `"message-block"`, and the `id` must be a date that matches a key in the database for the message. 
 
@@ -235,20 +246,6 @@ http://amazinggracepdx.com/jesus-mountainside-message
 You may have noticed that the scripts are being loaded from https://amazinggracepdx.netlify.com. The way GitHub exposes its files, it  is non-trivial to load a javascript file as a script. To mitigate this, we use Netlifly which exposes GitHub repositories as web sites. Netlifly can serve an entire website, but  we only use it as a way to serve our scripts.
 
 
-# Tutorial: Adding a new series
-
-## Overview
-
-1. [Create a new card](#Create-a-new-card)
-2. [Add HTML blocks for the messages](#Add-HTML-blocks)
-
-## Create a new card
-
--- TODO --
-
-## Add HTML blocks
-
--- TODO --
 
 # Tutorial: Weekly upload
 
@@ -266,20 +263,259 @@ You may have noticed that the scripts are being loaded from https://amazinggrace
         * Don't include music videos before or after the service
         * Name the file according to the format ***YYYY-MM-DD*_service.mp4**
     * Upload video to YouTube using Amazing Grace's account
-        * Set the *Title* according to the format *MM.DD.YY Title*
+        * Set the *Title* according to the format **MM.DD.YYYY Title**
         * Set the *Description* to include the Bible passage(s) and optionally a short description of the message
         * Set the *Playlist* to the sermon series name
         * Set the *Recording Date* to the date of the service
         * Make sure the *Visibility* is *Public*
         * Add any *Tags* that pertain to the service.
-        * Take note of the video ID and playlist ID. You'll need these to update *message_details.json*
-    * Audio
-        * Trim audio to capture just the sermon message
-            * Name the file according to the format ***YYYY-MM-DD*_sermon.mp3**
-        * Upload the file to Amazing Grace's Google Drive folder under "Sermon Audios/*Series Name*"
-        * From the web interface, get the share link for the file. You'll need this to update *message_details.json*
 
-## Add Details
+* Audio
+    * Trim audio to capture just the sermon message
+        * Name the file according to the format ***YYYY-MM-DD*_sermon.mp3**
+    * Upload the file to Amazing Grace's Google Drive folder under **Sermon Audios/*Series Name***
 
--- TODO --
+* Notes
+    * Notes should be uploaded as a PDF
+        * Pastor usually takes care of this
 
+## Add the details to the database
+
+This tutorial assumes you have set up the sermon series in *message_details.json* ahead of time, so you should have an existing block for each message in the sermon series. We'll focus on just the block for this message
+
+```json
+ "2019-06-23" : {
+        "title": "The Seeds We Sow",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 3:2-39",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+```
+As-is, this message block is ready for the website. The title and description will be functional if a matching `<div>` exists on a series web page. The video, audio, and notes buttons will be disabled since all the links are empty.
+
+![Empty message](tutorial/images/ex_card_empty_message.png)
+
+### Gather the details
+
+Get the video ID from the YouTube video URL:
+https://www.youtube.com/watch?v=<mark>mWH1jVwcjuM</mark>
+
+Get the playlist ID from the playlist's URL: https://www.youtube.com/watch?v=mWH1jVwcjuM&list=<mark>PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7</mark>
+
+Find out what time the message starts (usually after the first hymn). In this case, the message starts at 3:45, so the start time for the JSON data will be **225**.
+
+From the Google Drive web interface, get the link for the audio file by right-clicking on the file and selecting **Get shareable link**
+
+![image](tutorial/images/ex_google_drive_get_shareable_link.png)
+
+
+This will give you the link to play the file:
+https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
+
+To get the *download* link, take the ID from the above link and insert it into this URL: 
+
+
+
+
+Fill in the details for all the resources, and it should look like this: 
+https://drive.google.com/uc?export=download&id=<mark>1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA</mark>
+
+This link will initiate a download instead of playing the file. This link is used by the [front page](#Messages-Front-Page) for the embedded audio player.
+
+### Update the JSON file
+
+```json    
+"2019-06-23" : {
+        "title": "The Seeds We Sow",
+        "videoId": "mWH1jVwcjuM",
+        "playlistId": "PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7",
+        "description": "2 Samuel 3:2-39",
+        "messageStart": 225,
+        "tags" : [],
+        "audioLink": "https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA",
+        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA",
+        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AAAKloonCx5bcVMKz6-Fetopa/David%20Long%20Live%20the%20King?dl=0&preview=Notes+2+Samuel+3.2-39+Seeds+We+Sow.pdf&subfolder_nav_tracking=1"
+       },
+```
+
+## Publish the changes
+
+### Validate the JSON file
+
+If the JSON file is improperly formatted, no data will be available to the website, and all message links will be broken (that's bad!). To prevent this from happening, you can check the JSON file with an online JSON validator. I use https://jsonlint.com/.
+
+![JSON Lint](tutorial/images/ex_json_lint.png)
+
+### Publish
+
+Once you've updated *message_details.json*, commit the file to this repo and push it. You can either edit the file through the GitHub in-browser editor or push the commit using an external GIT client.
+
+Once published to the master branch, the changes will be live on the website.
+
+![Populated message](tutorial/images/ex_card_populated_message.png)
+
+Result: http://amazinggracepdx.com/david-long-live-the-king 
+
+# Tutorial: Adding a new series
+
+## Overview
+
+1. [Create a new card](#Create-a-new-card)
+2. [Add HTML blocks for the messages](#Add-HTML-blocks)
+
+## Create a new card
+
+-- TODO -- 
+
+## Add HTML blocks
+
+Add two HTML blocks - one for the message `<div>` elements, and one for the `<script>` element.
+
+![HTML block select](tutorial/images/ex_card_html_block_select.png)
+
+### Message block `<div>` elements
+
+![Message blocks HTML block](tutorial/images/ex_card_html_block_message_blocks.png)
+
+HTML block code:
+```html
+<div id="2019-06-16" class="message-block"></div>
+<div id="2019-06-23" class="message-block"></div>
+<div id="2019-06-30" class="message-block"></div>
+<div id="2019-07-07" class="message-block"></div>
+<div id="2019-07-14" class="message-block"></div>
+<div id="2019-07-21" class="message-block"></div>
+<div id="2019-07-28" class="message-block"></div>
+<div id="2019-08-04" class="message-block"></div>
+<div id="2019-08-11" class="message-block"></div>
+<div id="2019-08-18" class="message-block"></div>
+```
+### Load `<script>` element
+
+![Load script element](tutorial/images/ex_card_html_block_message_series_load_script.png)
+
+## Add placeholders in the database
+
+Now add one element per message to the database (*message_details.json*), making sure to fill in at least the *date* key, *title*, and *description*.
+
+```json
+    "2019-06-16" : {
+        "title": "God's Where, God's When",
+        "videoId": "",
+        "playlistId": "",
+        "description": "",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-06-23" : {
+        "title": "The Seeds We Sow",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 3:2-39",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+       },
+    "2019-06-30" : {
+        "title": "Long Live the King!",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 5:1-16",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-07-07" : {
+        "title": "David's Mighty Men",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 5:17-25, 23:8-39",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-07-14" : {
+        "title": "Can Man Live With God?",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 6:1-11",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-07-21" : {
+        "title": "David's Dance",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 6:12-23",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-07-28" : {
+        "title": "David's Son, David's Lord",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 7:1-17",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-08-04" : {
+        "title": "David's Prayer",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 7:18-29",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-08-11" : {
+        "title": "Power and Promise",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 8-9",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    },
+    "2019-08-18" : {
+        "title": "The Ammonite War",
+        "videoId": "",
+        "playlistId": "",
+        "description": "2 Samuel 10",
+        "messageStart": 0,
+        "tags" : [],
+        "audioLink": "",
+        "audioDownloadLink": "",
+        "notesLink": ""
+    }
+```
+
+## Publish the changes
+
+See [Publish the changes](#Publish-the-changes) from the previous tutorial
