@@ -252,7 +252,8 @@ You may have noticed that the scripts are being loaded from https://amazinggrace
 ## Overview
 
 1. [Upload video, audio, and notes](#Upload-video,-audio,-and-notes)
-2. [Add details to *message_details.json* and push](#Add-details)
+2. [Add details to *message_details.json*](#Add-details)
+3. [Publish the changes](#Publish-the-changes)
 
 ## Upload video, audio, and notes
 
@@ -367,6 +368,8 @@ Result: http://amazinggracepdx.com/david-long-live-the-king
 
 1. [Create a new card](#Create-a-new-card)
 2. [Add HTML blocks for the messages](#Add-HTML-blocks)
+2. [Add placeholders in the database](#Add-placeholders-in-the-database)
+3. [Publish the changes](#Publish-the-changes)
 
 ## Create a new card
 
