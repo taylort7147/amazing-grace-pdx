@@ -234,3 +234,52 @@ http://amazinggracepdx.com/jesus-mountainside-message
 
 You may have noticed that the scripts are being loaded from https://amazinggracepdx.netlify.com. The way GitHub exposes its files, it  is non-trivial to load a javascript file as a script. To mitigate this, we use Netlifly which exposes GitHub repositories as web sites. Netlifly can serve an entire website, but  we only use it as a way to serve our scripts.
 
+
+# Tutorial: Adding a new series
+
+## Overview
+
+1. [Create a new card](#Create-a-new-card)
+2. [Add HTML blocks for the messages](#Add-HTML-blocks)
+
+## Create a new card
+
+-- TODO --
+
+## Add HTML blocks
+
+-- TODO --
+
+# Tutorial: Weekly upload
+
+## Overview
+
+1. [Upload video, audio, and notes](#Upload-video,-audio,-and-notes)
+2. [Add details to *message_details.json* and push](#Add-details)
+
+## Upload video, audio, and notes
+
+* Video
+    * Trim the video to capture the entire service
+        * Start at introduction before first hymn
+        * End just after the announcments
+        * Don't include music videos before or after the service
+        * Name the file according to the format ***YYYY-MM-DD*_service.mp4**
+    * Upload video to YouTube using Amazing Grace's account
+        * Set the *Title* according to the format *MM.DD.YY Title*
+        * Set the *Description* to include the Bible passage(s) and optionally a short description of the message
+        * Set the *Playlist* to the sermon series name
+        * Set the *Recording Date* to the date of the service
+        * Make sure the *Visibility* is *Public*
+        * Add any *Tags* that pertain to the service.
+        * Take note of the video ID and playlist ID. You'll need these to update *message_details.json*
+    * Audio
+        * Trim audio to capture just the sermon message
+            * Name the file according to the format ***YYYY-MM-DD*_sermon.mp3**
+        * Upload the file to Amazing Grace's Google Drive folder under "Sermon Audios/*Series Name*"
+        * From the web interface, get the share link for the file. You'll need this to update *message_details.json*
+
+## Add Details
+
+-- TODO --
+
