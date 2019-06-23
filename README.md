@@ -143,8 +143,6 @@ This is our code injection block as of writing this:
 
 ## Messages Front Page
 
---- TODO: Expand on this section with code exambles ---
-
 This page contains links and embedded media players for the latest message video, audio, and notes. Each element consists of a `<div>` element that contains and `id` specifying its type and a `<script>` element to bind the data to it. For simplicity, in the website editor, each of the video, audio, and notes elements are contained in separate HTML blocks.
 
 ### Video Block
