@@ -1,86 +1,14 @@
-# amazing-grace-pdx
+# Website Code
 
-A set of scripts and resources for amazinggracepdx.com
+**Caveat: This page assumes you have knowledge of web programming.**
 
-For tutorials on how to update weekly messages and message series, see the following pages:
+Currently we use [Nucleus](http://nucleus.church) as our website builder. It provides tools for building web pages (or "cards") using a simple drag-and-drop editor. Among the buildng blocks availble are HTML blocks which allow you to embed HTML code into a section of the page. This is used heavily for loading and displaying the resources from this GitHub project. It also provides finer control of the website's behavior via custom CSS and code-injection.
 
-[Tutorial: Weekly upload](tutorial/tutorial-weekly-upload.md)
-
-[Tutorial: Adding a new series](tutorial/tutorial-adding-a-new-series.md)
-
-# Data
-
-The data consists of a group of sermon messages. 
-
-## Usage
-The Data is used in several places on the website for links and embedded media players.
-
-For more details, see [Web Pages](#Web-Pages)
-
-## Data Format
-
-As of now, the main "database" for the website is stored as a JSON file *message_details.json*. This file contains one element for every message, each containing details and links to a YouTube video, audio file, and notes. The data is keyed by date, using the format *YYYY-MM-DD*. 
-
-```json
-{    
-    "2019-03-31" : {
-        "title": "The Story of the World",
-        "videoId": "3Q7foYHXzVA",
-        "playlistId": "m4931EJqwZp5YhyYNW",
-        "description": "Luke 15:11-32",
-        "messageStart": 212,
-        "tags" : [],
-        "audioLink": "https://drive.google.com/open?id=1SRmP2cyPp9m1msiTJoEwMTQoWQh3mgBz",
-        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1SRmP2cyPp9m1msiTJoEwMTQoWQh3mgBz",
-        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AABIXfs-vRMBlZZdskhacMWDa/Miscellaneous%202019?dl=0&lst=&preview=Luke+15.11-32+Lost+Sons+Branches+Notes.pdf&subfolder_nav_tracking=1"
-    },
-    "2019-04-07" : {
-        "title": "What's Worth Pursuing in Life",
-        "videoId": "KDvKC0hfGQc",
-        "playlistId": "m4931EJqwZp5YhyYNW",
-        "description": "Philippians 3:7-16",
-        "messageStart": 276,
-        "tags" : [],
-        "audioLink": "https://drive.google.com/open?id=1v-5qP4VcCaieNSk2lvKcgMiCsgp24nTg",
-        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1v-5qP4VcCaieNSk2lvKcgMiCsgp24nTg",
-        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AABIXfs-vRMBlZZdskhacMWDa/Miscellaneous%202019?dl=0&lst=&preview=Philippians+3.7-16+Branches+Notes.pdf&subfolder_nav_tracking=1"
-    },
-    ...
-}
-```
-
-### Message Details
-
-* *title* - The title of the message
-* *description* - A short description of the message. This usually includes the Bible passage. On the website, the contents of this field are displayed  when hovering over the title in message series pages.
-
-### Video Details
-
-* *videoId* - The YouTube video ID
-* *playlistId* - The YouTube playlist ID
-* *messageStart* - The time in seconds at which the message portion of the video begins. This is used to provide controls to seek to the start of the service or beginning of the message.
-* *tags* - Unused
-
-### Audio Details
-
-* *audioLink* - The complete URL to the message audio for streaming. This link is used for the [message series](#Message-Series-Pages) page.
-* *audioDownloadLink* - The complete URL to the message audio for downloading. This is primarily used for the [main message](#Messages-Front-Page) page's audio widget.
-
-### Notes Details
-* *notesLink* - The complete URL to the message notes
-
-
-
-
-
-# For programmers' eyes only
-<details>
-<summary>Expand if you want to see the details of how the data is bound to the visual elements on the website</summary>
-
+This page outlines the different web elements that make up the website.  It contains information about the styles, HTML blocks, and scripts that are used and how to utilize them using the website editor.
 
 # CSS
 
-Our site has a custom CSS style sheet - *global_style.css*. This provides styles for various custom elements to match the default website's element styles.
+Our site has a [custom CSS style sheet](../global_style.css). This provides styles for various custom elements to match the default website's element styles.
 
 To accomplish this, a root style is provided that can be overriden on a per-page basis to allow for custom color schemes.
 
@@ -101,9 +29,9 @@ By providing a `:root{}` block in the page's custom CSS section, any one or more
 
 # Code Injection
 
-The website that manages amazinggracepdx.com (nucleus.church) provides the ability to inject code into every page. We use this to inject Google Analytics, JQuery, our custom CSS, and a few custom scripts.
+Nucleus provides the ability to inject code into every page. We use this to inject Google Analytics, JQuery, our custom CSS, and a few custom scripts.
 
-![Code injection](tutorial/images/ex_code_injection.png)
+![Code injection](images/ex_code_injection.png)
 
 This is our code injection block as of writing this:
 
@@ -156,7 +84,7 @@ This page contains links and embedded media players for the latest message video
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_video.js"></script>
 ```
 
-![Embedded video player](tutorial/images/ex_card_embedded_video_player.png)
+![Embedded video player](images/ex_card_embedded_video_player.png)
 
 ### Audio Block
 
@@ -166,7 +94,7 @@ This page contains links and embedded media players for the latest message video
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_audio.js"></script>
 ```
 
-![Embedded video player](tutorial/images/ex_card_embedded_audio_player.png)
+![Embedded video player](images/ex_card_embedded_audio_player.png)
 
 
 ### Notes Block
@@ -177,7 +105,7 @@ This page contains links and embedded media players for the latest message video
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_notes.js"></script>
 ```
 
-![Notes button](tutorial/images/ex_card_notes_button.png)
+![Notes button](images/ex_card_notes_button.png)
 
 ### Load Block
 
@@ -199,7 +127,7 @@ The end result can be seen here: http://amazinggracepdx.com/messages-1
 
 Each message series has its own page. Each message in the series is is represented as a title with links to the video, audio, and notes.
 
-![Message series](tutorial/images/ex_card_message_series.png)
+![Message series](images/ex_card_message_series.png)
 
 The message series page is made up of two HTML blocks. The first is a section containing one `<div>` element for each message. The `class` must be `"message-block"`, and the `id` must be a date that matches a key in the database for the message. 
 
@@ -235,6 +163,3 @@ http://amazinggracepdx.com/jesus-mountainside-message
 # A note on Netlifly
 
 You may have noticed that the scripts are being loaded from https://amazinggracepdx.netlify.com. The way GitHub exposes its files, it  is non-trivial to load a javascript file as a script. To mitigate this, we use Netlifly which exposes GitHub repositories as web sites. Netlifly can serve an entire website, but  we only use it as a way to serve our scripts.
-
-</details>
-<!-- End of programming section -->
