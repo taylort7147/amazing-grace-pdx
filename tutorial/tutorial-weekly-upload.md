@@ -4,7 +4,7 @@
 ## Overview
 
 1. [Upload video, audio, and notes](#Upload-video,-audio,-and-notes)
-2. [Add details to *message_details.json*](#Add-details)
+2. [Add details to the database](#Add-the-details-to-the-database)
 3. [Publish the changes](#Publish-the-changes)
 
 ## Upload video, audio, and notes
@@ -104,7 +104,7 @@ If the JSON file is improperly formatted, no data will be available to the websi
 
 ### Publish
 
-Once you've updated [message_details.json](../message_details.json), commit the file to this repo and push it. You can either edit the file through the GitHub in-browser editor or push the commit using an external GIT client.
+Once you've updated *[*message_details.json*, [publish the changes](tutorial-publishing-changes.md)
 
 Once published to the master branch, the changes will be live on the website.
 

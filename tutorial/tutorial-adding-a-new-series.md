@@ -6,7 +6,6 @@
 1. [Create a new card](#Create-a-new-card)
 2. [Add HTML blocks for the messages](#Add-HTML-blocks)
 2. [Add placeholders in the database](#Add-placeholders-in-the-database)
-3. [Publish the changes](#Publish-the-changes)
 
 ## Create a new card
 
@@ -16,7 +15,7 @@
 
 Add two HTML blocks - one for the message `<div>` elements, and one for the `<script>` element.
 
-![HTML block select](images/ex_card_html_block_select.png)
+![Two HTML blocks](images/ex_card_two_html_block_elements.png)
 
 ### Message block `<div>` elements
 
@@ -38,6 +37,11 @@ HTML block code:
 ### Load `<script>` element
 
 ![Load script element](images/ex_card_html_block_message_series_load_script.png)
+
+HTML block code:
+```html
+<script type="text/javascript" src="https://amazinggracepdx.netlify.com/message_series.js">
+```
 
 ## Add placeholders in the database
 
@@ -156,8 +160,8 @@ Now add one element per message to the [database](../message_details.json), maki
     }
 ```
 
-## Publish the changes
+### Publish the changes
 
-See [Publish the changes](#Publish-the-changes) from the previous tutorial
+--TODO--
 
 

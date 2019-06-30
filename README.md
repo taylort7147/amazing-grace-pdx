@@ -1,73 +1,35 @@
 # amazing-grace-pdx
 
-A set of scripts and resources for amazinggracepdx.com
+## Overview
+
+Resources for storing, loading, and displaying data for amazinggracepdx.com. 
+
+## Motivation
+
+The motivation for this project was to make the data portable. During the migration from FinalWeb to Nucleus, moving all the audio and videos quickly became unmanageable. We've begun storing the data through third parties like YouTube and Google Drive which was the first step in making the data portable. 
+
+This project furthers that effort by providing a one-stop location for all the links and details for each message, as well as tools for loading and displaying those resources via raw HTML. Most website editors (including Nucleus) offer HTML block elements for building web pages. This project simplifies the loading and displaying of the message details and media in a completely portable way. That way in the future, if we ever decide to switch website providers again, the port will be much less painful - almost automatic.
+
+For instance, a web page for a sermon series using native web editor tools consists of one button element for each link. There are 3 buttons for each sermon message - audio, video, and notes. Let's pretend there are 5 messages in a series on average. That's 15 buttons to re-create for each series. With this project, all the links can be reused, so we can create the new page with two HTML blocks that are almost exactly the same for each series (just change the dates for the individual messages).
+
+## What makes the data portable?
+
+Each week is represented as a single entry in our [database](message_details.json). The entry contains information about the title, data, description, and links for the audio/video/notes. This data isn't tied to any web editor. The scripts in this project are made to be able to load this data using simple HTML, much like you would embed a YouTube video.
+
+For more details, see [Data](tutorial/description-data.md)
+
+## Tutorials
 
 For tutorials on how to update weekly messages and message series, see the following pages:
 
-[Tutorial: Weekly upload](tutorial/tutorial-weekly-upload.md)
-
 [Tutorial: Adding a new series](tutorial/tutorial-adding-a-new-series.md)
 
-# Data
-
-The data consists of a group of sermon messages. 
-
-## Usage
-The Data is used in several places on the website for links and embedded media players.
-
-For more details, see [Web Pages](tutorial/description-website-code.md#Web-Pages)
-
-## Data Format
-
-As of now, the main "database" for the website is stored as a JSON file [message_details.json](message_details.json). This file contains one element for every message, each containing details and links to a YouTube video, audio file, and notes. The data is keyed by date, using the format *YYYY-MM-DD*. 
-
-```json
-{    
-    "2019-03-31" : {
-        "title": "The Story of the World",
-        "videoId": "3Q7foYHXzVA",
-        "playlistId": "m4931EJqwZp5YhyYNW",
-        "description": "Luke 15:11-32",
-        "messageStart": 212,
-        "tags" : [],
-        "audioLink": "https://drive.google.com/open?id=1SRmP2cyPp9m1msiTJoEwMTQoWQh3mgBz",
-        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1SRmP2cyPp9m1msiTJoEwMTQoWQh3mgBz",
-        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AABIXfs-vRMBlZZdskhacMWDa/Miscellaneous%202019?dl=0&lst=&preview=Luke+15.11-32+Lost+Sons+Branches+Notes.pdf&subfolder_nav_tracking=1"
-    },
-    "2019-04-07" : {
-        "title": "What's Worth Pursuing in Life",
-        "videoId": "KDvKC0hfGQc",
-        "playlistId": "m4931EJqwZp5YhyYNW",
-        "description": "Philippians 3:7-16",
-        "messageStart": 276,
-        "tags" : [],
-        "audioLink": "https://drive.google.com/open?id=1v-5qP4VcCaieNSk2lvKcgMiCsgp24nTg",
-        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1v-5qP4VcCaieNSk2lvKcgMiCsgp24nTg",
-        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AABIXfs-vRMBlZZdskhacMWDa/Miscellaneous%202019?dl=0&lst=&preview=Philippians+3.7-16+Branches+Notes.pdf&subfolder_nav_tracking=1"
-    },
-    ...
-}
-```
-
-### Message Details
-
-* *title* - The title of the message
-* *description* - A short description of the message. This usually includes the Bible passage. On the website, the contents of this field are displayed  when hovering over the title in message series pages.
-
-### Video Details
-
-* *videoId* - The YouTube video ID
-* *playlistId* - The YouTube playlist ID
-* *messageStart* - The time in seconds at which the message portion of the video begins. This is used to provide controls to seek to the start of the service or beginning of the message.
-* *tags* - Unused
-
-### Audio Details
-
-* *audioLink* - The complete URL to the message audio for streaming. This link is used for the [message series](#Message-Series-Pages) page.
-* *audioDownloadLink* - The complete URL to the message audio for downloading. This is primarily used for the [main message](#Messages-Front-Page) page's audio widget.
-
-### Notes Details
-* *notesLink* - The complete URL to the message notes
+[Tutorial: Weekly upload](tutorial/tutorial-weekly-upload.md)
 
 
+## Programming details
 
+For the more technologically inclined, see how this project is implemented on our website:
+
+* [Website code](tutorial/description-website-code.md)
+* [Scripts](tutorial/description-scripts.md) 
