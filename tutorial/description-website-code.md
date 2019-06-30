@@ -118,7 +118,7 @@ loadYouTubeIframeAPI();
 </script>
 ```
 
-This block requires *load_message_details.js* and *load_youtube_iframe.js* to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
+This block requires [load_message_details.js](../load_message_details.js) and [load_youtube_iframe_api.js](../load_youtube_iframe_api.js) to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
 
 
 The end result can be seen here: http://amazinggracepdx.com/messages-1
@@ -148,12 +148,12 @@ Multiple `<div>` elements may be placed on after the other to form a list of mes
 ```
 ### Load Block
 
-In order for the data to be bound to the `<div>` elements, you must load the *load_message_series.js* script after the last element. 
+In order for the data to be bound to the `<div>` elements, you must load the [message_series.js](../message_series.js) script after the last element. 
 
 ```html
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/message_series.js"></script>
 ```
-This block requires *load_message_details.js* to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
+This block requires [load_message_details.js](../load_message_details.js) to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
 
 For any missing link in the details for any particular message, the button for that link will be greyed out and disabled.
 
