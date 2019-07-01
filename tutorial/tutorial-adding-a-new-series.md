@@ -160,6 +160,8 @@ Now add one element per message to the [database](../message_details.json), maki
     }
 ```
 
+**Unfortunately, Nucleus doesn't display a good preview of these HTML blocks, so they'll just look like empty HTML blocks until you open the preview.**
+
 ### Publish the changes
 
 See [Publishing changes](tutorial-publishing-changes.md)
