@@ -14,7 +14,7 @@ For instance, a web page for a sermon series using native web editor tools consi
 
 ## What makes the data portable?
 
-Each week is represented as a single entry in our [database](message_details.json). The entry contains information about the title, data, description, and links for the audio/video/notes. This data isn't tied to any web editor. The scripts in this project are made to be able to load this data using simple HTML, much like you would embed a YouTube video.
+Each week is represented as a single entry in our [database](message_details.json). The entry contains information about the title, date, description, and links for the audio/video/notes. This data isn't tied to any web editor. The scripts in this project are made to be able to load this data using simple HTML, much like you would embed a YouTube video.
 
 For more details, see [Data](tutorial/description-data.md)
 
