@@ -162,6 +162,6 @@ Now add one element per message to the [database](../message_details.json), maki
 
 ### Publish the changes
 
---TODO--
+See [Publishing changes](tutorial-publishing-changes.md)
 
 
