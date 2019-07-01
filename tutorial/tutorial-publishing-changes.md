@@ -4,4 +4,4 @@ In order for any changes to be published to the website, you must *commit* your 
 
 The other way involves using a Git client such as [Git](https://git-scm.com/) or [GitHub Desktop](https://help.github.com/en/desktop) to push your local changes to the GitHub repository. You can learn more about how to do so [here](https://help.github.com/en/articles/set-up-git), but this method has a steeper learning curve.
 
-<sup>1</sup>A repository (or *repo*) is single location where files are stored for distribution. Often repositories are managed by a version control system (VCS) that allows multiple users to work on a single project without having multiple copies of each file floating around. GitHub is a website that uses Git, a VCS, to host public and private repositories.
+<sup>1</sup>A repository (or *repo*) is a single location where files are stored for distribution. Often repositories are managed by a version control system (VCS) that allows multiple users to work on a single project without having multiple copies of each file floating around. GitHub is a website that uses Git, a VCS, to host public and private repositories.
