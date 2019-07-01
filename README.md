@@ -26,7 +26,7 @@ For tutorials on how to update weekly messages and message series, see the follo
 
 [Tutorial: Weekly upload](tutorial/tutorial-weekly-upload.md)
 
-<span style="background:red !important;color:white !important">The only file you should change for updating messages is the *message_details.json* file</span>
+<p><span style="background:red !important;color:white !important">The only file you should change for updating messages is the message_details.json file</span><p>
 
 
 ## Programming details
