@@ -6,6 +6,13 @@ Currently we use [Nucleus](http://nucleus.church) as our website builder. It pro
 
 This page outlines the different web elements that make up the website.  It contains information about the styles, HTML blocks, and scripts that are used and how to utilize them using the website editor.
 
+Contents:
+* [CSS](#CSS)
+* [Code Injection](#Code-Injection)
+* [Web Pages](#Web-Pages)
+    * [Messages Front Page](#Messages-Front-Page)
+    * [Message Series Pages](#Message-Series-Pages)
+
 # CSS
 
 Our site has a [custom CSS style sheet](../global_style.css). This provides styles for various custom elements to match the default website's element styles.
@@ -68,6 +75,15 @@ This page contains links and embedded media players for the latest message video
 
 ### Video Block
 
+The video block embeds a YouTube player with the latest message. The script that loads this player provides enhancements over the standard YouTube embedded video, including:
+
+* No YouTube logo overlay
+* Ability to bind buttons to the player
+    * See *Jump to Beginning* and *Jump to Message* buttons in the screenshot below
+* Control over the *suggested videos* that appear when the video completes
+    * Only showing videos from Amazing Grace's channel
+
+HTML block code:
 ```html
 <div align="center" class="" >
     <!-- YouTube iframe container -->
@@ -88,6 +104,9 @@ This page contains links and embedded media players for the latest message video
 
 ### Audio Block
 
+This HTML block embeds an audio widget of the latest message.
+
+HTML block code:
 ```html
 <div id="latest-message-audio" class="ag-center"></div>
 
@@ -98,6 +117,10 @@ This page contains links and embedded media players for the latest message video
 
 
 ### Notes Block
+
+This HTML block creates a button that links to the latest message notes.
+
+HTML block code:
 
 ```html
 <div id="latest-message-notes" class="ag-center"></div>
@@ -110,6 +133,8 @@ This page contains links and embedded media players for the latest message video
 ### Load Block
 
 One final HTML block is required to be placed after all the other blocks. This block contains a simple `<script>` element that calls the *load* functions that acquire the data resources. At this point, all of the other scripts will have registered their callbacks with the relevant data loaders, so upon acquisition of the resources, each element will be populated.
+
+HTML block code:
 
 ```html
 <script>
