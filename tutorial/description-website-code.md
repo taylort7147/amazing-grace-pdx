@@ -57,13 +57,14 @@ This is our code injection block as of writing this:
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
 <!-- Taylor's CSS -->
-<link rel="stylesheet" href="https://amazinggracepdx.netlify.com/global_style.css">
+<link rel="stylesheet" href="https://taylort7147.github.io/amazing-grace-pdx/global_style.css">
 
 <!-- Taylor's scripts -->
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/barrier.js"></script>
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/load_message_details.js"></script>
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/load_youtube_iframe_api.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/barrier.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/load_message_details.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/load_youtube_iframe_api.js"></script>
 ```
+
 **Note that the latter two load scripts only provide functions for loading resources - they don't actually initiate the load. See example in 
 [Messages Front Page](##Messages-Front-Page)**
 
@@ -99,7 +100,7 @@ HTML block code:
         <button id="latest-message-video-controls-jump-to-message" type="button" class="ag-btn ag-btn-round">Jump To Message</button>
     </div>
 </div>
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_video.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_video.js"></script>
 ```
 
 ![Embedded video player](images/ex_card_embedded_video_player.png)
@@ -112,7 +113,7 @@ HTML block code:
 ```html
 <div id="latest-message-audio" class="ag-center"></div>
 
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_audio.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_audio.js"></script>
 ```
 
 ![Embedded video player](images/ex_card_embedded_audio_player.png)
@@ -127,7 +128,7 @@ HTML block code:
 ```html
 <div id="latest-message-notes" class="ag-center"></div>
 
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/latest_message_notes.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_notes.js"></script>
 ```
 
 ![Notes button](images/ex_card_notes_button.png)
@@ -178,7 +179,7 @@ Multiple `<div>` elements may be placed on after the other to form a list of mes
 In order for the data to be bound to the `<div>` elements, you must load the [message_series.js](../message_series.js) script after the last element. 
 
 ```html
-<script type="text/javascript" src="https://amazinggracepdx.netlify.com/message_series.js"></script>
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/message_series.js"></script>
 ```
 This block requires [load_message_details.js](../load_message_details.js) to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
 
@@ -187,6 +188,7 @@ For any missing link in the details for any particular message, the button for t
 The end result can be seen here:
 http://amazinggracepdx.com/jesus-mountainside-message
 
-# A note on Netlifly
 
-You may have noticed that the scripts are being loaded from https://amazinggracepdx.netlify.com. The way GitHub exposes its files, it  is non-trivial to load a javascript file as a script. To mitigate this, we use Netlifly which exposes GitHub repositories as web sites. Netlifly can serve an entire website, but  we only use it as a way to serve our scripts.
+# How are the scripts hosted?
+
+The scripts are hosted via the *GitHub Pages* for this project, located at https://taylort7147.github.io/amazing-grace-pdx. *GitHub Pages* must be enabled in the project settings for this to work.
