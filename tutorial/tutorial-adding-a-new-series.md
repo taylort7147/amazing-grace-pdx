@@ -7,9 +7,29 @@
 2. [Add HTML blocks for the messages](#Add-HTML-blocks)
 2. [Add placeholders in the database](#Add-placeholders-in-the-database)
 
+
 ## Create a new card
 
--- TODO -- 
+You can either [create a new card](http://help.nucleus.church/en/articles/1385441-create-new-card), or [duplicate an existing one](http://help.nucleus.church/en/articles/1384961-duplicate-card).
+
+![Create a new card](images/ex_new_card.png)
+
+Once you have created the card, set up the theme color by going to settings. 
+
+![Card settings](images/ex_card_settings.png)
+
+In the left-hand panel, scroll down to *Card Primary Color*. Select the color you want for this card. This sets up the theme color for all the applicable Nucleus elements. 
+
+![Card theme color](images/ex_card_custom_css.png)
+
+To make the elements from this project match the theme, enter the following into the *Custom CSS* block just below the *Card Primary Color*, replacing the hexadecimal number representing the color (`#523026`) with the color chosen for the theme.
+
+```css
+:root{
+    --bg-color-primary: #523026;
+}
+```
+
 
 ## Add HTML blocks
 
@@ -20,6 +40,8 @@ Add two HTML blocks - one for the message `<div>` elements, and one for the `<sc
 ### Message block `<div>` elements
 
 ![Message blocks HTML block](images/ex_card_html_block_message_blocks.png)
+
+In this block, create one `<div>` element for each message in the series. The `id` is the date of the message, which will be used to bind the data to the element. The `class="message-block"` tells our loading script to create a series of buttons for this `<div>`, which will be enabled automatically with the links from the database when available.
 
 HTML block code:
 ```html
@@ -38,14 +60,19 @@ HTML block code:
 
 ![Load script element](images/ex_card_html_block_message_series_load_script.png)
 
+This block executes a script from this project that loads the database and binds the data to the matching `<div>`s from the block above. Technically, both these blocks could be one, but separating them makes it more clear what each block does.
+
+**This block will be *exactly* the same for every message series**
+
 HTML block code:
 ```html
 <script type="text/javascript" src="https://amazinggracepdx.netlify.com/message_series.js">
 ```
 
+
 ## Add placeholders in the database
 
-Now add one element per message to the [database](../message_details.json), making sure to fill in at least the *date* key, *title*, and *description*.
+Now add one element per message to the [database](../message_details.json), making sure to fill in at least the *date* key, *title*, and *description*. Until these placeholders exist and the file changes committed to the repo, none of the message series blocks will be visible on the website (or preview).
 
 ```json
     "2019-06-16" : {
