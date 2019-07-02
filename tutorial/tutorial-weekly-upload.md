@@ -34,7 +34,7 @@
 
 ## Add the details to the database
 
-This tutorial assumes you have set up the sermon series in [message_details.json](../message_details.json) ahead of time, so you should have an existing block for each message in the sermon series. If you haven't then refer back to [this tutoial](tutorial-adding-a-new-series.md). We'll focus on just the block for this message.
+This tutorial assumes you have set up the sermon series in [message_details.json](../message_details.json) ahead of time, so you should have an existing block for each message in the sermon series. If you haven't then refer back to [this tutorial](tutorial-adding-a-new-series.md). We'll focus on just the block for this message.
 
 ```json
  "2019-06-23" : {
