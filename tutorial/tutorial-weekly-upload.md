@@ -55,10 +55,9 @@ As-is, this message block is ready for the website. The title and description wi
 
 ### Gather the details
 
-Get the video ID from the YouTube video URL:
-<span>https</span>://www.youtube.com/watch?v=<mark>mWH1jVwcjuM</mark> (videoId)
+Get the video ID from the YouTube video URL: https://www.youtube.com/watch?v=**mWH1jVwcjuM** (videoId)
 
-Get the playlist ID from the playlist's URL: <span>https</span>://www.youtube.com/watch?v=mWH1jVwcjuM&list=<mark>PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7</mark> (playlistId)
+Get the playlist ID from the playlist's URL: https://www.youtube.com/watch?v=mWH1jVwcjuM&list=**PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7** (playlistId)
 
 Find out what time in seconds the message starts (usually after the first hymn). In this case, the message starts at 3:45, so the start time for the JSON data will be <mark>225</mark> (messageStart).
 
@@ -68,11 +67,11 @@ From the Google Drive web interface, get the link for the audio file by right-cl
 
 
 This will give you the link to play the file:
-<mark><span>https</span>://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA</mark> (audioLink)
+**https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA** (audioLink)
 
 To get the *download* link, take the ID from the above link and insert it into this URL: 
 
-<mark><span>https<span>://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA</mark> (audioDownloadLink)
+**https://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA** (audioDownloadLink)
 
 This link will initiate a download instead of playing the file. This link is used by the [front page](description-website-code.md#Messages-Front-Page) for the embedded audio player.
 
@@ -104,7 +103,7 @@ If the JSON file is improperly formatted, no data will be available to the websi
 
 ### Publish
 
-Once you've updated *[*message_details.json*, [publish the changes](tutorial-publishing-changes.md)
+Once you've updated *message_details.json*, [publish the changes](tutorial-publishing-changes.md)
 
 Once published to the master branch, the changes will be live on the website.
 
