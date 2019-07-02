@@ -55,23 +55,50 @@ As-is, this message block is ready for the website. The title and description wi
 
 ### Gather the details
 
-Get the video ID from the YouTube video URL: https://www.youtube.com/watch?v=**mWH1jVwcjuM** (videoId)
+Get the video ID from the YouTube video URL. 
 
-Get the playlist ID from the playlist's URL: https://www.youtube.com/watch?v=mWH1jVwcjuM&list=**PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7** (playlistId)
+#### Example:
 
-Find out what time in seconds the message starts (usually after the first hymn). In this case, the message starts at 3:45, so the start time for the JSON data will be <mark>225</mark> (messageStart).
+URL: 
+    
+    https://www.youtube.com/watch?v=mWH1jVwcjuM
+
+Video ID:
+    
+    mWH1jVwcjuM
+
+Get the playlist ID from the playlist's URL.
+
+#### Example:
+
+URL:
+
+    https://www.youtube.com/watch?v=mWH1jVwcjuM&list=PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7
+
+Playlist ID:
+
+    PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7
+
+Find out what time in seconds the message starts (usually after the first hymn). In this case, the message starts at 3:45, so the start time for the JSON data will be 
+
+    225 
 
 From the Google Drive web interface, get the link for the audio file by right-clicking on the file and selecting **Get shareable link**
 
 ![image](images/ex_google_drive_get_shareable_link.png)
 
 
-This will give you the link to play the file:
-**https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA** (audioLink)
+This will give you the link to play the file.
 
-To get the *download* link, take the ID from the above link and insert it into this URL: 
+Audio Link:
 
-**https://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA** (audioDownloadLink)
+    https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
+
+To get the *download* link, take the ID from the above link and insert it into this URL:
+
+Audio Download Link:
+
+    https://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
 
 This link will initiate a download instead of playing the file. This link is used by the [front page](description-website-code.md#Messages-Front-Page) for the embedded audio player.
 
