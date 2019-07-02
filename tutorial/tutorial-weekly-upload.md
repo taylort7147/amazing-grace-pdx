@@ -54,7 +54,7 @@ As-is, this message block is ready for the website. The title and description wi
 ![Empty message](images/ex_card_empty_message.png)
 
 ### Gather the details
-
+---
 Get the video ID from the YouTube video URL. 
 
 #### Example:
@@ -66,6 +66,7 @@ URL:
 Video ID:
     
     mWH1jVwcjuM
+---
 
 Get the playlist ID from the playlist's URL.
 
@@ -78,10 +79,12 @@ URL:
 Playlist ID:
 
     PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7
+---
 
 Find out what time in seconds the message starts (usually after the first hymn). In this case, the message starts at 3:45, so the start time for the JSON data will be 
 
     225 
+---
 
 From the Google Drive web interface, get the link for the audio file by right-clicking on the file and selecting **Get shareable link**
 
@@ -102,6 +105,8 @@ Audio Download Link:
 
 This link will initiate a download instead of playing the file. This link is used by the [front page](description-website-code.md#Messages-Front-Page) for the embedded audio player.
 
+---
+
 ### Update the JSON file
 
 Fill in the details for all the resources, and it should look like this: 
@@ -119,6 +124,8 @@ Fill in the details for all the resources, and it should look like this:
         "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AAAKloonCx5bcVMKz6-Fetopa/David%20Long%20Live%20the%20King?dl=0&preview=Notes+2+Samuel+3.2-39+Seeds+We+Sow.pdf&subfolder_nav_tracking=1"
        },
 ```
+
+---
 
 ## Publish the changes
 
