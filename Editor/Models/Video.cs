@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Editor.Models
 {
@@ -23,6 +24,8 @@ namespace Editor.Models
         public DateTime MessageStartTime { get; set; }
 
         public int MessageId { get; set; }
+
+        [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
     }
 }

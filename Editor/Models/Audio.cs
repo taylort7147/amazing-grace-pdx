@@ -18,6 +18,8 @@ namespace Editor.Models
         public string DownloadUrl { get; set; }
 
         public int MessageId { get; set; }
+
+        [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
     }
 }
