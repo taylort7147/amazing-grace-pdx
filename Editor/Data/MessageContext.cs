@@ -13,4 +13,10 @@ using Editor.Models;
         }
 
         public DbSet<Editor.Models.Message> Message { get; set; }
+
+        public DbSet<Editor.Models.Video> Video { get; set; }
+
+        public DbSet<Editor.Models.Audio> Audio { get; set; }
+
+        public DbSet<Editor.Models.Notes> Notes { get; set; }
     }
