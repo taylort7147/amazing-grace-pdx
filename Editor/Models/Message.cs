@@ -27,7 +27,6 @@ namespace Editor.Models
         public int? AudioId { get; set; }
         public Audio Audio { get; set; }
 
-        [Required]
         public int? NotesId { get; set; }
         public Notes Notes { get; set; }
     }
