@@ -20,7 +20,10 @@ namespace Editor.Pages_Audio
 
         public IActionResult OnGet()
         {
-        ViewData["MessageId"] = new SelectList(_context.Message, "Id", "Description");
+            // Only show messages that don't have a linked audio reference
+            var unlinkedMessages = _context.Message.Where(m => m.AudioId == null);
+
+            ViewData["MessageId"] = new SelectList(unlinkedMessages, "Id", "Description");
             return Page();
         }
 
@@ -34,7 +37,19 @@ namespace Editor.Pages_Audio
                 return Page();
             }
 
+            var message = await _context.Message.FindAsync(Audio.MessageId);
+            if(message == null)
+            {
+                Console.Error.WriteLine("Unexpected null message with ID: " + Audio.MessageId);
+                return Page();
+            }
+
             _context.Audio.Add(Audio);
+            await _context.SaveChangesAsync();
+
+            // Update the message's audio reference
+            message.AudioId = Audio.Id;
+            _context.Message.Update(message);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

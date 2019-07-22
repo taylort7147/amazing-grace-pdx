@@ -48,6 +48,21 @@ namespace Editor.Pages_Messages
 
             if (Message != null)
             {
+                if(Message.Video != null)
+                {
+                    _context.Video.Remove(Message.Video);
+                }
+
+                if(Message.Audio != null)
+                {
+                    _context.Audio.Remove(Message.Audio);
+                }
+
+                if(Message.Notes != null)
+                {
+                    _context.Notes.Remove(Message.Notes);
+                }
+
                 _context.Message.Remove(Message);
                 await _context.SaveChangesAsync();
             }

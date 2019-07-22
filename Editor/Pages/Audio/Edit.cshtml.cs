@@ -30,13 +30,17 @@ namespace Editor.Pages_Audio
             }
 
             Audio = await _context.Audio
-                .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Audio == null)
             {
                 return NotFound();
             }
-           ViewData["MessageId"] = new SelectList(_context.Message, "Id", "Description");
+
+            // Only show messages that don't have a linked audio reference
+            var unlinkedMessages = _context.Message.Where(m => m.AudioId == null);
+
+            ViewData["MessageId"] = new SelectList(unlinkedMessages, "Id", "Description");
             return Page();
         }
 

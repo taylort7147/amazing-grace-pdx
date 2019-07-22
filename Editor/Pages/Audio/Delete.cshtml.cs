@@ -29,7 +29,7 @@ namespace Editor.Pages_Audio
             }
 
             Audio = await _context.Audio
-                .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Audio == null)
             {
@@ -49,6 +49,13 @@ namespace Editor.Pages_Audio
 
             if (Audio != null)
             {
+                var message = await _context.Message.FindAsync(Audio.MessageId);
+                if(message != null)
+                {
+                    message.AudioId = null;
+                    _context.Message.Update(message);
+                }
+
                 _context.Audio.Remove(Audio);
                 await _context.SaveChangesAsync();
             }
