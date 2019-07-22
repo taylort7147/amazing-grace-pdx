@@ -1,0 +1,12 @@
+# Build Folders
+[Bb]in/
+[Oo]bj/
+
+# Third party
+wwwroot/lib/
+
+# VS Code
+.vscode/
+
+# Other 
+*.db
