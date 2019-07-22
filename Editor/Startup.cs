@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Editor
 {
@@ -33,6 +34,8 @@ namespace Editor
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<MessageContext>(options => options.UseSqlite(Configuration.GetConnectionString("MessageContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
