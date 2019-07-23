@@ -23,13 +23,13 @@
                 @Html.DisplayNameFor(model => model.Message[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Message[0].VideoId)
+                @Html.DisplayNameFor(model => model.Message[0].Video)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Message[0].AudioId)
+                @Html.DisplayNameFor(model => model.Message[0].Audio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Message[0].NotesId)
+                @Html.DisplayNameFor(model => model.Message[0].Notes)
             </th>
             <th></th>
         </tr>
@@ -47,13 +47,19 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VideoId)
+                @if(item.VideoId != null){
+                    <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@item.VideoId" role="button">Video</a>
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AudioId)
+                @if(item.AudioId != null){
+                    <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@item.AudioId" role="button">Audio</a>
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NotesId)
+                @if(item.NotesId != null){
+                    <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@item.NotesId" role="button">Notes</a>
+                }
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
