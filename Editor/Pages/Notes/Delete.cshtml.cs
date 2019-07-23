@@ -29,7 +29,7 @@ namespace Editor.Pages_Notes
             }
 
             Notes = await _context.Notes
-                .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Notes == null)
             {
@@ -49,6 +49,13 @@ namespace Editor.Pages_Notes
 
             if (Notes != null)
             {
+                var message = await _context.Message.FindAsync(Notes.MessageId);
+                if(message != null)
+                {
+                    message.NotesId = null;
+                    _context.Message.Update(message);
+                }
+
                 _context.Notes.Remove(Notes);
                 await _context.SaveChangesAsync();
             }

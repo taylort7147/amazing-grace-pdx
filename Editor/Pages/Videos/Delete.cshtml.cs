@@ -29,7 +29,7 @@ namespace Editor.Pages_Videos
             }
 
             Video = await _context.Video
-                .Include(v => v.Message).FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(v => v.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Video == null)
             {
@@ -49,6 +49,13 @@ namespace Editor.Pages_Videos
 
             if (Video != null)
             {
+                var message = await _context.Message.FindAsync(Video.MessageId);
+                if(message != null)
+                {
+                    message.VideoId = null;
+                    _context.Message.Update(message);
+                }
+
                 _context.Video.Remove(Video);
                 await _context.SaveChangesAsync();
             }
