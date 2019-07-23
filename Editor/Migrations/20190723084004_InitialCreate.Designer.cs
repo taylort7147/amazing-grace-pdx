@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Editor.Migrations
 {
     [DbContext(typeof(MessageContext))]
-    [Migration("20190722053145_InitialCreate")]
+    [Migration("20190723084004_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,7 +89,7 @@ namespace Editor.Migrations
 
                     b.Property<int>("MessageId");
 
-                    b.Property<DateTime>("MessageStartTime");
+                    b.Property<int>("MessageStartTimeSeconds");
 
                     b.Property<string>("YouTubePlaylistId");
 

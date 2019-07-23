@@ -87,7 +87,7 @@ namespace Editor.Migrations
 
                     b.Property<int>("MessageId");
 
-                    b.Property<int>("MessageStartTime");
+                    b.Property<int>("MessageStartTimeSeconds");
 
                     b.Property<string>("YouTubePlaylistId");
 

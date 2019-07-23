@@ -74,7 +74,7 @@ namespace Editor.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     YouTubeVideoId = table.Column<string>(nullable: false),
                     YouTubePlaylistId = table.Column<string>(nullable: true),
-                    MessageStartTime = table.Column<DateTime>(nullable: false),
+                    MessageStartTimeSeconds = table.Column<int>(nullable: false),
                     MessageId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

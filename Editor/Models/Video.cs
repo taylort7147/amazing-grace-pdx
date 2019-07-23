@@ -19,8 +19,7 @@ namespace Editor.Models
         [RegularExpression("[a-zA-Z0-9_-]{18}")] // Current implementation, not guaranteed by spec
         public string YouTubePlaylistId { get; set; }
 
-        [Display(Name = "Message Start Time")]
-        public int MessageStartTime { get; set; }
+        public int MessageStartTimeSeconds { get; set; }
 
         // Derived from MessageStartTime
         // Convenience for calculations and string conversion
@@ -29,17 +28,18 @@ namespace Editor.Models
         {
             get
             {
-                return TimeSpan.FromSeconds(MessageStartTime);
+                return TimeSpan.FromSeconds(MessageStartTimeSeconds);
             }
             set
             {
-                MessageStartTime = (int) value.TotalSeconds;
+                MessageStartTimeSeconds = (int) value.TotalSeconds;
             }
         }
 
         // Derived from MessageStartTimeSpan
         // Used for textual representation
         [NotMapped]
+        [Display(Name = "Message Start Time")]
         [RegularExpression("^((((([0-9]{0,2}:)?[0-5])?[0-9]:)?[0-5])?[0-9])?$")]
         public string MessageStartTimeString
         {
