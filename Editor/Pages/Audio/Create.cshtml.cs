@@ -27,8 +27,11 @@ namespace Editor.Pages_Audio
             var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Description");
             if(messageId != null)
             {
-                var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).First();
-                selected.Selected = true;
+                var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
+                if(selected != null)
+                {
+                    selected.Selected = true;
+                }
             }
             ViewData["MessageId"] = unlinkedMessageSelectList;
             return Page();
