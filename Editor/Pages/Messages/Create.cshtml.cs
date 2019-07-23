@@ -36,7 +36,7 @@ namespace Editor.Pages_Messages
             _context.Message.Add(Message);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Edit/", new {id = Message.Id});
         }
     }
 }
