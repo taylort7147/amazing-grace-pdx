@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Video.Message)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Video.Message.Description)
+            <a class="btn btn-light" asp-page="/Messages/Details" asp-route-id="@Model.Video.MessageId" role="button">@Model.Video.Message.Title</a>
         </dd>
     </dl>
 </div>

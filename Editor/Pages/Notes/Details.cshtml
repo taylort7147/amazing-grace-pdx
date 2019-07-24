@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Notes.Message)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Notes.Message.Description)
+            <a class="btn btn-light" asp-page="/Messages/Details" asp-route-id="@Model.Notes.MessageId" role="button">@Model.Notes.Message.Title</a>
         </dd>
     </dl>
 </div>

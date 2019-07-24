@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Audio.Message)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Audio.Message.Description)
+            <a class="btn btn-light" asp-page="/Messages/Details" asp-route-id="@Model.Audio.MessageId" role="button">@Model.Audio.Message.Title</a>
         </dd>
     </dl>
 </div>

@@ -30,22 +30,34 @@
             @Html.DisplayFor(model => model.Message.Date)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.VideoId)
+            @Html.DisplayNameFor(model => model.Message.Video)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.VideoId)
+            @if(Model.Message.VideoId != null){
+                <a class="btn btn-light" asp-page="/Video/Details" asp-route-id="@Model.Message.VideoId" role="button">Video</a>
+            } else {
+                <p>No video linked</p>
+            }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.AudioId)
+            @Html.DisplayNameFor(model => model.Message.Audio)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.AudioId)
+            @if(Model.Message.AudioId != null){
+                <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@Model.Message.AudioId" role="button">Audio</a>
+            } else {
+                <p>No audio linked</p>
+            }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.NotesId)
+            @Html.DisplayNameFor(model => model.Message.Notes)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.NotesId)
+            @if(Model.Message.NotesId != null){
+                <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@Model.Message.NotesId" role="button">Notes</a>
+            } else {
+                <p>No notes linked</p>
+            }
         </dd>
     </dl>
 </div>
