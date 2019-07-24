@@ -30,13 +30,17 @@ namespace Editor.Pages_Notes
             }
 
             Notes = await _context.Notes
-                .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Notes == null)
             {
                 return NotFound();
             }
-           ViewData["MessageId"] = new SelectList(_context.Message, "Id", "Description");
+
+            // Only show messages that don't have a linked audio reference, or are already linked to this
+            var selectableMessages = _context.Message.Where(m => m.NotesId == null || m.NotesId == Notes.Id);
+
+            ViewData["MessageId"] = new SelectList(selectableMessages, "Id", "Description");
             return Page();
         }
 

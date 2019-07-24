@@ -37,10 +37,10 @@ namespace Editor.Pages_Audio
                 return NotFound();
             }
 
-            // Only show messages that don't have a linked audio reference
-            var unlinkedMessages = _context.Message.Where(m => m.AudioId == null);
+            // Only show messages that don't have a linked audio reference, or are already linked to this
+            var selectableMessages = _context.Message.Where(m => m.AudioId == null || m.AudioId == Audio.Id);
 
-            ViewData["MessageId"] = new SelectList(unlinkedMessages, "Id", "Description");
+            ViewData["MessageId"] = new SelectList(selectableMessages, "Id", "Description");
             return Page();
         }
 

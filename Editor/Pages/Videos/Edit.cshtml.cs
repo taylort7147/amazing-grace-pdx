@@ -30,13 +30,17 @@ namespace Editor.Pages_Videos
             }
 
             Video = await _context.Video
-                .Include(v => v.Message).FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(v => v.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Video == null)
             {
                 return NotFound();
             }
-           ViewData["MessageId"] = new SelectList(_context.Message, "Id", "Description");
+
+            // Only show messages that don't have a linked audio reference, or are already linked to this
+            var selectableMessages = _context.Message.Where(m => m.VideoId == null || m.VideoId == Video.Id);
+
+            ViewData["MessageId"] = new SelectList(selectableMessages, "Id", "Description");
             return Page();
         }
 
