@@ -14,13 +14,13 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Message[0].Date)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Message[0].Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Message[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Date)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Message[0].Video)
@@ -38,13 +38,13 @@
 @foreach (var item in Model.Message) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
                 @if(item.VideoId != null){
