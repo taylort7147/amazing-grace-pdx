@@ -18,19 +18,16 @@ namespace Editor.Pages_Notes
             _context = context;
         }
 
-        public IActionResult OnGet(int? messageId)
+        public IActionResult OnGet(int messageId)
         {
             // Only show messages that don't have a linked audio reference
             var unlinkedMessages = _context.Message.Where(m => m.NotesId == null);
 
             var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Description");
-            if(messageId != null)
+            var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
+            if(selected != null)
             {
-                var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
-                if(selected != null)
-                {
-                    selected.Selected = true;
-                }
+                selected.Selected = true;
             }
             ViewData["MessageId"] = unlinkedMessageSelectList;
             return Page();

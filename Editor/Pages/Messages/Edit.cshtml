@@ -39,7 +39,7 @@
                 <label asp-for="Message.Video" class="control-label"></label>
                 @if(Model.Message.VideoId == null)
                 {
-                    <a class="btn btn-light" asp-page="/Videos/Create" asp-route-id="@Model.Message.VideoId" asp-route-messageId="@Model.Message.Id" role="button">Add</a>
+                    <a class="btn btn-light" asp-page="/Videos/Create" asp-route-id="@Model.Message.VideoId" asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
                 }
                 else
                 {
@@ -51,7 +51,7 @@
                 <label asp-for="Message.Audio" class="control-label"></label>
                 @if(Model.Message.AudioId == null)
                 {
-                    <a class="btn btn-light" asp-page="/Audio/Create" asp-route-id="@Model.Message.AudioId" asp-route-messageId="@Model.Message.Id" role="button">Add</a>
+                    <a class="btn btn-light" asp-page="/Audio/Create" asp-route-id="@Model.Message.AudioId" asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
                 }
                 else
                 {
@@ -63,7 +63,7 @@
                 <label asp-for="Message.Notes" class="control-label"></label>
                 @if(Model.Message.NotesId == null)
                 {
-                    <a class="btn btn-light" asp-page="/Notes/Create" asp-route-id="@Model.Message.NotesId" asp-route-messageId="@Model.Message.Id" role="button">Add</a>
+                    <a class="btn btn-light" asp-page="/Notes/Create" asp-route-id="@Model.Message.NotesId" asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
                 }
                 else
                 {
