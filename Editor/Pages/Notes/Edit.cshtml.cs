@@ -22,6 +22,11 @@ namespace Editor.Pages_Notes
         [BindProperty]
         public Notes Notes { get; set; }
 
+        [BindProperty]
+        public int? OriginalMessageId { get; set; }
+
+        public SelectList MessageIdList { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,10 +42,12 @@ namespace Editor.Pages_Notes
                 return NotFound();
             }
 
-            // Only show messages that don't have a linked audio reference, or are already linked to this
+            OriginalMessageId = Notes.MessageId;
+
+            // Only show messages that don't have a linked notes reference, or are already linked to this
             var selectableMessages = _context.Message.Where(m => m.NotesId == null || m.NotesId == Notes.Id);
 
-            ViewData["MessageId"] = new SelectList(selectableMessages, "Id", "Description");
+            MessageIdList = new SelectList(selectableMessages, "Id", "Description");
             return Page();
         }
 
@@ -51,8 +58,28 @@ namespace Editor.Pages_Notes
                 return Page();
             }
 
-            _context.Attach(Notes).State = EntityState.Modified;
+            var message = await _context.Message.FindAsync(Notes.MessageId);
+            if(message == null)
+            {
+                Console.Error.WriteLine("Unexpected null message with ID: " + Notes.MessageId);
+                return Page();
+            }
 
+            // Unlink the original message if linking to a new message
+            if(OriginalMessageId != null)
+            {
+                var originalMessage = await _context.Message.FindAsync(OriginalMessageId);
+                if(originalMessage != null &&
+                        originalMessage.NotesId != message.NotesId)
+                {
+                    originalMessage.NotesId = null;
+                    _context.Update(originalMessage);
+                }
+            }
+
+            message.NotesId = Notes.Id;
+            _context.Update(Notes);
+            _context.Update(message);
             try
             {
                 await _context.SaveChangesAsync();
