@@ -22,6 +22,11 @@ namespace Editor.Pages_Videos
         [BindProperty]
         public Video Video { get; set; }
 
+        [BindProperty]
+        public int? OriginalMessageId { get; set; }
+
+        public SelectList MessageIdList { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,10 +42,12 @@ namespace Editor.Pages_Videos
                 return NotFound();
             }
 
-            // Only show messages that don't have a linked audio reference, or are already linked to this
+            OriginalMessageId = Video.MessageId;
+
+            // Only show messages that don't have a linked video reference, or are already linked to this
             var selectableMessages = _context.Message.Where(m => m.VideoId == null || m.VideoId == Video.Id);
 
-            ViewData["MessageId"] = new SelectList(selectableMessages, "Id", "Description");
+            MessageIdList = new SelectList(selectableMessages, "Id", "Description");
             return Page();
         }
 
@@ -51,7 +58,28 @@ namespace Editor.Pages_Videos
                 return Page();
             }
 
-            _context.Attach(Video).State = EntityState.Modified;
+            var message = await _context.Message.FindAsync(Video.MessageId);
+            if(message == null)
+            {
+                Console.Error.WriteLine("Unexpected null message with ID: " + Video.MessageId);
+                return Page();
+            }
+
+            // Unlink the original message if linking to a new message
+            if(OriginalMessageId != null)
+            {
+                var originalMessage = await _context.Message.FindAsync(OriginalMessageId);
+                if(originalMessage != null &&
+                        originalMessage.VideoId != message.VideoId)
+                {
+                    originalMessage.VideoId = null;
+                    _context.Update(originalMessage);
+                }
+            }
+
+            message.VideoId = Video.Id;
+            _context.Update(Video);
+            _context.Update(message);
 
             try
             {
