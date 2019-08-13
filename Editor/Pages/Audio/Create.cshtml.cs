@@ -24,7 +24,7 @@ namespace Editor.Pages_Audio
             // Only show messages that don't have a linked audio reference
             var unlinkedMessages = _context.Message.Where(m => m.AudioId == null);
 
-            var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Description");
+            var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Title");
             var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
             if(selected != null)
             {
