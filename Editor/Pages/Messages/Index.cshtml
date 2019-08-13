@@ -5,68 +5,39 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Video)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Audio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message[0].Notes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Message) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @if(item.VideoId != null){
-                    <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@item.VideoId" role="button">Video</a>
-                }
-            </td>
-            <td>
-                @if(item.AudioId != null){
-                    <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@item.AudioId" role="button">Audio</a>
-                }
-            </td>
-            <td>
-                @if(item.NotesId != null){
-                    <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@item.NotesId" role="button">Notes</a>
-                }
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="text-center">
+    <a class="btn btn-primary btn-large" asp-page="/Messages/Create" role="button">Add a New Message</a>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message[0].Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message[0].Video)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message[0].Audio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message[0].Notes)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var message in Model.Message)
+            {
+                @await Html.PartialAsync("_MessageTableRow", message);
+            }
+        </tbody>
+    </table>
+</div>

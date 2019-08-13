@@ -1,0 +1,32 @@
+@model Editor.Models.Message
+<tr>
+    <td>
+        @Html.DisplayFor(model => model.Date)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Description)
+    </td>
+    <td>
+        @if(Model.VideoId != null){
+            <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@Model.VideoId" role="button">Video</a>
+        }
+    </td>
+    <td>
+        @if(Model.AudioId != null){
+            <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@Model.AudioId" role="button">Audio</a>
+        }
+    </td>
+    <td>
+        @if(Model.NotesId != null){
+            <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@Model.NotesId" role="button">Notes</a>
+        }
+    </td>
+    <td>
+        <a asp-page="./Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-page="./Details" asp-route-id="@Model.Id">Details</a> |
+        <a asp-page="./Delete" asp-route-id="@Model.Id">Delete</a>
+    </td>
+</tr>

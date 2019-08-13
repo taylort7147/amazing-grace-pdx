@@ -56,5 +56,6 @@ body {
 }
 
 .btn-large {
+  margin: 12pt;
   font-size: 24pt;
 }
