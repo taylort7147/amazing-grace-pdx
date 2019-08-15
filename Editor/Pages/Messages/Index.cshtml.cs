@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Editor.Models;
 
 namespace Editor.Pages_Messages
 {
+    [AllowAnonymous]
     public class IndexModel : PageModel
     {
         private readonly MessageContext _context;
@@ -18,7 +20,7 @@ namespace Editor.Pages_Messages
             _context = context;
         }
 
-        public IList<Message> Message { get;set; }
+        public IList<Message> Message { get; set; }
 
         public async Task OnGetAsync()
         {
