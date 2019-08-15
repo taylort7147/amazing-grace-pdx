@@ -13,8 +13,11 @@ namespace Editor.Models
                 serviceProvider.GetRequiredService<
                 DbContextOptions<MessageContext>>()))
             {
-                ClearDatabase(context);
-                SeedDatabase(context);
+                if(!context.Message.Any())
+                {
+                    ClearDatabase(context);
+                    SeedDatabase(context);
+                }
             }
         }
 
