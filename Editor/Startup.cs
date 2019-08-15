@@ -70,7 +70,7 @@ namespace Editor
                 options.SlidingExpiration = true;
             });
 
-            services.AddDbContext<MessageContext>(options => options.UseSqlite(Configuration.GetConnectionString("MessageContext")));
+            services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MessageContext")));
 
             services.AddMvc(config =>
             {
