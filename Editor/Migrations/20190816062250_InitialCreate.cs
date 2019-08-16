@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Editor.Migrations
@@ -12,7 +13,7 @@ namespace Editor.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(maxLength: 120, nullable: false),
                     Description = table.Column<string>(maxLength: 4095, nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
@@ -30,7 +31,7 @@ namespace Editor.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     StreamUrl = table.Column<string>(nullable: false),
                     DownloadUrl = table.Column<string>(nullable: false),
                     MessageId = table.Column<int>(nullable: false)
@@ -51,7 +52,7 @@ namespace Editor.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Url = table.Column<string>(nullable: false),
                     MessageId = table.Column<int>(nullable: false)
                 },
@@ -71,7 +72,7 @@ namespace Editor.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     YouTubeVideoId = table.Column<string>(nullable: false),
                     YouTubePlaylistId = table.Column<string>(nullable: true),
                     MessageStartTimeSeconds = table.Column<int>(nullable: false),
