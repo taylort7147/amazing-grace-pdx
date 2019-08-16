@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Editor.Areas.Identity.Data;
+using Editor.Authorization;
 
 namespace Editor
 {
@@ -79,10 +80,14 @@ namespace Editor
                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSingleton<IAuthorizationHandler,
+                                  AdministratorsAuthorizationHandler>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -101,6 +106,20 @@ namespace Editor
 
             app.UseAuthentication();
             app.UseMvc();
+
+            CreateUserRoles(serviceProvider).Wait();
+        }
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            // Adding Admin Role
+            var roleCheck = await RoleManager.RoleExistsAsync(Constants.AdministratorRole);
+            if (!roleCheck)
+            {
+                //create the roles and seed them to the database
+                await RoleManager.CreateAsync(new IdentityRole(Constants.AdministratorRole));
+            }
         }
     }
 }

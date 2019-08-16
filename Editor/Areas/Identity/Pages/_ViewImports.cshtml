@@ -1,5 +1,8 @@
 @using Microsoft.AspNetCore.Identity
 @using Editor.Areas.Identity
-@using Microsoft.AspNetCore.Identity
 @namespace Editor.Areas.Identity.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Editor.Authorization;
+@using Microsoft.AspNetCore.Authorization
+@using Editor.Models
+@inject IAuthorizationService AuthorizationService
