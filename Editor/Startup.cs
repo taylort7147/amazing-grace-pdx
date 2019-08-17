@@ -82,6 +82,9 @@ namespace Editor
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton<IAuthorizationHandler,
+                                  ManagerAuthorizationHandler>();
+
+            services.AddSingleton<IAuthorizationHandler,
                                   AdministratorsAuthorizationHandler>();
 
         }
@@ -113,11 +116,13 @@ namespace Editor
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Adding Admin Role
-            var roleCheck = await RoleManager.RoleExistsAsync(Constants.AdministratorRole);
-            if (!roleCheck)
+            if (!await RoleManager.RoleExistsAsync(Constants.ManagerRole))
             {
-                //create the roles and seed them to the database
+                await RoleManager.CreateAsync(new IdentityRole(Constants.ManagerRole));
+            }
+
+            if (!await RoleManager.RoleExistsAsync(Constants.AdministratorRole))
+            {
                 await RoleManager.CreateAsync(new IdentityRole(Constants.AdministratorRole));
             }
         }
