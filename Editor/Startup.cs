@@ -83,9 +83,17 @@ namespace Editor
 
             services.AddSingleton<IAuthorizationHandler,
                                   ManagerAuthorizationHandler>();
-
             services.AddSingleton<IAuthorizationHandler,
                                   AdministratorsAuthorizationHandler>();
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "ElevatedRights", policy => policy.RequireRole(
+                        Constants.AdministratorRole,
+                        Constants.ManagerRole));
+            });
 
         }
 
