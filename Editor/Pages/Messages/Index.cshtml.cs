@@ -32,12 +32,34 @@ namespace Editor.Pages_Messages
 
         public IList<Message> Message { get; set; }
 
-        public async Task OnGetAsync(string sortOrder)
+        private bool Search(Message message, string searchString)
+        {
+            var lowerSearchString = searchString.ToLower();
+            if(message.Title.ToLower().Contains(lowerSearchString))
+            {
+                return true;
+            }
+            if(message.Description.ToLower().Contains(lowerSearchString))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task OnGetAsync(string sortOrder, string searchString)
         {
             ViewData["DateSortParam"] = (sortOrder == SortOrder.DateDescending) ? SortOrder.Date : SortOrder.DateDescending;
             ViewData["TitleSortParam"] = (sortOrder == SortOrder.Title) ? SortOrder.TitleDescending : SortOrder.Title;
             ViewData["DescriptionSortParam"] = (sortOrder == SortOrder.Description) ? SortOrder.DescriptionDescending : SortOrder.Description;
+            ViewData["CurrentSearch"] = searchString;
+
             var messages = from m in _context.Message select m;
+
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                messages = messages.Where(m => Search(m, searchString));
+            }
+
             switch(sortOrder)
             {
 

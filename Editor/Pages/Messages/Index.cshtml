@@ -9,19 +9,38 @@
     <a class="btn btn-primary btn-large" asp-page="/Messages/Create" role="button">Add a New Message</a>
 </div>
 <div>
+    <!-- TODO: Move to partial -->
+    <form asp-action="Index" method="get">
+        <div class="active-cyan-4 mb-4">
+            <input class="form-control" 
+                type="text" 
+                name="SearchString" 
+                placeholder="Search" 
+                aria-label="Search" 
+                value="@ViewData["CurrentSearch"]">
+        </div>
+    </form>
+</div>
+<div>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">
+                    <a asp-action="Index"
+                        asp-route-sortOrder="@ViewData["DateSortParam"]" 
+                        asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Date)</a>
                 </th>
                 <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParam"]">
+                    <a asp-action="Index" 
+                        asp-route-sortOrder="@ViewData["TitleSortParam"]"
+                        asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Title)</a>
                 </th>
                 <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]">
+                    <a asp-action="Index" 
+                        asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
+                        asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Description)</a>
                 </th>
                 <th>
@@ -43,4 +62,8 @@
             }
         </tbody>
     </table>
+    @if(!String.IsNullOrEmpty((string)ViewData["CurrentSearch"]))
+    {
+        <a asp-action="Index">Back to List</a>
+    }
 </div>
