@@ -1,4 +1,7 @@
 @using Editor
 @namespace Editor.Pages
 @using Editor.Authorization
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims;
+@inject IAuthorizationService AuthorizationService
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

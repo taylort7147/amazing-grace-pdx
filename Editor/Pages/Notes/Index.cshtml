@@ -29,9 +29,9 @@
                 @Html.DisplayFor(modelItem => item.Message.Title)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
             </td>
         </tr>
 }

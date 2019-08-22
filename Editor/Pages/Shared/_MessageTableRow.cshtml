@@ -25,8 +25,8 @@
         }
     </td>
     <td>
-        <a asp-page="./Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-page="./Details" asp-route-id="@Model.Id">Details</a> |
-        <a asp-page="./Delete" asp-route-id="@Model.Id">Delete</a>
+        <partial name="_EditLink" model="new { Id = @Model.Id, User = @User }">
+        <a asp-page="./Details" asp-route-id="@Model.Id">Details</a>
+        <partial name="_DeleteLink" model="new { Id = @Model.Id, User = @User }">
     </td>
 </tr>
