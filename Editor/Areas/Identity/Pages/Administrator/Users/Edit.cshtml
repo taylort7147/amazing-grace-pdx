@@ -17,21 +17,22 @@
                 <input disabled asp-for="IdentityUser.UserName" />
             </div>
             <div class="form-group">
-                <partial name="_CheckBoxPartial"  for="@Model.IsManagerCheckBox">
+                <partial name="_CheckBoxPartial"  for="@Model.ReadOnlyPermission">
+            </div>
+            <div class="form-group">
+                <partial name="_CheckBoxPartial"  for="@Model.ReadWritePermission">
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <div>
+                <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.IdentityUser.Id" role="button">Delete</a>
+            </div>
+            <div>
+                <a asp-page="./Index">Back to List</a>
+            </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.IdentityUser.Id" role="button">Delete</a>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {

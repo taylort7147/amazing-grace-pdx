@@ -21,6 +21,9 @@ namespace Editor.Authorization
         public const string EditOperationName = "Edit";
         public const string DeleteOperationName = "Delete";
         public const string AdministratorRole = "Administrator";
-        public const string ManagerRole = "Manager";
+        public const string ReadWriteRole = "ReadWrite";
+        public const string ReadOnlyRole = "ReadOnly";
+        public const string ReadWritePolicy = "ReadWrite";
+        public const string ReadOnlyPolicy = "ReadOnly";
     }
 }

@@ -82,17 +82,21 @@ namespace Editor
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton<IAuthorizationHandler,
-                                  ManagerAuthorizationHandler>();
+                                  ReadWriteAuthorizationHandler>();
             services.AddSingleton<IAuthorizationHandler,
                                   AdministratorsAuthorizationHandler>();
-
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(
-                    "ElevatedRights", policy => policy.RequireRole(
+                    Constants.ReadWritePolicy, policy => policy.RequireRole(
                         Constants.AdministratorRole,
-                        Constants.ManagerRole));
+                        Constants.ReadWriteRole));
+                options.AddPolicy(
+                    Constants.ReadOnlyPolicy, policy => policy.RequireRole(
+                        Constants.AdministratorRole,
+                        Constants.ReadWriteRole,
+                        Constants.ReadOnlyRole));
             });
 
         }
@@ -122,16 +126,17 @@ namespace Editor
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await CreateRoleIfMissingAsync(roleManager, Constants.ReadOnlyRole);
+            await CreateRoleIfMissingAsync(roleManager, Constants.ReadWriteRole);
+            await CreateRoleIfMissingAsync(roleManager, Constants.AdministratorRole);
+        }
 
-            if (!await RoleManager.RoleExistsAsync(Constants.ManagerRole))
+        private async Task CreateRoleIfMissingAsync(RoleManager<IdentityRole> roleManager, string role)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
             {
-                await RoleManager.CreateAsync(new IdentityRole(Constants.ManagerRole));
-            }
-
-            if (!await RoleManager.RoleExistsAsync(Constants.AdministratorRole))
-            {
-                await RoleManager.CreateAsync(new IdentityRole(Constants.AdministratorRole));
+                await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
     }

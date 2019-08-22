@@ -29,7 +29,10 @@ namespace Editor.Areas.Identity.Pages.Administrator.Users
         public IdentityUser IdentityUser { get; set; }
 
         [BindProperty]
-        public CheckBoxModel IsManagerCheckBox { get; set; }
+        public CheckBoxModel ReadOnlyPermission { get; set; }
+
+        [BindProperty]
+        public CheckBoxModel ReadWritePermission { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -44,9 +47,11 @@ namespace Editor.Areas.Identity.Pages.Administrator.Users
                 return NotFound();
             }
 
-            IsManagerCheckBox = new CheckBoxModel();
-            IsManagerCheckBox.DisplayName = "Manager";
-            IsManagerCheckBox.IsChecked = await _userManager.IsInRoleAsync(IdentityUser, Constants.ManagerRole);
+            ReadOnlyPermission = new CheckBoxModel{DisplayName="Read Only"};
+            ReadOnlyPermission.IsChecked = await _userManager.IsInRoleAsync(IdentityUser, Constants.ReadOnlyRole);
+
+            ReadWritePermission = new CheckBoxModel{DisplayName="Read/Write"};
+            ReadWritePermission.IsChecked = await _userManager.IsInRoleAsync(IdentityUser, Constants.ReadWriteRole);
 
             return Page();
         }
@@ -58,22 +63,28 @@ namespace Editor.Areas.Identity.Pages.Administrator.Users
                 return Page();
             }
 
-            if(!IsManagerCheckBox.IsChecked &&
-                    await _userManager.IsInRoleAsync(IdentityUser, Constants.ManagerRole))
-            {
-                await _userManager.UpdateSecurityStampAsync(IdentityUser);
-                await _userManager.RemoveFromRoleAsync(IdentityUser, Constants.ManagerRole);
-                await _context.SaveChangesAsync();
-            }
-            else if(IsManagerCheckBox.IsChecked &&
-                    !(await _userManager.IsInRoleAsync(IdentityUser, Constants.ManagerRole)))
-            {
-                await _userManager.UpdateSecurityStampAsync(IdentityUser);
-                await _userManager.AddToRoleAsync(IdentityUser, Constants.ManagerRole);
-                await _context.SaveChangesAsync();
-            }
+            await UpdateRole(Constants.ReadOnlyRole, ReadOnlyPermission.IsChecked);
+            await UpdateRole(Constants.ReadWriteRole, ReadWritePermission.IsChecked);
 
             return RedirectToPage("./Index");
+        }
+
+        private async Task UpdateRole(string role, bool isChecked)
+        {
+            if(!isChecked &&
+                    await _userManager.IsInRoleAsync(IdentityUser, role))
+            {
+                await _userManager.UpdateSecurityStampAsync(IdentityUser);
+                await _userManager.RemoveFromRoleAsync(IdentityUser, role);
+                await _context.SaveChangesAsync();
+            }
+            else if(isChecked &&
+                    !(await _userManager.IsInRoleAsync(IdentityUser, role)))
+            {
+                await _userManager.UpdateSecurityStampAsync(IdentityUser);
+                await _userManager.AddToRoleAsync(IdentityUser, role);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

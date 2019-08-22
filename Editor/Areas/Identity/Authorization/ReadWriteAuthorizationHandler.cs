@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace Editor.Authorization
 {
-    public class ManagerAuthorizationHandler
+    public class ReadWriteAuthorizationHandler
         : AuthorizationHandler<OperationAuthorizationRequirement>
     {
         protected override Task HandleRequirementAsync(
@@ -25,7 +25,7 @@ namespace Editor.Authorization
             }
 
             // Managers can create, edit, and delete
-            if (context.User.IsInRole(Constants.ManagerRole))
+            if (context.User.IsInRole(Constants.ReadWriteRole))
             {
                 context.Succeed(requirement);
             }
