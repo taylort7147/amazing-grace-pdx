@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Editor.Authorization;
 using Editor.Models;
 
 namespace Editor.Pages_Audio
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
         private readonly MessageContext _context;
@@ -20,7 +23,6 @@ namespace Editor.Pages_Audio
 
         public IActionResult OnGet(int messageId)
         {
-
             // Only show messages that don't have a linked audio reference
             var unlinkedMessages = _context.Message.Where(m => m.AudioId == null);
 

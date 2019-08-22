@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Editor.Authorization;
 using Editor.Models;
 
 namespace Editor.Pages_Videos
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
         private readonly MessageContext _context;
