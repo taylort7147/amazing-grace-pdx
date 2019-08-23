@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Editor.Areas.Identity.Data;
 using Editor.Authorization;
+using Newtonsoft.Json;
 
 namespace Editor
 {
@@ -79,7 +80,12 @@ namespace Editor
                 .RequireAuthenticatedUser()
                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
 
             services.AddSingleton<IAuthorizationHandler,
                                   ReadWriteAuthorizationHandler>();
