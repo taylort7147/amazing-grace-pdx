@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Editor.Migrations
+namespace MessageManager.Migrations
 {
     [DbContext(typeof(MessageContext))]
     partial class MessageContextModelSnapshot : ModelSnapshot
@@ -18,7 +18,7 @@ namespace Editor.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Editor.Models.Audio", b =>
+            modelBuilder.Entity("MessageManager.Models.Audio", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Editor.Migrations
                     b.ToTable("Audio");
                 });
 
-            modelBuilder.Entity("Editor.Models.Message", b =>
+            modelBuilder.Entity("MessageManager.Models.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace Editor.Migrations
                     b.ToTable("Message");
                 });
 
-            modelBuilder.Entity("Editor.Models.Notes", b =>
+            modelBuilder.Entity("MessageManager.Models.Notes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace Editor.Migrations
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("Editor.Models.Video", b =>
+            modelBuilder.Entity("MessageManager.Models.Video", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,27 +109,27 @@ namespace Editor.Migrations
                     b.ToTable("Video");
                 });
 
-            modelBuilder.Entity("Editor.Models.Audio", b =>
+            modelBuilder.Entity("MessageManager.Models.Audio", b =>
                 {
-                    b.HasOne("Editor.Models.Message", "Message")
+                    b.HasOne("MessageManager.Models.Message", "Message")
                         .WithOne("Audio")
-                        .HasForeignKey("Editor.Models.Audio", "MessageId")
+                        .HasForeignKey("MessageManager.Models.Audio", "MessageId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Editor.Models.Notes", b =>
+            modelBuilder.Entity("MessageManager.Models.Notes", b =>
                 {
-                    b.HasOne("Editor.Models.Message", "Message")
+                    b.HasOne("MessageManager.Models.Message", "Message")
                         .WithOne("Notes")
-                        .HasForeignKey("Editor.Models.Notes", "MessageId")
+                        .HasForeignKey("MessageManager.Models.Notes", "MessageId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Editor.Models.Video", b =>
+            modelBuilder.Entity("MessageManager.Models.Video", b =>
                 {
-                    b.HasOne("Editor.Models.Message", "Message")
+                    b.HasOne("MessageManager.Models.Message", "Message")
                         .WithOne("Video")
-                        .HasForeignKey("Editor.Models.Video", "MessageId")
+                        .HasForeignKey("MessageManager.Models.Video", "MessageId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

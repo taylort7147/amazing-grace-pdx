@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using Editor.Models;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace Editor.Authorization
+namespace MessageManager.Authorization
 {
     public class AdministratorsAuthorizationHandler
         : AuthorizationHandler<OperationAuthorizationRequirement>

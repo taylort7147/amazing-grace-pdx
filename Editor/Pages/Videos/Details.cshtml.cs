@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Editor.Models;
+using MessageManager.Models;
 
-namespace Editor.Pages_Videos
+namespace MessageManager.Pages_Videos
 {
     [AllowAnonymous]
     public class DetailsModel : PageModel

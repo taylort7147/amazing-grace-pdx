@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Editor.Models;
-using Editor.Authorization;
+using MessageManager.Models;
+using MessageManager.Authorization;
 
-namespace Editor.Pages_Notes
+namespace MessageManager.Pages_Notes
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel

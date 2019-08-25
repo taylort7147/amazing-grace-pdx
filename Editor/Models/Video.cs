@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Editor.Models
+namespace MessageManager.Models
 {
     public class Video
     {

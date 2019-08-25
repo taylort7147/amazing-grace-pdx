@@ -1,5 +1,5 @@
 using System;
-using Editor.Areas.Identity.Data;
+using MessageManager.Areas.Identity.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: HostingStartup(typeof(Editor.Areas.Identity.IdentityHostingStartup))]
-namespace Editor.Areas.Identity
+[assembly: HostingStartup(typeof(MessageManager.Areas.Identity.IdentityHostingStartup))]
+namespace MessageManager.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {
@@ -16,13 +16,13 @@ namespace Editor.Areas.Identity
         {
             builder.ConfigureServices((context, services) =>
             {
-                services.AddDbContext<EditorIdentityDbContext>(options =>
+                services.AddDbContext<IdentityDbContext>(options =>
                         options.UseSqlServer(
-                            context.Configuration.GetConnectionString("EditorIdentityDbContextConnection")));
+                            context.Configuration.GetConnectionString("IdentityDbContextConnection")));
 
                 services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<EditorIdentityDbContext>();
+                .AddEntityFrameworkStores<IdentityDbContext>();
             });
         }
     }

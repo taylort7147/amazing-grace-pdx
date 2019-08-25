@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Editor.Authorization;
-using Editor.Models;
+using MessageManager.Authorization;
+using MessageManager.Models;
 
-namespace Editor.Pages_Notes
+namespace MessageManager.Pages_Notes
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class DeleteModel : PageModel

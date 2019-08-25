@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace Editor.Authorization
+namespace MessageManager.Authorization
 {
     public static class ContactOperations
     {

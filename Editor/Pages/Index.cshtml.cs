@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Editor.Models;
+using MessageManager.Models;
 
-namespace Editor.Pages
+namespace MessageManager.Pages
 {
     public class IndexModel : PageModel
     {

@@ -14,11 +14,11 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Editor.Areas.Identity.Data;
-using Editor.Authorization;
+using MessageManager.Areas.Identity.Data;
+using MessageManager.Authorization;
 using Newtonsoft.Json;
 
-namespace Editor
+namespace MessageManager
 {
     public class Startup
     {

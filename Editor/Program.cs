@@ -9,9 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Editor.Models;
+using MessageManager.Models;
 
-namespace Editor
+namespace MessageManager
 {
     public class Program
     {

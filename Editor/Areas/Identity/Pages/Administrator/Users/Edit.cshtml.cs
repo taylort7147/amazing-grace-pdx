@@ -8,20 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Editor.Areas.Identity.Data;
-using Editor.Authorization;
-using Editor.Pages.Shared;
+using MessageManager.Areas.Identity.Data;
+using MessageManager.Authorization;
+using MessageManager.Pages.Shared;
 
-namespace Editor.Areas.Identity.Pages.Administrator.Users
+namespace MessageManager.Areas.Identity.Pages.Administrator.Users
 {
     [Authorize(Roles = "Administrator")]
     public class EditModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly EditorIdentityDbContext _context;
+        private readonly IdentityDbContext _context;
 
         public EditModel(UserManager<IdentityUser> userManager,
-                         EditorIdentityDbContext context)
+                         IdentityDbContext context)
         {
             _userManager = userManager;
             _context = context;

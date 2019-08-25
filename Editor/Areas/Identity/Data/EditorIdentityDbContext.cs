@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Editor.Areas.Identity.Data
+namespace MessageManager.Areas.Identity.Data
 {
-    public class EditorIdentityDbContext : IdentityDbContext<IdentityUser>
+    public class IdentityDbContext : IdentityDbContext<IdentityUser>
     {
-        public EditorIdentityDbContext(DbContextOptions<EditorIdentityDbContext> options)
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)
         {
         }

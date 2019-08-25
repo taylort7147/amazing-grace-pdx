@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Editor.Migrations
+namespace MessageManager.Migrations
 {
     [DbContext(typeof(MessageContext))]
     [Migration("20190816062250_InitialCreate")]
@@ -16,124 +16,124 @@ namespace Editor.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+            .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+            .HasAnnotation("Relational:MaxIdentifierLength", 128)
+            .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("MessageManager.Models.Audio", b =>
+            {
+                b.Property<int>("Id")
+                .ValueGeneratedOnAdd()
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Editor.Models.Audio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                b.Property<string>("DownloadUrl")
+                .IsRequired();
 
-                    b.Property<string>("DownloadUrl")
-                        .IsRequired();
+                b.Property<int>("MessageId");
 
-                    b.Property<int>("MessageId");
+                b.Property<string>("StreamUrl")
+                .IsRequired();
 
-                    b.Property<string>("StreamUrl")
-                        .IsRequired();
+                b.HasKey("Id");
 
-                    b.HasKey("Id");
+                b.HasIndex("MessageId")
+                .IsUnique();
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                b.ToTable("Audio");
+            });
 
-                    b.ToTable("Audio");
-                });
+            modelBuilder.Entity("MessageManager.Models.Message", b =>
+            {
+                b.Property<int>("Id")
+                .ValueGeneratedOnAdd()
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Editor.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                b.Property<int?>("AudioId");
 
-                    b.Property<int?>("AudioId");
+                b.Property<DateTime>("Date");
 
-                    b.Property<DateTime>("Date");
+                b.Property<string>("Description")
+                .IsRequired()
+                .HasMaxLength(4095);
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(4095);
+                b.Property<int?>("NotesId");
 
-                    b.Property<int?>("NotesId");
+                b.Property<string>("Title")
+                .IsRequired()
+                .HasMaxLength(120);
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(120);
+                b.Property<int?>("VideoId");
 
-                    b.Property<int?>("VideoId");
+                b.HasKey("Id");
 
-                    b.HasKey("Id");
+                b.ToTable("Message");
+            });
 
-                    b.ToTable("Message");
-                });
+            modelBuilder.Entity("MessageManager.Models.Notes", b =>
+            {
+                b.Property<int>("Id")
+                .ValueGeneratedOnAdd()
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Editor.Models.Notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                b.Property<int>("MessageId");
 
-                    b.Property<int>("MessageId");
+                b.Property<string>("Url")
+                .IsRequired();
 
-                    b.Property<string>("Url")
-                        .IsRequired();
+                b.HasKey("Id");
 
-                    b.HasKey("Id");
+                b.HasIndex("MessageId")
+                .IsUnique();
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                b.ToTable("Notes");
+            });
 
-                    b.ToTable("Notes");
-                });
+            modelBuilder.Entity("MessageManager.Models.Video", b =>
+            {
+                b.Property<int>("Id")
+                .ValueGeneratedOnAdd()
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Editor.Models.Video", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                b.Property<int>("MessageId");
 
-                    b.Property<int>("MessageId");
+                b.Property<int>("MessageStartTimeSeconds");
 
-                    b.Property<int>("MessageStartTimeSeconds");
+                b.Property<string>("YouTubePlaylistId");
 
-                    b.Property<string>("YouTubePlaylistId");
+                b.Property<string>("YouTubeVideoId")
+                .IsRequired();
 
-                    b.Property<string>("YouTubeVideoId")
-                        .IsRequired();
+                b.HasKey("Id");
 
-                    b.HasKey("Id");
+                b.HasIndex("MessageId")
+                .IsUnique();
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                b.ToTable("Video");
+            });
 
-                    b.ToTable("Video");
-                });
+            modelBuilder.Entity("MessageManager.Models.Audio", b =>
+            {
+                b.HasOne("MessageManager.Models.Message", "Message")
+                .WithOne("Audio")
+                .HasForeignKey("MessageManager.Models.Audio", "MessageId")
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            modelBuilder.Entity("Editor.Models.Audio", b =>
-                {
-                    b.HasOne("Editor.Models.Message", "Message")
-                        .WithOne("Audio")
-                        .HasForeignKey("Editor.Models.Audio", "MessageId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            modelBuilder.Entity("MessageManager.Models.Notes", b =>
+            {
+                b.HasOne("MessageManager.Models.Message", "Message")
+                .WithOne("Notes")
+                .HasForeignKey("MessageManager.Models.Notes", "MessageId")
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            modelBuilder.Entity("Editor.Models.Notes", b =>
-                {
-                    b.HasOne("Editor.Models.Message", "Message")
-                        .WithOne("Notes")
-                        .HasForeignKey("Editor.Models.Notes", "MessageId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Editor.Models.Video", b =>
-                {
-                    b.HasOne("Editor.Models.Message", "Message")
-                        .WithOne("Video")
-                        .HasForeignKey("Editor.Models.Video", "MessageId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            modelBuilder.Entity("MessageManager.Models.Video", b =>
+            {
+                b.HasOne("MessageManager.Models.Message", "Message")
+                .WithOne("Video")
+                .HasForeignKey("MessageManager.Models.Video", "MessageId")
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 #pragma warning restore 612, 618
         }
     }

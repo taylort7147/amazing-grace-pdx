@@ -10,17 +10,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Editor.Areas.Identity.Data;
-using Editor.Authorization;
+using MessageManager.Areas.Identity.Data;
+using MessageManager.Authorization;
 
-namespace Editor.Areas.Identity.Pages.Administrator.Users
+namespace MessageManager.Areas.Identity.Pages.Administrator.Users
 {
     [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel
     {
-        private readonly EditorIdentityDbContext _context;
+        private readonly IdentityDbContext _context;
 
-        public IndexModel(EditorIdentityDbContext context)
+        public IndexModel(IdentityDbContext context)
         {
             _context = context;
         }

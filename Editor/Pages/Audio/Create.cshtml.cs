@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Editor.Authorization;
-using Editor.Models;
+using MessageManager.Authorization;
+using MessageManager.Models;
 
-namespace Editor.Pages_Audio
+namespace MessageManager.Pages_Audio
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel

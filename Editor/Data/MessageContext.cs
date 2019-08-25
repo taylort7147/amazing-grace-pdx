@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Editor.Models;
+using MessageManager.Models;
 
-    public class MessageContext : DbContext
+public class MessageContext : DbContext
+{
+    public MessageContext (DbContextOptions<MessageContext> options)
+        : base(options)
     {
-        public MessageContext (DbContextOptions<MessageContext> options)
-            : base(options)
-        {
-        }
-
-        public DbSet<Editor.Models.Message> Message { get; set; }
-
-        public DbSet<Editor.Models.Video> Video { get; set; }
-
-        public DbSet<Editor.Models.Audio> Audio { get; set; }
-
-        public DbSet<Editor.Models.Notes> Notes { get; set; }
     }
+
+    public DbSet<MessageManager.Models.Message> Message { get; set; }
+
+    public DbSet<MessageManager.Models.Video> Video { get; set; }
+
+    public DbSet<MessageManager.Models.Audio> Audio { get; set; }
+
+    public DbSet<MessageManager.Models.Notes> Notes { get; set; }
+}

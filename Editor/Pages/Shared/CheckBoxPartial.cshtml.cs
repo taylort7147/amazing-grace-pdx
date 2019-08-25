@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Editor.Pages.Shared
+namespace MessageManager.Pages.Shared
 {
     public class CheckBoxModel
     {
