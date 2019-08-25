@@ -16,7 +16,7 @@ namespace MessageManager.Models
 
 
         [Display(Name = "Playlist ID")]
-        [RegularExpression("[a-zA-Z0-9_-]{18}")] // Current implementation, not guaranteed by spec
+        [RegularExpression("[a-zA-Z0-9_-]{34}")] // Current implementation, not guaranteed by spec
         public string YouTubePlaylistId { get; set; }
 
         public int MessageStartTimeSeconds { get; set; }
