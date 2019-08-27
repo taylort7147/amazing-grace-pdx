@@ -71,7 +71,7 @@ namespace MessageManager
                 options.SlidingExpiration = true;
             });
 
-            services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:MessageDb"]));
+            services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MessageDb")));
 
             services.AddMvc(config =>
             {

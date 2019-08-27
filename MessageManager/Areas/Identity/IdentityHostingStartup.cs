@@ -18,7 +18,7 @@ namespace MessageManager.Areas.Identity
             {
                 services.AddDbContext<IdentityDbContext>(options =>
                         options.UseSqlServer(
-                            context.Configuration["ConnectionStrings:IdentityDb"]));
+                            context.Configuration.GetConnectionString("IdentityDb")));
 
                 services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
