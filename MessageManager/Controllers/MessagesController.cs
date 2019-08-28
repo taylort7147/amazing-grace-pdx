@@ -1,8 +1,9 @@
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MessageManager.Models;
 
 namespace MessageManager.Controllers
@@ -39,6 +40,26 @@ namespace MessageManager.Controllers
                           .Include(m => m.Video)
                           .Include(m => m.Notes)
                           .FirstOrDefaultAsync(m => m.Id == id);
+
+            if(message == null)
+            {
+                return NotFound();
+            }
+
+            return message;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("latest")]
+        public async Task<ActionResult<Message>> GetLatestMessage()
+        {
+            var message = await _context.Message
+                          .Include(m => m.Audio)
+                          .Include(m => m.Video)
+                          .Include(m => m.Notes)
+                          .OrderByDescending(m => m.Date)
+                          .FirstOrDefaultAsync();
+
 
             if(message == null)
             {

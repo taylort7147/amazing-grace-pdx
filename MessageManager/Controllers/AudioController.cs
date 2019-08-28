@@ -1,8 +1,9 @@
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MessageManager.Models;
 
 namespace MessageManager.Controllers
@@ -21,7 +22,7 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Audio>>> GetMessages()
+        public async Task<ActionResult<IEnumerable<Audio>>> GetAudio()
         {
             return await _context.Audio
                    .Include(m => m.Message)
@@ -30,7 +31,7 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Audio>> GetMessage(int id)
+        public async Task<ActionResult<Audio>> GetAudio(int id)
         {
             var Audio = await _context.Audio
                         .Include(a => a.Message)
@@ -42,6 +43,24 @@ namespace MessageManager.Controllers
             }
 
             return Audio;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("latest")]
+        public async Task<ActionResult<Audio>> GetLatestAudio()
+        {
+            var audio = await _context.Audio
+                        .Include(a => a.Message)
+                        .OrderByDescending(a => a.Message.Date)
+                        .FirstOrDefaultAsync();
+
+
+            if(audio == null)
+            {
+                return NotFound();
+            }
+
+            return audio;
         }
     }
 }

@@ -1,8 +1,9 @@
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MessageManager.Models;
 
 namespace MessageManager.Controllers
@@ -21,7 +22,7 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Notes>>> GetMessages()
+        public async Task<ActionResult<IEnumerable<Notes>>> GetNotes()
         {
             return await _context.Notes
                    .Include(m => m.Message)
@@ -30,7 +31,7 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Notes>> GetMessage(int id)
+        public async Task<ActionResult<Notes>> GetNotes(int id)
         {
             var Notes = await _context.Notes
                         .Include(v => v.Message)
@@ -42,6 +43,24 @@ namespace MessageManager.Controllers
             }
 
             return Notes;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("latest")]
+        public async Task<ActionResult<Notes>> GetLatestNotes()
+        {
+            var notes = await _context.Notes
+                        .Include(n => n.Message)
+                        .OrderByDescending(n => n.Message.Date)
+                        .FirstOrDefaultAsync();
+
+
+            if(notes == null)
+            {
+                return NotFound();
+            }
+
+            return notes;
         }
     }
 }
