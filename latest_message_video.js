@@ -1,16 +1,15 @@
 // Requires 
 //      barrier.js
-//      load_message_details.js
 //      load_youtube_iframe_api.js
 
 // ************** Button control functions ***************
-function initializeButtonCallbacks(player, videoDetails){
+function initializeButtonCallbacks(player, videoDetails) {
     console.log("initializeButtonCallbacks()");
     $("#latest-message-video-controls-jump-to-beginning").on("click", () => jumpTo(player, 0));
-    $("#latest-message-video-controls-jump-to-message").on("click", () => jumpTo(player, videoDetails.messageStart));
+    $("#latest-message-video-controls-jump-to-message").on("click", () => jumpTo(player, videoDetails.messageStartTimeSeconds));
 }
 
-function jumpTo(player, timeInSeconds){
+function jumpTo(player, timeInSeconds) {
     console.log(`jumpTo(${timeInSeconds})`);
     player.seekTo(timeInSeconds);
 }
@@ -28,39 +27,32 @@ function createPlayer(videoDetails) {
     var player = new YT.Player('latest-message-video', {
         height: '390',
         width: '640',
-        videoId: videoDetails.videoId,
+        videoId: videoDetails.youTubeVideoId,
         playerVars: {
-            start: videoDetails.messageStart,
+            start: videoDetails.messageStartTimeSeconds,
             color: "white",
             modestbranding: 1,
             rel: 0
         },
         events: {
-          'onReady': (event) => onPlayerReady(event, player, videoDetails),
-          'onStateChange': onPlayerStateChange
+            'onReady': (event) => onPlayerReady(event, player, videoDetails),
+            'onStateChange': onPlayerStateChange
         }
     });
     return player;
 }
 
-function getLatestVideo(obj) {
-    var sortedKeys = Object.keys(obj).sort();
-    index = sortedKeys.length - 1;
-    while(index >= 0){
-        key = sortedKeys[index];
-        if(obj[key].videoId && obj[key].videoId.length > 0) { return obj[key]; }
-        --index;
-    }
-}
-
-function onResultsReady(results){
+function onResultsReady(results) {
     console.log("onResultsReady()");
-    data = results["data"];
-    var videoDetails = getLatestVideo(data);
+    videoDetails = results["data"];
+    console.log(videoDetails);
     var player = createPlayer(videoDetails);
     initializeButtonCallbacks(player, videoDetails);
 }
 
 var videoBarrier = new Barrier(["api", "data"], onResultsReady);
-registerMessageDetailsCallback(data => videoBarrier.addResult("data", data));
+$.getJSON("https://amazing-grace-pdx.azurewebsites.net/api/videos/latest", function (data) {
+    videoBarrier.addResult("data", data);
+});
+
 registerYouTubeIframeAPIReadyCallback(() => videoBarrier.addResult("api", true));

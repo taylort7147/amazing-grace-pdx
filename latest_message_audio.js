@@ -1,24 +1,13 @@
 // Requires 
-//      barrier.js
-//      load_message_details.js
+//      no dependencies
 
-function getLatestAudio(obj) {
-    var sortedKeys = Object.keys(obj).sort();
-    index = sortedKeys.length - 1;
-    while(index >= 0){
-        key = sortedKeys[index];
-        if(obj[key].audioDownloadLink && obj[key].audioDownloadLink.length > 0) { return obj[key]; }
-        --index;
-    }
-}
-
-function onAudioReady(data){
+function onAudioReady(data) {
     console.log("onAudioReady()");
-    var messageDetails = getLatestAudio(data);
-    appendAudioBlock($("#latest-message-audio")[0], messageDetails.audioDownloadLink)
+    console.log(data);
+    appendAudioBlock($("#latest-message-audio")[0], data.downloadUrl)
 }
 
-function appendAudioBlock(tag, link){
+function appendAudioBlock(tag, link) {
 
     var audioTag = document.createElement('audio');
     audioTag.controls = "controls";
@@ -30,4 +19,6 @@ function appendAudioBlock(tag, link){
     tag.appendChild(audioTag);
 }
 
-registerMessageDetailsCallback(onAudioReady);
+$.getJSON("https://amazing-grace-pdx.azurewebsites.net/api/audio/latest", function (data) {
+    onAudioReady(data);
+});
