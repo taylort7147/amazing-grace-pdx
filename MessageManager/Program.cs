@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using MessageManager.Models;
+using MessageManager.Areas.Identity.Data;
 
 namespace MessageManager
 {
@@ -28,9 +29,7 @@ namespace MessageManager
                     var context=services.
                                 GetRequiredService<MessageContext>();
                     context.Database.Migrate();
-
-                    // Warning: Erases and seeds database.
-                    SeedData.Initialize(services);
+                    services.GetRequiredService<IdentityDbContext>().Database.Migrate();
                 }
                 catch (Exception ex)
                 {
