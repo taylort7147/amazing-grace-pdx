@@ -26,25 +26,25 @@
         <thead>
             <tr>
                 <th>
-                    <a asp-action="Index"
+                    <a asp-page="Index"
                         asp-route-sortOrder="@ViewData["DateSortParam"]" 
                         asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Date)</a>
                 </th>
                 <th>
-                    <a asp-action="Index" 
+                    <a asp-page="Index" 
                         asp-route-sortOrder="@ViewData["TitleSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Title)</a>
                 </th>
                 <th>
-                    <a asp-action="Index" 
+                    <a asp-page="Index" 
                         asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Description)</a>
                 </th>
                 <th>
-                    <a asp-action="Index" 
+                    <a asp-page="Index" 
                         asp-route-sortOrder="@ViewData["SeriesSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
                     @Html.DisplayNameFor(model => model.Message[0].Series)</a>
