@@ -25,6 +25,7 @@ namespace MessageManager.Controllers
         public async Task<ActionResult<IEnumerable<Message>>> GetMessages()
         {
             return await _context.Message
+                   .Include(m => m.Series)
                    .Include(m => m.Audio)
                    .Include(m => m.Video)
                    .Include(m => m.Notes)
