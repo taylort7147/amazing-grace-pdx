@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using MessageManager.Authorization;
 using MessageManager.Models;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages_Series
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class EditModel : PageModel
@@ -23,7 +23,7 @@ namespace MessageManager.Pages_Messages
         }
 
         [BindProperty]
-        public Message Message { get; set; }
+        public Series Series { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,20 +32,14 @@ namespace MessageManager.Pages_Messages
                 return NotFound();
             }
 
-            Message = await _context.Message.FirstOrDefaultAsync(m => m.Id == id);
+            Series = await _context.Series
+                     .Include(s => s.Messages).FirstOrDefaultAsync(s => s.Id == id);
 
-            var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
-            var selected = seriesSelectList.Where(x => x.Value == id.ToString()).FirstOrDefault();
-            if(selected != null)
-            {
-                selected.Selected = true;
-            }
-            ViewData["SeriesSelectList"] = seriesSelectList;
-
-            if (Message == null)
+            if (Series == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
@@ -56,7 +50,7 @@ namespace MessageManager.Pages_Messages
                 return Page();
             }
 
-            _context.Attach(Message).State = EntityState.Modified;
+            _context.Update(Series);
 
             try
             {
@@ -64,7 +58,7 @@ namespace MessageManager.Pages_Messages
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MessageExists(Message.Id))
+                if (!SeriesExists(Series.Id))
                 {
                     return NotFound();
                 }
@@ -77,9 +71,9 @@ namespace MessageManager.Pages_Messages
             return RedirectToPage("./Index");
         }
 
-        private bool MessageExists(int id)
+        private bool SeriesExists(int id)
         {
-            return _context.Message.Any(e => e.Id == id);
+            return _context.Series.Any(e => e.Id == id);
         }
     }
 }

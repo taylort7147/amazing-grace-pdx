@@ -19,4 +19,6 @@ public class MessageContext : DbContext
     public DbSet<MessageManager.Models.Audio> Audio { get; set; }
 
     public DbSet<MessageManager.Models.Notes> Notes { get; set; }
+
+    public DbSet<MessageManager.Models.Series> Series { get; set; }
 }

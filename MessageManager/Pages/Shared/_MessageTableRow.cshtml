@@ -1,4 +1,5 @@
 @model MessageManager.Models.Message
+@using System;
 <tr>
     <td>
         @Html.DisplayFor(model => model.Date)
@@ -7,7 +8,21 @@
         @Html.DisplayFor(model => model.Title)
     </td>
     <td>
-        @Html.DisplayFor(model => model.Description)
+        @{
+            var description = @Model.Description;
+            var maxDisplayLength = 20;
+            if(!String.IsNullOrEmpty(description) && description.Length > 20)
+            {
+                description = @description.Substring(0, maxDisplayLength - 3) + "...";
+            }
+            @description;
+        }
+    </td>
+    <td>
+        @if(Model.SeriesId != null)
+        {
+            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.SeriesId" role="button">@Model.Series.Name</a>
+        }
     </td>
     <td>
         @if(Model.VideoId != null){

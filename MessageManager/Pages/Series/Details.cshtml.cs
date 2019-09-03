@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MessageManager.Models;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages_Series
 {
     [AllowAnonymous]
     public class DetailsModel : PageModel
@@ -20,7 +20,7 @@ namespace MessageManager.Pages_Messages
             _context = context;
         }
 
-        public Message Message { get; set; }
+        public Series Series { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,11 +29,10 @@ namespace MessageManager.Pages_Messages
                 return NotFound();
             }
 
-            Message = await _context.Message
-                      .Include(m => m.Series)
-                      .FirstOrDefaultAsync(m => m.Id == id);
+            Series = await _context.Series
+                     .Include(s => s.Messages).FirstOrDefaultAsync(s => s.Id == id);
 
-            if (Message == null)
+            if (Series == null)
             {
                 return NotFound();
             }

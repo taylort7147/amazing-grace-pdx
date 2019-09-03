@@ -21,6 +21,8 @@ namespace MessageManager.Pages_Messages
             public const string TitleDescending = "title_desc";
             public const string Description = "description";
             public const string DescriptionDescending = "description_desc";
+            public const string Series = "series";
+            public const string SeriesDescending = "series_desc";
         }
 
         private readonly MessageContext _context;
@@ -51,9 +53,10 @@ namespace MessageManager.Pages_Messages
             ViewData["DateSortParam"] = (sortOrder == SortOrder.DateDescending) ? SortOrder.Date : SortOrder.DateDescending;
             ViewData["TitleSortParam"] = (sortOrder == SortOrder.Title) ? SortOrder.TitleDescending : SortOrder.Title;
             ViewData["DescriptionSortParam"] = (sortOrder == SortOrder.Description) ? SortOrder.DescriptionDescending : SortOrder.Description;
+            ViewData["SeriesSortParam"] = (sortOrder == SortOrder.Series) ? SortOrder.SeriesDescending : SortOrder.Series;
             ViewData["CurrentSearch"] = searchString;
 
-            var messages = from m in _context.Message select m;
+            var messages = from m in _context.Message.Include(m => m.Series) select m;
 
             if(!String.IsNullOrEmpty(searchString))
             {
@@ -75,6 +78,12 @@ namespace MessageManager.Pages_Messages
                 break;
             case SortOrder.DescriptionDescending:
                 messages = messages.OrderByDescending(m => m.Description);
+                break;
+            case SortOrder.Series:
+                messages = messages.OrderBy(m => m.Series.Name);
+                break;
+            case SortOrder.SeriesDescending:
+                messages = messages.OrderByDescending(m => m.Series.Name);
                 break;
             case SortOrder.Date:
                 messages = messages.OrderBy(m => m.Date);

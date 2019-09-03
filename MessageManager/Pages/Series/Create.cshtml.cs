@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Authorization;
-using MessageManager.Authorization;
 using MessageManager.Models;
+using MessageManager.Authorization;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages_Series
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
@@ -21,22 +21,13 @@ namespace MessageManager.Pages_Messages
             _context = context;
         }
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGet()
         {
-            var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
-            var selected = seriesSelectList.Where(x => x.Value == null).FirstOrDefault();
-            if(selected != null)
-            {
-                selected.Selected = true;
-            }
-            ViewData["SeriesSelectList"] = seriesSelectList;
             return Page();
         }
 
         [BindProperty]
-        public Message Message { get; set; }
-
-
+        public Series Series { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -45,10 +36,10 @@ namespace MessageManager.Pages_Messages
                 return Page();
             }
 
-            _context.Message.Add(Message);
+            _context.Series.Add(Series);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Edit/", new {id = Message.Id});
+            return RedirectToPage("./Index");
         }
     }
 }

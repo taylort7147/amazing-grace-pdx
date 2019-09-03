@@ -29,5 +29,8 @@ namespace MessageManager.Models
 
         public int? NotesId { get; set; }
         public Notes Notes { get; set; }
+
+        public int? SeriesId { get; set; }
+        public Series Series { get; set; }
     }
 }
