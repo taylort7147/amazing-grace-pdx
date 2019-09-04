@@ -53,7 +53,7 @@ function getVideoLink(details) {
 }
 
 function getAudioLink(details) {
-    if (deetails && details.streamUrl && details.streamUrl.length > 0)
+    if (details && details.streamUrl && details.streamUrl.length > 0)
         return details.streamUrl;
 }
 
