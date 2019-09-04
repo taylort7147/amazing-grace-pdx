@@ -93,7 +93,9 @@ function appendMessageBlock(tag, data) {
     date = tag.id;
     details = data.find(function (e) {
         var d = new Date(e.date);
-        var dateString = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
+        var dateString = String(d.getFullYear()).padStart(4, "0") + "-" +
+            String(d.getMonth() + 1).padStart(2, "0") + "-" +
+            String(d.getDate()).padStart(2, "0");
         console.log(date);
         console.log(dateString);
         return dateString == date;
