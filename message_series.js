@@ -48,17 +48,17 @@ function formatDate(dateString) {
 }
 
 function getVideoLink(details) {
-    if (details.youTubeVideoId && details.youTubeVideoId.length > 0)
+    if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
         return `https://www.youtube.com/watch?v=${details.youTubeVideoId}&t=${details.messageStartTimeSeconds}`;
 }
 
 function getAudioLink(details) {
-    if (details.streamUrl && details.streamUrl.length > 0)
+    if (deetails && details.streamUrl && details.streamUrl.length > 0)
         return details.streamUrl;
 }
 
 function getNotesLink(details) {
-    if (details.url && details.url.length > 0)
+    if (details && details.url && details.url.length > 0)
         return details.url;
 }
 
