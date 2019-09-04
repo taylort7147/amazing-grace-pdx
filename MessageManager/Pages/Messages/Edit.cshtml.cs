@@ -35,7 +35,7 @@ namespace MessageManager.Pages_Messages
             Message = await _context.Message.FirstOrDefaultAsync(m => m.Id == id);
 
             var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
-            var selected = seriesSelectList.Where(x => x.Value == id.ToString()).FirstOrDefault();
+            var selected = seriesSelectList.Where(x => x.Value == Message.SeriesId.ToString()).FirstOrDefault();
             if(selected != null)
             {
                 selected.Selected = true;
