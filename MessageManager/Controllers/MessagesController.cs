@@ -22,8 +22,13 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessages()
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(string series)
         {
+            if(!string.IsNullOrEmpty(series))
+            {
+                return await GetMessagesBySeries(series);
+            }
+
             return await _context.Message
                    .Include(m => m.Series)
                    .Include(m => m.Audio)
@@ -48,6 +53,31 @@ namespace MessageManager.Controllers
             }
 
             return message;
+        }
+
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySeries(string series)
+        {
+            var selectedSeries = await _context.Series.FirstOrDefaultAsync(s => s.Name.ToLower() == series.ToLower());
+            if(selectedSeries == null)
+            {
+                return NotFound();
+            }
+
+            await _context.Entry(selectedSeries).Collection(s => s.Messages).LoadAsync();
+            foreach(var message in selectedSeries.Messages)
+            {
+                await _context.Entry(message).Reference(m => m.Video).LoadAsync();
+                await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
+                await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
+            }
+            var messages = selectedSeries.Messages.ToList();
+
+            if(messages == null)
+            {
+                return NotFound();
+            }
+
+            return messages;
         }
 
         [AllowAnonymous]
