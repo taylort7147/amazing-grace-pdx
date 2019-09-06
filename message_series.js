@@ -1,10 +1,3 @@
-function onMessagesReady(data) {
-    console.log(`onMessagesReady()`);
-    console.log(data);
-    messageBlocks = $("div.message-block");
-    console.log(`Number of message bocks: ${messageBlocks.length}`);
-    messageBlocks.each((i, tag) => appendMessageBlock(tag, data));
-}
 
 function appendMessageBlockHeader(tag, text) {
     headerTag = document.createElement("h3");
@@ -42,7 +35,7 @@ function appendButtonGroup(tag) {
 }
 
 function formatDate(dateString) {
-    date = new Date(dateString + "T00:00:00");
+    date = new Date(dateString);
     var formattedDate = date.toLocaleDateString('en-US', { month: "long", day: "numeric", year: "numeric" });
     return formattedDate;
 }
@@ -88,39 +81,53 @@ function appendHiddenDiv(parentTag, activatorTag) {
     return divTag;
 }
 
-function appendMessageBlock(tag, data) {
-    console.log(`appendMessageBlock() called for ${tag.id}`);
-    date = tag.id;
-    details = data.find(function (e) {
-        var d = new Date(e.date);
-        var dateString = String(d.getFullYear()).padStart(4, "0") + "-" +
-            String(d.getMonth() + 1).padStart(2, "0") + "-" +
-            String(d.getDate()).padStart(2, "0");
-        console.log(date);
-        console.log(dateString);
-        return dateString == date;
-    });
-    if (details) {
-        // Header
-        headerTag = appendMessageBlockHeader(tag, details.title);
+function appendMessageBlock(parentTag, data) {
+    console.log(`appendMessageBlock() called for ${parentTag.id}`);
+    if (data == null) { return; }
 
-        // Information
-        infoDiv = appendHiddenDiv(tag, headerTag);
-        dateTag = appendMessageBlockParagraph(infoDiv, formatDate(date))
-        dateTag.classList.add("message-block-date");
-        infoTag = appendMessageBlockDescription(infoDiv, details.description);;
+    // Tag
+    var tag = document.createElement("div");
+    tag.classList.add("message-block");
+    parentTag.appendChild(tag);
 
-        // Button group
-        buttonGroupTag = appendButtonGroup(tag);
-        appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(details.notes));
-        appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(details.audio));
-        appendMessageBlockLink(buttonGroupTag, "Video", getVideoLink(details.video));
-    } else {
-        tag.hidden = true;
-    }
+    // Header
+    headerTag = appendMessageBlockHeader(tag, data.title);
+
+    // Information
+    infoDiv = appendHiddenDiv(tag, headerTag);
+    dateTag = appendMessageBlockParagraph(infoDiv, formatDate(data.date))
+    dateTag.classList.add("message-block-date");
+    infoTag = appendMessageBlockDescription(infoDiv, data.description);;
+
+    // Button group
+    buttonGroupTag = appendButtonGroup(tag);
+    appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(data.notes));
+    appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(data.audio));
+    appendMessageBlockLink(buttonGroupTag, "Video", getVideoLink(data.video));
     return tag;
 }
 
-$.getJSON("https://amazing-grace-pdx.azurewebsites.net/api/messages", function (data) {
-    onMessagesReady(data);
-});
+function getMessageSeries(seriesName, cb) {
+    console.log(`Series name: ${seriesName}`);
+    var seriesUri = encodeURIComponent(seriesName);
+    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages?series=${seriesUri}`
+    console.log(`URI: ${uri}`);
+    $.getJSON(uri, cb);
+}
+
+function populateMessageSeriesBlock(parentTag, series) {
+    console.log(parentTag);
+    if (series == null) {
+        console.log("No messages found for series");
+        return;
+    }
+    console.log(`Series: (${series.length} entries)`);
+    console.log(series);
+    console.log(typeof (series));
+    series.forEach((message) => appendMessageBlock(parentTag, message));
+}
+
+messageSeriesBlocks = $("div.message-series-block");
+console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
+messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
+    populateMessageSeriesBlock(tag, data)));
