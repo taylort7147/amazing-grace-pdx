@@ -16,5 +16,12 @@ namespace MessageManager.Models
 
         [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
+
+        public override string ToString()
+        {
+            return $"Notes(Id={Id}, " +
+                   $"Url={Url}, " +
+                   $"MessageId={MessageId})";
+        }
     }
 }

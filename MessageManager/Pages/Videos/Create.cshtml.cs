@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using MessageManager.Authorization;
 using MessageManager.Models;
 
@@ -15,10 +16,12 @@ namespace MessageManager.Pages_Videos
     public class CreateModel : PageModel
     {
         private readonly MessageContext _context;
+        private readonly ILogger _logger;
 
-        public CreateModel(MessageContext context)
+        public CreateModel(MessageContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult OnGet(int messageId)
@@ -60,6 +63,7 @@ namespace MessageManager.Pages_Videos
             message.VideoId = Video.Id;
             _context.Message.Update(message);
             await _context.SaveChangesAsync();
+            _logger.LogCritical($"User {User.Identity.Name} created '{Video.ToString()}.");
 
             return RedirectToPage("./Index");
         }

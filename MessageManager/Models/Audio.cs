@@ -21,5 +21,13 @@ namespace MessageManager.Models
 
         [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
+
+        public override string ToString()
+        {
+            return $"Audio(Id={Id}, " +
+                   $"StreamUrl={StreamUrl}, " +
+                   $"DownloadUrl={DownloadUrl}, " +
+                   $"MessageId={MessageId})";
+        }
     }
 }

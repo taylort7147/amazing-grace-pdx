@@ -32,5 +32,16 @@ namespace MessageManager.Models
 
         public int? SeriesId { get; set; }
         public Series Series { get; set; }
+
+        public override string ToString()
+        {
+            return $"Message(Id={Id}, " +
+                   $"Title={Title}, " +
+                   $"Description={Description}, " +
+                   $"AudioId={AudioId}, " +
+                   $"NotesId={NotesId}, " +
+                   $"VideoId={VideoId}, " +
+                   $"SeriesId={SeriesId})";
+        }
     }
 }

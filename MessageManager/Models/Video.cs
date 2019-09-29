@@ -67,5 +67,14 @@ namespace MessageManager.Models
 
         [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
+
+        public override string ToString()
+        {
+            return $"Video(Id={Id}, " +
+                   $"YouTubeVideoId={YouTubeVideoId}, " +
+                   $"YouTubePlaylistId={YouTubePlaylistId}, " +
+                   $"MessageStartTimeSeconds={MessageStartTimeSeconds}, " +
+                   $"MessageId={MessageId})";
+        }
     }
 }

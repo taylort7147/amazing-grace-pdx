@@ -4,12 +4,19 @@ using System.Collections.Generic;
 
 namespace MessageManager.Models
 {
-public class Series {
-    public int Id { get; set; }
+    public class Series
+    {
+        public int Id { get; set; }
 
-    [Required]
-    public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-    public IEnumerable<Message> Messages { get; set; }
-}
+        public IEnumerable<Message> Messages { get; set; }
+
+        public override string ToString()
+        {
+            return $"Series(Id={Id}, " +
+                   $"Name={Name})";
+        }
+    }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MessageManager.Authorization;
 using MessageManager.Models;
 
@@ -16,10 +17,12 @@ namespace MessageManager.Pages_Audio
     public class EditModel : PageModel
     {
         private readonly MessageContext _context;
+        private readonly ILogger _logger;
 
-        public EditModel(MessageContext context)
+        public EditModel(MessageContext context, ILogger<EditModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -87,6 +90,7 @@ namespace MessageManager.Pages_Audio
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogCritical($"User {User.Identity.Name} edited object with new values'{Audio.ToString()}.");
             }
             catch (DbUpdateConcurrencyException)
             {

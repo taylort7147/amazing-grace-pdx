@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MessageManager.Authorization;
 using MessageManager.Models;
 
@@ -15,10 +16,12 @@ namespace MessageManager.Pages_Messages
     public class DeleteModel : PageModel
     {
         private readonly MessageContext _context;
+        private readonly ILogger _logger;
 
-        public DeleteModel(MessageContext context)
+        public DeleteModel(MessageContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -68,6 +71,7 @@ namespace MessageManager.Pages_Messages
 
                 _context.Message.Remove(Message);
                 await _context.SaveChangesAsync();
+                _logger.LogCritical($"User {User.Identity.Name} deleted '{Message.ToString()}.");
             }
 
             return RedirectToPage("./Index");
