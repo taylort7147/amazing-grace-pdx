@@ -16,12 +16,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Audio.StreamUrl" class="control-label"></label>
-                <input asp-for="Audio.StreamUrl" class="form-control" />
+                
+                <input asp-for="Audio.StreamUrl" class="form-control" />https://drive.google.com/open?id=
                 <span asp-validation-for="Audio.StreamUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Audio.DownloadUrl" class="control-label"></label>
-                <input asp-for="Audio.DownloadUrl" class="form-control" />
+                <p></p>
+                <input asp-for="Audio.DownloadUrl" class="form-control" />https://drive.google.com/uc?export=download&id=
                 <span asp-validation-for="Audio.DownloadUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
