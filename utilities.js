@@ -27,3 +27,23 @@ function appendTooltip(parentTag, position = "top") {
     parentTag.appendChild(tooltipTag);
     return tooltipTag;
 }
+
+function appendMessageDetailsTooltip(parentTag, details, position = "top") {
+    var tooltipTag = appendTooltip(parentTag, position);
+
+    var titleTag = document.createElement("p");
+    titleTag.classList.add("ag-text");
+    titleTag.innerHTML = details.title;
+    tooltipTag.appendChild(titleTag);
+
+    var dateTag = document.createElement("p");
+    dateTag.classList.add("ag-text");
+    dateTag.innerHTML = formatDate(details.date);
+    tooltipTag.appendChild(dateTag);
+
+    var descriptionTag = document.createElement("p")
+    descriptionTag.classList.add("ag-text");
+    descriptionTag.innerHTML = details.description
+    tooltipTag.appendChild(descriptionTag);
+    return tooltipTag;
+}
