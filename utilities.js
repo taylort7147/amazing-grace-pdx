@@ -21,9 +21,9 @@ function appendHiddenDiv(parentTag, activatorTag) {
 
 function appendTooltip(parentTag, position = "top") {
     var tooltipTag = document.createElement("span");
-    tooltipTag.classList.add("tooltip-text");
-    tooltipTag.classList.add(`tooltip-text-${position}`)
-    parentTag.classList.add("tooltip");
+    tooltipTag.classList.add("ag-tooltip-text");
+    tooltipTag.classList.add(`ag-tooltip-text-${position}`)
+    parentTag.classList.add("ag-tooltip");
     parentTag.appendChild(tooltipTag);
     return tooltipTag;
 }
