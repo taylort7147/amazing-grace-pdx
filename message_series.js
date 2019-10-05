@@ -74,7 +74,7 @@ function appendMessageBlock(parentTag, data) {
     headerTag = appendMessageBlockHeader(tag, data.title);
 
     // Information
-    infoDiv = appendHiddenDiv(tag, headerTag);
+    infoDiv = appendTooltip(headerTag, "top");
     dateTag = appendMessageBlockParagraph(infoDiv, formatDate(data.date))
     dateTag.classList.add("message-block-date");
     infoTag = appendMessageBlockDescription(infoDiv, data.description);;
