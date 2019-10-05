@@ -20,7 +20,7 @@
 }
 
 .ag-text{
-    color: var(--fg-color-primary);
+    color: var(--fg-color-primary)!important;
 }
 
 .ag-center{
@@ -181,5 +181,5 @@
   }
 
   .tooltip-text .ag-text {
-    color: var(--fg-color-primary);
+    color: var(--fg-color-primary)!important;
   }
