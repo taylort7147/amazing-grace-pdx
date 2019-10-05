@@ -11,14 +11,17 @@ function updateVideoDetails(videoDetails) {
     var tooltipTag = appendTooltip(parentTag, "right");
 
     var titleTag = document.createElement("p");
+    titleTag.classList.add("ag-text");
     titleTag.innerHTML = messageDetails.title;
     tooltipTag.appendChild(titleTag);
 
     var dateTag = document.createElement("p");
+    titleTag.classList.add("ag-text");
     dateTag.innerHTML = formatDate(messageDetails.date);
     tooltipTag.appendChild(dateTag);
 
     var descriptionTag = document.createElement("p")
+    titleTag.classList.add("ag-text");
     descriptionTag.innerHTML = messageDetails.description
     tooltipTag.appendChild(descriptionTag);
 }
