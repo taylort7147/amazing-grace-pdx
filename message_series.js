@@ -1,3 +1,5 @@
+// Requires 
+//      utilities.js
 
 function appendMessageBlockHeader(tag, text) {
     headerTag = document.createElement("h3");
@@ -34,12 +36,6 @@ function appendButtonGroup(tag) {
     return buttonGroupTag;
 }
 
-function formatDate(dateString) {
-    date = new Date(dateString);
-    var formattedDate = date.toLocaleDateString('en-US', { month: "long", day: "numeric", year: "numeric" });
-    return formattedDate;
-}
-
 function getVideoLink(details) {
     if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
         return `https://www.youtube.com/watch?v=${details.youTubeVideoId}&t=${details.messageStartTimeSeconds}`;
@@ -65,22 +61,6 @@ function appendMessageBlockDescription(tag, description) {
     tag.appendChild(descriptionTag);
     return descriptionTag;
 }
-
-function appendHiddenDiv(parentTag, activatorTag) {
-    var divTag = document.createElement("div");
-    divTag.classList.add("hidden");
-    activatorTag.onmouseover = () => {
-        console.log("mouseover");
-        divTag.classList.remove("hidden");
-    };
-    parentTag.onmouseleave = () => {
-        console.log("mouseout");
-        divTag.classList.add("hidden");
-    };
-    parentTag.appendChild(divTag);
-    return divTag;
-}
-
 function appendMessageBlock(parentTag, data) {
     console.log(`appendMessageBlock() called for ${parentTag.id}`);
     if (data == null) { return; }
