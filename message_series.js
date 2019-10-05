@@ -11,6 +11,7 @@ function appendMessageBlockHeader(tag, text) {
 function appendMessageBlockParagraph(tag, text) {
     pTag = document.createElement("p");
     pTag.innerHTML = text;
+    pTag.classList.add("ag-text");
     tag.appendChild(pTag);
     return pTag;
 }
@@ -54,9 +55,10 @@ function getNotesLink(details) {
 function appendMessageBlockDescription(tag, description) {
     if (!description)
         return;
-    var descriptionTag = document.createElement("div");
+    var descriptionTag = document.createElement("p");
     descriptionTag.classList.add("message-block-description");
     descriptionTag.classList.add("ag-center");
+    descriptionTag.classList.add("ag-text");
     descriptionTag.innerHTML = description;
     tag.appendChild(descriptionTag);
     return descriptionTag;
