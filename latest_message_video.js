@@ -1,6 +1,27 @@
 // Requires 
 //      barrier.js
 //      load_youtube_iframe_api.js
+//      utilities.js
+
+
+// ************** Video details functions ****************
+function updateVideoDetails(videoDetails) {
+    var parentTag = document.getElementById("latest-message-video-details");
+    var messageDetails = videoDetails.message;
+    var tooltipTag = appendTooltip(parentTag, "right");
+
+    var titleTag = document.createElement("p");
+    titleTag.innerHTML = messageDetails.title;
+    tooltipTag.appendChild(titleTag);
+
+    var dateTag = document.createElement("p");
+    dateTag.innerHTML = formatDate(messageDetails.date);
+    tooltipTag.appendChild(dateTag);
+
+    var descriptionTag = document.createElement("p")
+    descriptionTag.innerHTML = messageDetails.description
+    tooltipTag.appendChild(descriptionTag);
+}
 
 // ************** Button control functions ***************
 function initializeButtonCallbacks(player, videoDetails) {
@@ -47,6 +68,7 @@ function onResultsReady(results) {
     videoDetails = results["data"];
     console.log(videoDetails);
     var player = createPlayer(videoDetails);
+    updateVideoDetails(videoDetails);
     initializeButtonCallbacks(player, videoDetails);
 }
 
