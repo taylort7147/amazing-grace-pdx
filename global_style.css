@@ -9,10 +9,10 @@
     --disabled-bg-color: lightgrey;
     --disabled-fg-color: grey;
     --disabled-border-color: darkgrey;
-    --tooltip-width: 300px;
-    --tooltip-bg-color: var(--bg-color-primary);
-    --tooltip-fg-color: var(--fg-color-primary);
-    --tooltip-opacity: 0.95;
+    --tooltip-width: 200px;
+    --tooltip-bg-color: black;
+    --tooltip-fg-color: white;
+    --tooltip-opacity: 0.8;
 }
 
 .hidden{
@@ -29,7 +29,7 @@
 
 .ag-btn-group {
     font-size: 0px;
-    display: inline-flex;
+    display: block;
     vertical-align: middle;
     margin: 25px;
 }
