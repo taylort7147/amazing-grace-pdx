@@ -4,6 +4,10 @@
 function onNotesReady(data) {
     console.log("onNotesReady()");
     console.log(data);
+    appendMessageDetailsTooltip(
+        $("#latest-message-notes-details")[0],
+        data.message,
+        "right");
     appendNotesBlock($("#latest-message-notes")[0], data.url)
 }
 

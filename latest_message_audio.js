@@ -4,6 +4,10 @@
 function onAudioReady(data) {
     console.log("onAudioReady()");
     console.log(data);
+    appendMessageDetailsTooltip(
+        $("#latest-message-audio-details")[0],
+        data.message,
+        "right");
     appendAudioBlock($("#latest-message-audio")[0], data.downloadUrl)
 }
 
