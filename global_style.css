@@ -179,3 +179,7 @@
   .tooltip:hover .tooltip-text {
     visibility: visible;
   }
+
+  .tooltip-text .ag-text {
+    color: var(--fg-color-primary);
+  }

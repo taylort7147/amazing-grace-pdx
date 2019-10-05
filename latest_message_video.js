@@ -16,12 +16,12 @@ function updateVideoDetails(videoDetails) {
     tooltipTag.appendChild(titleTag);
 
     var dateTag = document.createElement("p");
-    titleTag.classList.add("ag-text");
+    dateTag.classList.add("ag-text");
     dateTag.innerHTML = formatDate(messageDetails.date);
     tooltipTag.appendChild(dateTag);
 
     var descriptionTag = document.createElement("p")
-    titleTag.classList.add("ag-text");
+    descriptionTag.classList.add("ag-text");
     descriptionTag.innerHTML = messageDetails.description
     tooltipTag.appendChild(descriptionTag);
 }
