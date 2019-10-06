@@ -9,10 +9,16 @@
     --disabled-bg-color: lightgrey;
     --disabled-fg-color: grey;
     --disabled-border-color: darkgrey;
-    --tooltip-width: 200px;
+    --tooltip-max-width: 500px;
     --tooltip-bg-color: black;
     --tooltip-fg-color: white;
     --tooltip-opacity: 0.8;
+}
+
+@media screen and (min-width: 1000px){
+    :root {
+        --tooltip-max-width: 800px;
+    }
 }
 
 .hidden{
@@ -144,10 +150,10 @@
     display: inline-block;
   }
   
-  /* Tooltip text */
-  .ag-tooltip .ag-tooltip-text {
+/* Tooltip text */
+.ag-tooltip .ag-tooltip-text {
     visibility: hidden;
-    width: var(--tooltip-width);
+    max-width: var(--tooltip-max-width);
     background-color: var(--tooltip-bg-color);
     color: var(--tooltip-fg-color);
     opacity: var(--tooltip-opacity);
@@ -156,30 +162,54 @@
     border-radius: 6px;
     position: absolute;
     z-index: 1;
-  }
-
-  .ag-tooltip .ag-tooltip-text-right {
-    top: -5px;
-    left: 105%;
-  }
-
-  .ag-tooltip .ag-tooltip-text-top {  
-    bottom: 100%;
-    left: 50%;
-    margin-left: calc(-1 * var(--tooltip-width) / 2);
-  }
-
-  .ag-tooltip .ag-tooltip-text-bottom {
-    top: 100%;
-    left: 50%;
-    margin-left: calc(-1 * var(--tooltip-width) / 2);
 }
   
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .ag-tooltip:hover .ag-tooltip-text {
-    visibility: visible;
-  }
+/* Horizontally-oriented tooltips */
+.ag-tooltip.ag-tooltip-right,
+.ag-tooltip.ag-tooltip-left {
+    width: max-content;
+}
+/* Vertically-oriented tooltips */
+.ag-tooltip.ag-tooltip-top,
+.ag-tooltip.ag-tooltip-bottom {
+    width: 100%;
+}
 
-  .ag-tooltip-text .ag-text {
+/* Tooltip text in a left tooltip */
+.ag-tooltip-left .ag-tooltip-text {
+    top: -5px;
+    right: 105%;
+    width: max-content;
+}
+
+/* Tooltip text in a right tooltip */
+.ag-tooltip-right .ag-tooltip-text {
+    top: -5px;
+    left: 105%;
+    width: max-content;
+}
+
+/* Tooltip text in a top tooltip */
+.ag-tooltip-top .ag-tooltip-text {  
+    bottom: 100%;
+    left: 50%;
+    margin-left: -25%;
+    width: 50%;
+}
+
+/* Tooltip text in a bottom tooltip */
+.ag-tooltip-bottom .ag-tooltip-text {
+    top: 100%;
+    left: 50%;
+    margin-left: -25%;
+    width: 50%;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.ag-tooltip:hover .ag-tooltip-text {
+    visibility: visible;
+}
+
+.ag-tooltip-text .ag-text {
     color: var(--fg-color-primary)!important;
-  }
+}
