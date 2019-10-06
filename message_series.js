@@ -55,7 +55,7 @@ function getNotesLink(details) {
 function appendMessageBlockDescription(tag, description) {
     if (!description)
         return;
-    var descriptionTag = document.createElement("p");
+    var descriptionTag = document.createElement("pre");
     descriptionTag.classList.add("message-block-description");
     descriptionTag.classList.add("ag-center");
     descriptionTag.classList.add("ag-text");
