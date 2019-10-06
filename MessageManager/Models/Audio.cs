@@ -22,6 +22,28 @@ namespace MessageManager.Models
         [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
 
+        // Private storage for Google Drive ID
+        [NotMapped]
+        private string _GoogleDriveId { get; set; }
+
+        // Used to set StreamUrl and DownloadUrl for Google Drive links
+        [NotMapped]
+        [Display(Name = "Google Drive ID")]
+        [RegularExpression("^[0-9a-zA-Z_\\-]+$")]
+        public string GoogleDriveId
+        {
+            get
+            {
+                return _GoogleDriveId;
+            }
+            set
+            {
+                _GoogleDriveId = value;
+                StreamUrl = "https://drive.google.com/open?id=" + value;
+                DownloadUrl = "https://drive.google.com/uc?export=download&id=" + value;
+            }
+        }
+
         public override string ToString()
         {
             return $"Audio(Id={Id}, " +
