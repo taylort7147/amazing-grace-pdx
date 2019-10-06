@@ -35,7 +35,7 @@
 
 .ag-btn-group {
     font-size: 0px;
-    display: block;
+    display: inline-flex;
     vertical-align: middle;
     margin: 25px;
 }
