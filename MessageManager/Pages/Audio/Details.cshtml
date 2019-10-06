@@ -1,0 +1,37 @@
+@page
+@model MessageManager.Pages_Audio.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Audio</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Audio.StreamUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Audio.StreamUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Audio.DownloadUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Audio.DownloadUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Audio.Message)
+        </dt>
+        <dd class="col-sm-10">
+            <a class="btn btn-light" asp-page="/Messages/Details" asp-route-id="@Model.Audio.MessageId" role="button">@Model.Audio.Message.Title</a>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Audio.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

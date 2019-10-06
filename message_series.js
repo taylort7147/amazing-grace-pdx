@@ -1,134 +1,115 @@
-function loadMessageDetails() {    
-    console.log("loadMessageDetails()");
-    // TODO: Consider making this an argument
-    dataUrl = "https://raw.githubusercontent.com/taylort7147/amazing-grace-pdx/master/message_details.json";
-    $.getJSON(dataUrl, onMessageDetailsLoaded);
-}
+// Requires 
+//      utilities.js
 
-function onMessageDetailsLoaded(data){
-    console.log(`onMessageDetailsLoaded(${data})`);
-    messageBlocks = $("div.message-block");
-    console.log(`Number of message bocks: ${messageBlocks.length}`);
-    messageBlocks.each((i, tag) => appendMessageBlock(tag, data));
-}
-
-function appendMessageBlockHeader(tag, text){
+function appendMessageBlockHeader(tag, text) {
     headerTag = document.createElement("h3");
     headerTag.innerHTML = text;
     tag.appendChild(headerTag);
     return headerTag;
 }
 
-function appendMessageBlockParagraph(tag, text){
+function appendMessageBlockParagraph(tag, text) {
     pTag = document.createElement("p");
     pTag.innerHTML = text;
+    pTag.classList.add("ag-text");
     tag.appendChild(pTag);
     return pTag;
 }
 
-function appendMessageBlockLink(tag, text, link){
+function appendMessageBlockLink(tag, text, link) {
     var buttonTag = document.createElement("a");
     buttonTag.innerHTML = text;
     buttonTag.className = "ag-btn ag-btn-round";
     buttonTag.role = "button";
-    if(link && link.length > 0){
+    if (link && link.length > 0) {
         buttonTag.href = link;
-    }else{
+    } else {
         buttonTag.className += " disabled";
     }
     tag.appendChild(buttonTag);
     return buttonTag;
 }
 
-function appendButtonGroup(tag){
+function appendButtonGroup(tag) {
     var buttonGroupTag = document.createElement("div");
     buttonGroupTag.className = "btn-group ag-btn-group";
     tag.appendChild(buttonGroupTag);
     return buttonGroupTag;
 }
 
-function formatDate(dateString){
-    date = new Date(dateString + "T00:00:00");
-    var formattedDate = date.toLocaleDateString('en-US', {month:"long", day:"numeric", year:"numeric"});
-    return formattedDate;
+function getVideoLink(details) {
+    if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
+        return `https://www.youtube.com/watch?v=${details.youTubeVideoId}&t=${details.messageStartTimeSeconds}`;
 }
 
-function getVideoLink(details){
-    if(details.videoId && details.videoId.length > 0)
-        return `https://www.youtube.com/watch?v=${details.videoId}`;
+function getAudioLink(details) {
+    if (details && details.streamUrl && details.streamUrl.length > 0)
+        return details.streamUrl;
 }
 
-function getAudioLink(details){
-    if(details.audioLink && details.audioLink.length > 0)
-        return details.audioLink;
+function getNotesLink(details) {
+    if (details && details.url && details.url.length > 0)
+        return details.url;
 }
 
-function getNotesLink(details){
-    if(details.notesLink && details.notesLink.length > 0)
-        return details.notesLink;
-}
-
-function appendMessageBlockDescription(tag, description){
-    if(!description)
+function appendMessageBlockDescription(tag, description) {
+    if (!description)
         return;
-    var descriptionTag = document.createElement("div");
+    var descriptionTag = document.createElement("p");
     descriptionTag.classList.add("message-block-description");
     descriptionTag.classList.add("ag-center");
+    descriptionTag.classList.add("ag-text");
     descriptionTag.innerHTML = description;
     tag.appendChild(descriptionTag);
     return descriptionTag;
 }
+function appendMessageBlock(parentTag, data) {
+    console.log(`appendMessageBlock() called for ${parentTag.id}`);
+    if (data == null) { return; }
 
-function appendHiddenDiv(parentTag, activatorTag){
-    var divTag = document.createElement("div");
-    divTag.classList.add("hidden");
-    activatorTag.onmouseover = () => { 
-        console.log("mouseover"); 
-        divTag.classList.remove("hidden");
-    };
-    parentTag.onmouseleave = () => {
-        console.log("mouseout");
-        divTag.classList.add("hidden");
-    };
-    parentTag.appendChild(divTag);
-    return divTag;
-}
+    // Tag
+    var tag = document.createElement("div");
+    tag.classList.add("message-block");
+    parentTag.appendChild(tag);
 
-function appendMessageBlock(tag, messageDetails){
-    console.log(`appendMessageBlock() called for ${tag.id}`);
-    date = tag.id;
-    details = messageDetails[date];
-    if(details){
-        // Header
-        headerTag = appendMessageBlockHeader(tag, details.title);
-        
-        // Information
-        infoDiv = appendHiddenDiv(tag, headerTag);
-        dateTag = appendMessageBlockParagraph(infoDiv, formatDate(date))
-        dateTag.classList.add("message-block-date");
-        infoTag = appendMessageBlockDescription(infoDiv, details.description);;
-        
-        // Button group
-        buttonGroupTag = appendButtonGroup(tag);
-        appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(details));
-        appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(details));
-        appendMessageBlockLink(buttonGroupTag, "Video", getVideoLink(details));
-    } else {
-        tag.hidden = true;
-    }
+    // Header
+    headerTag = appendMessageBlockHeader(tag, data.title);
+
+    // Information
+    infoDiv = appendTooltip(headerTag, "top");
+    dateTag = appendMessageBlockParagraph(infoDiv, formatDate(data.date))
+    dateTag.classList.add("message-block-date");
+    infoTag = appendMessageBlockDescription(infoDiv, data.description);;
+
+    // Button group
+    buttonGroupTag = appendButtonGroup(tag);
+    appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(data.notes));
+    appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(data.audio));
+    appendMessageBlockLink(buttonGroupTag, "Video", getVideoLink(data.video));
     return tag;
 }
 
-function injectMessageDetailsLoadScript(){
-    console.log("injectMessageDetailsLoadScript()");
-    var target = $("script").last();
-    var tag = document.createElement('script');
-    tag.id = "message-details-load-script";
-    tag.type = "application/javascript";
-    tag.innerHTML = "loadMessageDetails();";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+function getMessageSeries(seriesName, cb) {
+    console.log(`Series name: ${seriesName}`);
+    var seriesUri = encodeURIComponent(seriesName);
+    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages?series=${seriesUri}`
+    console.log(`URI: ${uri}`);
+    $.getJSON(uri, cb);
 }
 
-// Inject script tag to load the message details
-injectMessageDetailsLoadScript()
+function populateMessageSeriesBlock(parentTag, series) {
+    console.log(parentTag);
+    if (series == null) {
+        console.log("No messages found for series");
+        return;
+    }
+    console.log(`Series: (${series.length} entries)`);
+    console.log(series);
+    console.log(typeof (series));
+    series.forEach((message) => appendMessageBlock(parentTag, message));
+}
+
+messageSeriesBlocks = $("div.message-series-block");
+console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
+messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
+    populateMessageSeriesBlock(tag, data)));

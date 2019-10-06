@@ -1,0 +1,35 @@
+@page
+@model MessageManager.Pages_Series.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div class="text-center">
+    <a class="btn btn-primary btn-large" asp-page="/Series/Create" role="button">Add a New Series</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Series[0].Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Series) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
