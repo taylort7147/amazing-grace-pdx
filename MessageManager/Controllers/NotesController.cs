@@ -51,6 +51,7 @@ namespace MessageManager.Controllers
         {
             var notes = await _context.Notes
                         .Include(n => n.Message)
+                        .Where(n => n.Message.Date.DayOfWeek == System.DayOfWeek.Sunday)
                         .OrderByDescending(n => n.Message.Date)
                         .FirstOrDefaultAsync();
 

@@ -51,6 +51,7 @@ namespace MessageManager.Controllers
         {
             var audio = await _context.Audio
                         .Include(a => a.Message)
+                        .Where(a => a.Message.Date.DayOfWeek == System.DayOfWeek.Sunday)
                         .OrderByDescending(a => a.Message.Date)
                         .FirstOrDefaultAsync();
 
