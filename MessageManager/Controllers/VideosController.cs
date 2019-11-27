@@ -51,6 +51,7 @@ namespace MessageManager.Controllers
         {
             var video = await _context.Video
                         .Include(v => v.Message)
+                        .Where(v => v.Message.Date.DayOfWeek == System.DayOfWeek.Sunday)
                         .OrderByDescending(v => v.Message.Date)
                         .FirstOrDefaultAsync();
 
