@@ -25,7 +25,10 @@ namespace MessageManager.Controllers
         public async Task<ActionResult<IEnumerable<Series>>> GetSeries()
         {
             return await _context.Series
-                   .Include(m => m.Messages)
+                   .Include(s => s.Messages)
+                   .OrderBy(s => s
+                        .Messages.OrderBy(
+                            m => m.Date).Select(m => m.Date))
                    .ToListAsync();
         }
 
