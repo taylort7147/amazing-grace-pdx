@@ -34,6 +34,7 @@ namespace MessageManager.Controllers
                    .Include(m => m.Audio)
                    .Include(m => m.Video)
                    .Include(m => m.Notes)
+                   .OrderByDescending(m => m.Date)
                    .ToListAsync();
         }
 
