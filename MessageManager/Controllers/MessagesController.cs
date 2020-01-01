@@ -65,6 +65,7 @@ namespace MessageManager.Controllers
             }
 
             await _context.Entry(selectedSeries).Collection(s => s.Messages).LoadAsync();
+            selectedSeries.Messages = selectedSeries.Messages.OrderBy(m => m.Date);
             foreach(var message in selectedSeries.Messages)
             {
                 await _context.Entry(message).Reference(m => m.Video).LoadAsync();
