@@ -8,7 +8,7 @@ using MessageManager.Models;
 
 namespace MessageManager.Controllers
 {
-
+    
     [Route("api/[controller]")]
     [ApiController]
     public class SeriesController : ControllerBase
@@ -24,12 +24,17 @@ namespace MessageManager.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Series>>> GetSeries()
         {
-            return await _context.Series
+            var seriesList = await _context.Series
                .Include(s => s.Messages)
                .OrderBy(s => s
                     .Messages.OrderBy(
                         m => m.Date).Select(m => m.Date))
                .ToListAsync();
+            foreach(var series in seriesList)
+            {
+                series.Messages = series.Messages.OrderBy(s => s.Date);
+            }
+            return seriesList;
         }
 
         [AllowAnonymous]
@@ -38,9 +43,6 @@ namespace MessageManager.Controllers
         {
             var series = await _context.Series
                 .Include(s => s.Messages)
-                .OrderBy(s => s
-                     .Messages.OrderBy(
-                         m => m.Date).Select(m => m.Date))
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if(series == null)
@@ -48,6 +50,7 @@ namespace MessageManager.Controllers
                 return NotFound();
             }
 
+            series.Messages = series.Messages.OrderBy(s => s.Date);            
             return series;
         }
 
