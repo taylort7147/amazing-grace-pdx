@@ -25,11 +25,11 @@ namespace MessageManager.Controllers
         public async Task<ActionResult<IEnumerable<Series>>> GetSeries()
         {
             return await _context.Series
-                   .Include(s => s.Messages)
-                   .OrderBy(s => s
-                        .Messages.OrderBy(
-                            m => m.Date).Select(m => m.Date))
-                   .ToListAsync();
+               .Include(s => s.Messages)
+               .OrderBy(s => s
+                    .Messages.OrderBy(
+                        m => m.Date).Select(m => m.Date))
+               .ToListAsync();
         }
 
         [AllowAnonymous]
@@ -37,8 +37,11 @@ namespace MessageManager.Controllers
         public async Task<ActionResult<Series>> GetSeries(int id)
         {
             var series = await _context.Series
-                         .Include(s => s.Messages)
-                         .FirstOrDefaultAsync(s => s.Id == id);
+                .Include(s => s.Messages)
+                .OrderBy(s => s
+                     .Messages.OrderBy(
+                         m => m.Date).Select(m => m.Date))
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if(series == null)
             {
