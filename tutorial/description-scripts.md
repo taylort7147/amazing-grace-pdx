@@ -12,7 +12,7 @@
     * ***load_message_video.js* requires *load_youtube_iframe.js***
 
 * *message_series.js*
-    * Like the above three scripts, but used for the message series pages to inject details into "message blocks", which are HTML \<div> elements - one for each message in the series.
+    * Like the above three scripts, but used for the message series pages to inject details into a "message series block", which is an HTML `<div>` element with an `id` indicating the message series.
 
 * *barrier.js*
     * Provides a utility function to *barrier*, or wait until, multiple resources are available before proceeding.
