@@ -13,7 +13,9 @@ Contents:
     * [Messages Front Page](#Messages-Front-Page)
     * [Message Series Pages](#Message-Series-Pages)
 
-# CSS
+---
+
+## CSS
 
 Our site has a [custom CSS style sheet](../global_style.css). This provides styles for various custom elements to match the default website's element styles.
 
@@ -32,9 +34,18 @@ To accomplish this, a root style is provided that can be overriden on a per-page
     --disabled-border-color: darkgrey;
 }
 ```
-By providing a `:root{}` block in the page's custom CSS section, any one or more of these fields can be overriden.
+By providing a `:root{}` block in the page's custom CSS section, any one or more of these fields can be overriden. To do this, in the page's custom CSS, only include the only the fields you want to override. Fields that aren't present will inherit the defaults from the global CSS.
 
-# Code Injection
+```css
+: root {
+    --bg-color-primary: #ABA8F0;
+}
+```
+This example changes the background color of UI elements on this page, specifically buttons. This mechanism can be used for setting the color scheme of a series, for example.
+
+---
+
+## Code Injection
 
 Nucleus provides the ability to inject code into every page. We use this to inject Google Analytics, JQuery, our custom CSS, and a few custom scripts.
 
@@ -61,22 +72,26 @@ This is our code injection block as of writing this:
 
 <!-- Taylor's scripts -->
 <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/barrier.js"></script>
-<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/load_message_details.js"></script>
 <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/load_youtube_iframe_api.js"></script>
+<script  type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/utilities.js"></script>
 ```
 
-**Note that the latter two load scripts only provide functions for loading resources - they don't actually initiate the load. See example in 
-[Messages Front Page](##Messages-Front-Page)**
+---
 
-# Web Pages 
+## Web Pages 
 
 **Unfortunately, Nucleus doesn't display a good preview of these HTML blocks, so they'll just look like empty HTML blocks until you open the preview.**
 
-## Messages Front Page
+---
 
-This page contains links and embedded media players for the latest message video, audio, and notes. Each element consists of a `<div>` element that contains and `id` specifying its type and a `<script>` element to bind the data to it. For simplicity, in the website editor, each of the video, audio, and notes elements are contained in separate HTML blocks.
+### Messages Front Page
 
-### Video Block
+This page contains links and embedded media players for the latest message video, audio, and notes. Each element consists of three elements:
+* `<h3>` element that contains an `id` equal to `"latest-message-[type]-details"`. This header adds a hover-over text field displaying details about the message such as title, description, and date.
+* `<div>` element(s) that contains an `id` specifying its type
+* `<script>` element to load and bind the data to it. The script uses the `id` field of the `<div>` elements to locate them on the page and inject code into them.
+
+#### Video Block
 
 The video block embeds a YouTube player with the latest message. The script that loads this player provides enhancements over the standard YouTube embedded video, including:
 
@@ -88,6 +103,8 @@ The video block embeds a YouTube player with the latest message. The script that
 
 HTML block code:
 ```html
+<h3>Video <span id="latest-message-video-details">[+]</span></h3>
+
 <div align="center" class="" >
     <!-- YouTube iframe container -->
     <div class="ag-embed-responsive">
@@ -100,17 +117,25 @@ HTML block code:
         <button id="latest-message-video-controls-jump-to-message" type="button" class="ag-btn ag-btn-round">Jump To Message</button>
     </div>
 </div>
+
 <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_video.js"></script>
+
+<script>
+    loadYouTubeIframeAPI();
+</script>
 ```
+
+Notice the last `<script>` tag in this block. It calls the *load* function that loads the YouTube API for loading the video player. This block requires [load_youtube_iframe_api.js](../load_youtube_iframe_api.js) to be loaded before hand. This is done automatically by the site's [code injection](#Code-Injection).
 
 ![Embedded video player](images/ex_card_embedded_video_player.png)
 
-### Audio Block
+#### Audio Block
 
 This HTML block embeds an audio widget of the latest message.
 
 HTML block code:
 ```html
+<h3>Audio <span id="latest-message-audio-details">[+]</span></h3>
 <div id="latest-message-audio" class="ag-center"></div>
 
 <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_audio.js"></script>
@@ -119,13 +144,14 @@ HTML block code:
 ![Embedded video player](images/ex_card_embedded_audio_player.png)
 
 
-### Notes Block
+#### Notes Block
 
 This HTML block creates a button that links to the latest message notes.
 
 HTML block code:
 
 ```html
+<h3>Notes <span id="latest-message-notes-details">[+]</span></h3>
 <div id="latest-message-notes" class="ag-center"></div>
 
 <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_notes.js"></script>
@@ -133,62 +159,34 @@ HTML block code:
 
 ![Notes button](images/ex_card_notes_button.png)
 
-### Load Block
-
-One final HTML block is required to be placed after all the other blocks. This block contains a simple `<script>` element that calls the *load* functions that acquire the data resources. At this point, all of the other scripts will have registered their callbacks with the relevant data loaders, so upon acquisition of the resources, each element will be populated.
-
-HTML block code:
-
-```html
-<script>
-loadMessageDetails();
-loadYouTubeIframeAPI();
-</script>
-```
-
-This block requires [load_message_details.js](../load_message_details.js) and [load_youtube_iframe_api.js](../load_youtube_iframe_api.js) to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
-
 
 The end result can be seen here: http://amazinggracepdx.com/messages-1
 
-## Message Series Pages
+---
+
+### Message Series Pages
 
 Each message series has its own page. Each message in the series is is represented as a title with links to the video, audio, and notes.
 
 ![Message series](images/ex_card_message_series.png)
 
-The message series page is made up of two HTML blocks. The first is a section containing one `<div>` element for each message. The `class` must be `"message-block"`, and the `id` must be a date that matches a key in the database for the message. 
-
-### Message Blocks
+The message series page is made up of one HTML block. The block contains a `<div>` element whose `class` must be `"message-series-block"`, and `id` must be the name of the series in the database (see [Series Table](description-data.md#Series-Table)). The block also contains a `<script>` tag that is used to load the series from the database.
 
 ```html
-<div id="2019-02-03" class="message-block"></div>
+<div id="Christian Worldview"  class="message-series-block"></div>
+
+<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/message_series.js">
 ```
-
-Multiple `<div>` elements may be placed on after the other to form a list of messages for the series.
-
-```html
-<div id="2019-02-03" class="message-block"></div>
-<div id="2019-02-10" class="message-block"></div>
-<div id="2019-02-17" class="message-block"></div>
-<div id="2019-02-24" class="message-block"></div>
-<div id="2019-03-10" class="message-block"></div>
-```
-### Load Block
-
-In order for the data to be bound to the `<div>` elements, you must load the [message_series.js](../message_series.js) script after the last element. 
-
-```html
-<script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/message_series.js"></script>
-```
-This block requires [load_message_details.js](../load_message_details.js) to be loaded before hand. This is done automatically by the [code injection](#Code-Injection).
 
 For any missing link in the details for any particular message, the button for that link will be greyed out and disabled.
 
+![Disabled links](images/ex_card_empty_message.png)
+
 The end result can be seen here:
-http://amazinggracepdx.com/jesus-mountainside-message
+http://amazinggracepdx.com/seeing-reality-as-it-is
 
+---
 
-# How are the scripts hosted?
+### How are the scripts hosted?
 
 The scripts are hosted via the *GitHub Pages* for this project, located at https://taylort7147.github.io/amazing-grace-pdx. *GitHub Pages* must be enabled in the project settings for this to work.
