@@ -1,6 +1,6 @@
 # MessageManager
 
-The MessageManager is a new tool that allows you to add, edit, and view messages in the backing database. The manager is hosted on Azure at https://amazing-grace-pdx.azurewebsites.net/Messages.
+The MessageManager is a new tool that allows you to add, edit, and view messages in the backing database. The manager is hosted on Azure at https://amazing-grace-pdx.azurewebsites.net.
 
 ![Message Manager](../images/ex_message_manager_home.png)
 
