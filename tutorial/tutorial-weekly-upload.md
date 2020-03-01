@@ -4,8 +4,7 @@
 ## Overview
 
 1. [Upload video, audio, and notes](#Upload-video,-audio,-and-notes)
-2. [Add details to the database](#Add-the-details-to-the-database)
-3. [Publish the changes](#Publish-the-changes)
+1. [Add details to the database](#Add-the-details-to-the-database)
 
 ## Upload video, audio, and notes
 
@@ -34,22 +33,9 @@
 
 ## Add the details to the database
 
-This tutorial assumes you have set up the sermon series in [message_details.json](../message_details.json) ahead of time, so you should have an existing block for each message in the sermon series. If you haven't then refer back to [this tutorial](tutorial-adding-a-new-series.md). We'll focus on just the block for this message.
+This tutorial assumes you have set up the sermon series in the database ahead of time, so you should have an existing entry for each message in the sermon series. If you haven't then refer back to [this tutorial](tutorial-adding-a-new-series.md).
 
-```json
- "2019-06-23" : {
-        "title": "The Seeds We Sow",
-        "videoId": "",
-        "playlistId": "",
-        "description": "2 Samuel 3:2-39",
-        "messageStart": 0,
-        "tags" : [],
-        "audioLink": "",
-        "audioDownloadLink": "",
-        "notesLink": ""
-    },
-```
-As-is, this message block is ready for the website. The title and description will be functional if a matching `<div>` exists on a series web page. The video, audio, and notes buttons will be disabled since all the links are empty.
+Before adding any of the links, the video, audio, and notes buttons will be disabled since all the links are empty.
 
 ![Empty message](images/ex_card_empty_message.png)
 
@@ -81,9 +67,8 @@ Playlist ID:
     PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7
 ---
 
-Find out what time in seconds the message starts (usually after the first hymn). In this case, the message starts at 3:45, so the start time for the JSON data will be 
+Find out what time in seconds the message starts (usually after the first hymn). In this case, the message starts at 3:45.
 
-    225 
 ---
 
 From the Google Drive web interface, get the link for the audio file by right-clicking on the file and selecting **Get shareable link**
@@ -97,50 +82,12 @@ Audio Link:
 
     https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
 
-To get the *download* link, take the ID from the above link and insert it into this URL:
+From the audio link, get extract the ID:
 
-Audio Download Link:
-
-    https://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
-
-This link will initiate a download instead of playing the file. This link is used by the [front page](description-website-code.md#Messages-Front-Page) for the embedded audio player.
-
+    1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
+    
 ---
 
-### Update the JSON file
+### Update the database
 
-Fill in the details for all the resources, and it should look like this: 
-
-```json    
-"2019-06-23" : {
-        "title": "The Seeds We Sow",
-        "videoId": "mWH1jVwcjuM",
-        "playlistId": "PLfBOebmxfChGt7oRuCD2MvX_ZB3WltQE7",
-        "description": "2 Samuel 3:2-39",
-        "messageStart": 225,
-        "tags" : [],
-        "audioLink": "https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA",
-        "audioDownloadLink": "https://drive.google.com/uc?export=download&id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA",
-        "notesLink": "https://www.dropbox.com/sh/3zn82x1orun0hx7/AAAKloonCx5bcVMKz6-Fetopa/David%20Long%20Live%20the%20King?dl=0&preview=Notes+2+Samuel+3.2-39+Seeds+We+Sow.pdf&subfolder_nav_tracking=1"
-       },
-```
-
----
-
-## Publish the changes
-
-### Validate the JSON file
-
-If the JSON file is improperly formatted, no data will be available to the website, and all message links will be broken (that's bad!). To prevent this from happening, you can check the JSON file with an online JSON validator. I use https://jsonlint.com/.
-
-![JSON Lint](images/ex_json_lint.png)
-
-### Publish
-
-Once you've updated *message_details.json*, [publish the changes](tutorial-publishing-changes.md)
-
-Once published to the master branch, the changes will be live on the website.
-
-![Populated message](images/ex_card_populated_message.png)
-
-Result: http://amazinggracepdx.com/david-long-live-the-king 
+Once you have all the details, you can use the Message Manager to update the database. See [Message Manager](message-manager/home.md), and [Create a New Message](message-manager/create-message.md).

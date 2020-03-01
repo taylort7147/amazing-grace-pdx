@@ -10,11 +10,9 @@ The motivation for this project was to make the data portable. During the migrat
 
 This project furthers that effort by providing a one-stop location for all the links and details for each message, as well as tools for loading and displaying those resources via raw HTML. Most website editors (including Nucleus) offer HTML block elements for building web pages. This project simplifies the loading and displaying of the message details and media in a completely portable way. That way in the future, if we ever decide to switch website providers again, the port will be much less painful - almost automatic.
 
-For instance, a web page for a sermon series using native web editor tools consists of one button element for each link. There are 3 buttons for each sermon message - audio, video, and notes. Let's pretend there are 5 messages in a series on average. That's 15 buttons to re-create for each series. With this project, all the links can be reused, so we can create the new page with two HTML blocks that are almost exactly the same for each series (just change the dates for the individual messages).
-
 ## What makes the data portable?
 
-Each week is represented as a single entry in our [database](message_details.json). The entry contains information about the title, date, description, and links for the audio/video/notes. This data isn't tied to any web editor. The scripts in this project are made to be able to load this data using simple HTML, much like you would embed a YouTube video.
+Each week is represented as a single entry in our [database](tutorial/description-data.md#Database). The entry contains information about the title, date, description, and links for the audio/video/notes. This data isn't tied to any web editor. The scripts in this project are made to be able to load this data using simple HTML, much like you would embed a YouTube video. This means that any web editor that supports HTML blocks supports this data.
 
 For more details, see [Data](tutorial/description-data.md)
 
@@ -25,9 +23,6 @@ For tutorials on how to update weekly messages and message series, see the follo
 [Tutorial: Adding a new series](tutorial/tutorial-adding-a-new-series.md)
 
 [Tutorial: Weekly upload](tutorial/tutorial-weekly-upload.md)
-
-**Warning: The only file you should change for updating messages is the [message_details.json](message_details.json) file**
-
 
 ## Programming details
 
