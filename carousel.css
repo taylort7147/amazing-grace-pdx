@@ -1,0 +1,21 @@
+.carousel {
+    width: 60%;
+    min-width: 600px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    background: var(--bg-color-primary) 50%;
+}
+
+@media only screen and (max-width: 600px) {
+    .carousel {
+        width: 100%;
+        min-width: 300px;
+    }
+}
+
+.carousel-item {
+    opacity: 100%;
+    min-height: 300px;
+    text-align: center;
+}
