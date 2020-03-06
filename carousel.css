@@ -1,0 +1,83 @@
+.carousel {
+    width: 60%;
+    min-width: 600px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    /* background: #CCC; */
+}
+
+@media only screen and (max-width: 600px) {
+    .carousel {
+        width: 100%;
+        min-width: 300px;
+    }
+}
+
+.carousel-caption {
+    position: relative;
+    margin: 0;
+    left: 0;
+    padding-bottom: 0;
+    bottom: inherit;
+}
+
+.carousel-item {
+    min-height: 300px;
+    text-align: center;
+    padding: 0;
+    height: 100%;
+}
+
+.ag-background {
+    z-index: -1;
+    position: absolute;
+    background-color: var(--bg-color-primary);
+    width: inherit;
+    margin: inherit;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: inherit;
+}
+
+.ag-tile>.ag-background {
+    margin-left: 2.5%;
+}
+
+.ag-translucent {
+    opacity: 40%;
+}
+
+.ag-tile {
+    width: 95%;
+    height: 95%;
+    margin: auto;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 3.5rem;
+    padding-top: 0;
+    border-radius: 4.0rem;
+}
+
+.ag-tile h1,
+.ag-tile h2,
+.ag-tile h3,
+.ag-tile h4,
+.ag-tile h5,
+.ag-tile h6 {
+    color: var(--fg-color-secondary)
+}
+
+.ag-tile-container .ag-btn-group {
+    margin-bottom: 0;
+}
+
+.ag-tile-title {
+    text-align: center;
+}
+
+.carousel-indicator {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
