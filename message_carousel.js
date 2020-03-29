@@ -70,20 +70,20 @@ class Carousel {
     addItem(item, captionText) {
         var index = this.size();
         console.log(index);
+        // Create carousel item wrapper
         var carouselItem = document.createElement("div");
         carouselItem.classList.add("carousel-item");
+
+        // Add the item to the carousel item
         carouselItem.appendChild(item);
+
+        // Add the carousel item to the carousel
         this.inner.appendChild(carouselItem);
 
+        // Select this index if it is the first item
         if (index == 0) {
             carouselItem.classList.add("active");
         }
-
-        // var image = document.createElement("img");
-        // image.classList.add("d-block");
-        // image.classList.add("w-100");
-        // image.src = "https://media.pitchfork.com/photos/5bf2f92403d2bf08410e7e57/1:1/w_320/iron%20maiden_piece%20of%20mind.jpg"
-        // carouselItem.appendChild(image);
 
         // Add caption
         var caption = document.createElement("div");
@@ -114,10 +114,42 @@ class Carousel {
 function createMessageBlock(messageData) {
     console.log(messageData);
 
-    var block = document.createElement("p");
-    block.innerHTML = messageData.title;
-    block.style.width = 400;
-    block.style.height = 300;
+    var block = document.createElement("div");
+    block.classList.add("ag-tile");
+
+    var background = document.createElement("div");
+    background.classList.add("ag-background");
+    background.classList.add("ag-translucent");
+    block.appendChild(background);
+
+    var videoBlock = document.createElement("div");
+    var width = 95;
+    var height = width * 9 / 16;
+    videoBlock.style.width = `${width}%`;
+    videoBlock.style.height = "300px"; //`${height}%`;
+    videoBlock.style.display = "block";
+    videoBlock.style.background = "black";
+    videoBlock.style.textAlign = "center";
+    videoBlock.style.color = "white";
+    videoBlock.style.margin = "auto";
+    videoBlock.innerHTML = "Video";
+    block.appendChild(videoBlock);
+
+    block.appendChild(document.createElement("br"));
+
+    var audioBlock = document.createElement("div");
+    var width = 95;
+    var height = width * 9 / 16;
+    audioBlock.style.width = `${width}%`;
+    audioBlock.style.height = "50px"; //`${height}%`;
+    audioBlock.style.display = "block";
+    audioBlock.style.background = "black";
+    audioBlock.style.textAlign = "center";
+    audioBlock.style.color = "white";
+    audioBlock.style.margin = "auto";
+    audioBlock.innerHTML = "Audio";
+    block.appendChild(audioBlock);
+
     return block;
 }
 

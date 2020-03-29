@@ -4,7 +4,7 @@
     margin: auto;
     display: flex;
     justify-content: center;
-    background: var(--bg-color-primary) 50%;
+    /* background: #CCC; */
 }
 
 @media only screen and (max-width: 600px) {
@@ -15,7 +15,25 @@
 }
 
 .carousel-item {
-    opacity: 100%;
     min-height: 300px;
     text-align: center;
+    padding: 5% 2.5% 5% 2.5%;
+}
+
+.ag-background {
+    z-index: -1;
+    position: absolute;
+}
+
+.ag-translucent {
+    opacity: 0%;
+}
+
+.ag-tile {
+    width: 95%;
+    height: 95%;
+    margin: auto;
+    background: var(--bg-color-primary);
+    padding: 10%;
+    border-radius: 1.0rem;
 }
