@@ -84,22 +84,22 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet("latest")]
-        public async Task<ActionResult<Message>> GetLatestMessage()
+        public async Task<ActionResult<IEnumerable<Message>>> GetLatestNMessages(int? n)
         {
-            var message = await _context.Message
+            var messages = await _context.Message
                           .Include(m => m.Audio)
                           .Include(m => m.Video)
                           .Include(m => m.Notes)
                           .OrderByDescending(m => m.Date)
-                          .FirstOrDefaultAsync();
+                          .Take(n.GetValueOrDefault(1))
+                          .ToListAsync();
 
-
-            if(message == null)
+            if(messages == null)
             {
                 return NotFound();
             }
 
-            return message;
+            return messages;
         }
     }
 }
