@@ -3,10 +3,9 @@
 
 
 
-function getMessageSeries(seriesName, cb) {
-    console.log(`Series name: ${seriesName}`);
-    var seriesUri = encodeURIComponent(seriesName);
-    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages?series=${seriesUri}`
+function getMessages(n, cb) {
+    console.log(`Number of messages to retrieve: ${n}`);
+    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages/latest?n=${n}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
@@ -109,6 +108,10 @@ class Carousel {
     size() {
         return this.inner.children.length;
     }
+
+    select(n) {
+        $(`#${this.id}`).carousel(n);
+    }
 }
 
 function createMessageBlock(messageData) {
@@ -155,16 +158,16 @@ function createMessageBlock(messageData) {
 
 container = $(".ag-carousel");
 container.each((i, tag) => {
-    var series = tag.getAttribute("series");
+    var n = tag.getAttribute("n");
     var carouselId = tag.id + "_" + i;
     var carousel = new Carousel(carouselId);
     tag.appendChild(carousel.root);
 
-    getMessageSeries(series, seriesData => {
+    getMessages(n, seriesData => {
         seriesData.forEach(messageData => {
             var messageBlock = createMessageBlock(messageData);
             carousel.addItem(messageBlock, messageData.title);
-
         });
+        $(carousel.root).carousel(carousel.size() - 1);
     });
 });
