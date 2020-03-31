@@ -149,18 +149,18 @@ function createVideoBlock(messageData) {
 function createMessageCaption(messageData) {
     var caption = document.createElement("div");
 
-    var title = document.createElement("h5");
+    var title = document.createElement("h4");
     title.innerHTML = messageData.title;
 
-    var series = document.createElement("h6");
+    var series = document.createElement("h5");
     series.innerHTML = messageData.series.name;
 
-    var date = document.createElementNS("h6");
-    data.innerHTML = messageData.date;
+    var date = document.createElement("h5");
+    date.innerHTML = formatDate(messageData.date);
 
-    caption.appendChild(title);
-    caption.appendChild(series);
     caption.appendChild(date);
+    caption.appendChild(series);
+    caption.appendChild(title);
     return caption;
 }
 
