@@ -46,6 +46,7 @@ namespace MessageManager.Controllers
                           .Include(m => m.Audio)
                           .Include(m => m.Video)
                           .Include(m => m.Notes)
+                          .Include(m => m.Series)
                           .FirstOrDefaultAsync(m => m.Id == id);
 
             if(message == null)
@@ -90,6 +91,8 @@ namespace MessageManager.Controllers
                           .Include(m => m.Audio)
                           .Include(m => m.Video)
                           .Include(m => m.Notes)
+                          .Include(m => m.Series)
+                          .Where(m => m.Audio != null || m.Video != null || m.Notes != null)
                           .OrderByDescending(m => m.Date)
                           .Take(n.GetValueOrDefault(1))
                           .ToListAsync();
