@@ -3,12 +3,6 @@
 
 
 
-function getMessages(n, cb) {
-    console.log(`Number of messages to retrieve: ${n}`);
-    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages/latest?n=${n}`
-    console.log(`URI: ${uri}`);
-    $.getJSON(uri, cb);
-}
 
 class Carousel {
     constructor(id) {
@@ -66,12 +60,20 @@ class Carousel {
         this.root.appendChild(this.controlNext);
     }
 
-    addItem(item, captionText) {
+    addItem(item, caption) {
         var index = this.size();
         console.log(index);
         // Create carousel item wrapper
         var carouselItem = document.createElement("div");
         carouselItem.classList.add("carousel-item");
+
+        // Add caption
+        var captionBlock = document.createElement("div");
+        captionBlock.classList.add("carousel-caption");
+        captionBlock.classList.add("d-none");
+        captionBlock.classList.add("d-md-block");
+        captionBlock.appendChild(caption);
+        carouselItem.appendChild(captionBlock);
 
         // Add the item to the carousel item
         carouselItem.appendChild(item);
@@ -83,17 +85,6 @@ class Carousel {
         if (index == 0) {
             carouselItem.classList.add("active");
         }
-
-        // Add caption
-        var caption = document.createElement("div");
-        caption.classList.add("carousel-caption");
-        caption.classList.add("d-none");
-        caption.classList.add("d-md-block");
-        carouselItem.appendChild(caption);
-
-        var captionHeader = document.createElement("h5");
-        captionHeader.innerHTML = captionText;
-        caption.appendChild(captionHeader);
 
         // Add indicator
         var indicator = document.createElement("li");
@@ -114,6 +105,65 @@ class Carousel {
     }
 }
 
+function createVideoBlock(messageData) {
+    /*
+    <h3>Video <span id="latest-message-video-details">[+]</span></h3>
+
+    <div align="center" class="" >
+        <!-- YouTube iframe container -->
+        <div class="ag-embed-responsive">
+            <div id="latest-message-video" class="ag-embed-responsive-item"></div>
+        </div>
+
+        <!-- Controls for the YouTube player -->
+        <div id="latest-message-video-controls" class="ag-btn-group ag-center" role="group" aria-label="Player controls">
+            <button id="latest-message-video-controls-jump-to-beginning" type="button" class="ag-btn ag-btn-round">Jump To Beginning</button>
+            <button id="latest-message-video-controls-jump-to-message" type="button" class="ag-btn ag-btn-round">Jump To Message</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_video.js"></script>
+    */
+    var videoData = messageData.video;
+
+    var block = document.createElement("div");
+    block.style.textAlign = "center";
+
+    var embededVideo = document.createElement("div");
+    embededVideo.classList.add("ag-embed-responsive");
+
+    var embededVideoItem = document.createElement("div");
+    embededVideoItem.classList.add("ag-embed-responsive-item");
+    embededVideoItem.id = "embeded_video_" + videoData.youTubeVideoId;
+    var player = createPlayer(embededVideoItem.id, videoData);
+
+    var buttonBlock = createButtons(player, videoData);
+
+    embededVideo.appendChild(embededVideoItem);
+    block.appendChild(embededVideo);
+    block.appendChild(buttonBlock);
+
+    return block;
+}
+
+function createMessageCaption(messageData) {
+    var caption = document.createElement("div");
+
+    var title = document.createElement("h5");
+    title.innerHTML = messageData.title;
+
+    var series = document.createElement("h6");
+    series.innerHTML = messageData.series.name;
+
+    var date = document.createElementNS("h6");
+    data.innerHTML = messageData.date;
+
+    caption.appendChild(title);
+    caption.appendChild(series);
+    caption.appendChild(date);
+    return caption;
+}
+
 function createMessageBlock(messageData) {
     console.log(messageData);
 
@@ -124,36 +174,31 @@ function createMessageBlock(messageData) {
     background.classList.add("ag-background");
     background.classList.add("ag-translucent");
     block.appendChild(background);
-
-    var videoBlock = document.createElement("div");
-    var width = 95;
-    var height = width * 9 / 16;
-    videoBlock.style.width = `${width}%`;
-    videoBlock.style.height = "300px"; //`${height}%`;
-    videoBlock.style.display = "block";
-    videoBlock.style.background = "black";
-    videoBlock.style.textAlign = "center";
-    videoBlock.style.color = "white";
-    videoBlock.style.margin = "auto";
-    videoBlock.innerHTML = "Video";
-    block.appendChild(videoBlock);
-
-    block.appendChild(document.createElement("br"));
-
-    var audioBlock = document.createElement("div");
-    var width = 95;
-    var height = width * 9 / 16;
-    audioBlock.style.width = `${width}%`;
-    audioBlock.style.height = "50px"; //`${height}%`;
-    audioBlock.style.display = "block";
-    audioBlock.style.background = "black";
-    audioBlock.style.textAlign = "center";
-    audioBlock.style.color = "white";
-    audioBlock.style.margin = "auto";
-    audioBlock.innerHTML = "Audio";
-    block.appendChild(audioBlock);
-
+    if (messageData.video != null) {
+        console.log("Creating video");
+        console.log(messageData.video);
+        var videoBlock = createVideoBlock(messageData);
+        block.appendChild(videoBlock);
+    }
     return block;
+}
+
+function getMessages(n, cb) {
+    console.log(`Number of messages to retrieve: ${n}`);
+    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages/latest?n=${n}`
+    console.log(`URI: ${uri}`);
+    $.getJSON(uri, cb);
+}
+
+function onResultsReady(results, carousel) {
+    console.log("onResultsReady()");
+    var allMessages = results["allMessages"];
+    allMessages.forEach(messageData => {
+        var messageBlock = createMessageBlock(messageData);
+        var caption = createMessageCaption(messageData);
+        carousel.addItem(messageBlock, caption);
+    });
+    $(carousel.root).carousel(carousel.size() - 1);
 }
 
 container = $(".ag-carousel");
@@ -163,11 +208,7 @@ container.each((i, tag) => {
     var carousel = new Carousel(carouselId);
     tag.appendChild(carousel.root);
 
-    getMessages(n, seriesData => {
-        seriesData.forEach(messageData => {
-            var messageBlock = createMessageBlock(messageData);
-            carousel.addItem(messageBlock, messageData.title);
-        });
-        $(carousel.root).carousel(carousel.size() - 1);
-    });
+    var videoBarrier = new Barrier(["youtubeApi", "allMessages"], (results) => onResultsReady(results, carousel));
+    registerYouTubeIframeAPIReadyCallback(data => videoBarrier.addResult("youtubeApi", data));
+    getMessages(n, allMessages => videoBarrier.addResult("allMessages", allMessages));
 });

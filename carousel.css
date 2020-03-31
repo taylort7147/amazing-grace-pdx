@@ -14,26 +14,44 @@
     }
 }
 
+.carousel-caption {
+    bottom: inherit;
+}
+
 .carousel-item {
     min-height: 300px;
     text-align: center;
-    padding: 5% 2.5% 5% 2.5%;
+    padding: 0%;
 }
 
 .ag-background {
     z-index: -1;
     position: absolute;
+    background-color: var(--bg-color-primary);
+    width: inherit;
+    margin: inherit;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: inherit;
+}
+
+.ag-tile>.ag-background {
+    margin-left: 2.5%;
 }
 
 .ag-translucent {
-    opacity: 0%;
+    opacity: 25%;
 }
 
 .ag-tile {
     width: 95%;
     height: 95%;
     margin: auto;
-    background: var(--bg-color-primary);
     padding: 10%;
-    border-radius: 1.0rem;
+    border-radius: 4.0rem;
+}
+
+.carousel-caption>h5 {
+    color: var(--fg-color-secondary)
 }

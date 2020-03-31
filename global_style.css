@@ -12,6 +12,10 @@
     --tooltip-bg-color: black;
     --tooltip-fg-color: white;
     --tooltip-opacity: 0.8;
+    --bg-opacity: 15%;
+    --tile-bg-color: var(--bg-color-primary);
+    --tile-caption-color: var(--fg-color-primary);
+    --tile-bg-opacity: var(--bg-opacity);
 }
 
 @media screen and (min-width: 1000px) {
