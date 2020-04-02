@@ -1,9 +1,6 @@
 // Requires 
 //      utilities.js
 
-
-
-
 class Carousel {
     constructor(id) {
         this.id = id;
@@ -67,7 +64,6 @@ class Carousel {
 
     addItem(item, caption, data) {
         var index = this.size();
-        console.log(index);
 
         this.data[index] = data;
 
@@ -132,7 +128,6 @@ function createMessageCaption(messageData) {
 }
 
 function createMessageBlock(messageData, videoBlock, index) {
-    console.log(messageData);
 
     var block = document.createElement("div");
     block.classList.add("ag-tile");
@@ -144,7 +139,6 @@ function createMessageBlock(messageData, videoBlock, index) {
 
     if (messageData.video != null) {
         console.log("Creating video");
-        console.log(messageData.video);
         $(document).ready(() =>
             $(document).on("slide.bs.carousel", (event) => {
                 console.log(event);
@@ -155,6 +149,8 @@ function createMessageBlock(messageData, videoBlock, index) {
                     block.appendChild(videoBlock);
                 }
             }));
+    } else {
+        // TODO: insert element to indicate video is not available
     }
     block.appendChild(videoBlock); // Add video to newest block by default
     return block;
@@ -162,8 +158,6 @@ function createMessageBlock(messageData, videoBlock, index) {
 
 function createPlayerFragment(playerElement, controls) {
     console.log("createPlayerFragment()");
-    console.log(playerElement);
-    console.log(controls);
     playerElement.id = "player";
 
     // var fragment = document.createDocumentFragment();
@@ -204,14 +198,17 @@ function onResultsReady(results, carousel) {
     var messageVideoControls = new MessageVideoControls();
     var playerFragment = createPlayerFragment(playerElement, messageVideoControls);
 
-    var allMessages = results["allMessages"];
+    var allMessages = results["allMessages"].reverse();
     var index = 0;
+    var lastMessageData = null;
     allMessages.forEach(messageData => {
         var messageBlock = createMessageBlock(messageData, playerFragment, index);
         var caption = createMessageCaption(messageData);
         carousel.addItem(messageBlock, caption, messageData);
+        lastMessageData = messageData;
         index += 1;
     });
+    messageVideoControls.setVideo(lastMessageData.video);
     $(document).ready(() => $(carousel.root).carousel(carousel.size() - 1));
 
     // Must create the player after the fragment has been added to each item
@@ -223,6 +220,7 @@ function onResultsReady(results, carousel) {
             console.log("onReady");
             console.log(event);
             messageVideoControls.setPlayer(player);
+            messageVideoControls.cueVideo();
         },
         /*onStateChange*/
         (event) => {
@@ -232,10 +230,9 @@ function onResultsReady(results, carousel) {
     $(document).ready(() => {
         $(document).on("slide.bs.carousel", (event) => {
             var data = carousel.getData(event.to);
-            messageVideoControls.loadVideo(data);
+            messageVideoControls.setVideo(data.video);
         });
     });
-
 }
 
 container = $(".ag-carousel");

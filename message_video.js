@@ -6,6 +6,7 @@
 class MessageVideoControls {
     constructor() {
         this.player = null;
+        this.videoDetails = null;
         this.createElements();
     }
 
@@ -39,16 +40,23 @@ class MessageVideoControls {
         this.player = player;
     }
 
-    loadVideo(videoDetails) {
-        console.log("loadVideo()");
-        console.log(videoDetails);
-        if (this.player) {
-            this.player.loadVideoById({
-                "videoId": videoDetails.youTubeVideoId,
-                "startSeconds": videoDetails.messageStartTimeSeconds
+    setVideo(videoDetails) {
+        this.videoDetails = videoDetails;
+    }
+
+    cueVideo() {
+        if (this.player && this.videoDetails) {
+            this.player.cueVideoById({
+                "videoId": this.videoDetails.youTubeVideoId,
+                "startSeconds": this.videoDetails.messageStartTimeSeconds
             });
-            this.jumpToMessageButton.onclick = () => this.player.seekTo(videoDetails.messageStartTimeSeconds);
+            this.jumpToMessageButton.onclick = () => this.player.seekTo(this.videoDetails.messageStartTimeSeconds);
         }
+    }
+
+    loadVideo() {
+        this.cueVideo();
+        this.player.playVideo();
     }
 }
 
@@ -60,8 +68,6 @@ function jumpTo(player, timeInSeconds) {
 // ************** Create a YouTube player *********************
 function createPlayer(selector, videoDetails, onReady, onStateChange) {
     console.log("createPlayer()");
-    console.log(selector);
-    console.log(videoDetails);
     var player = new YT.Player(selector, {
         height: '100%',
         width: '100%',
@@ -77,7 +83,7 @@ function createPlayer(selector, videoDetails, onReady, onStateChange) {
     });
 
     if (videoDetails) {
-        player.loadVideoById({
+        player.cueVideoById({
             "videoId": videoDetails.youTubeVideoId,
             "startSeconds": videoDetails.messageStartTimeSeconds
         });
