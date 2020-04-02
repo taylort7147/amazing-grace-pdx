@@ -137,6 +137,41 @@ function createMessageBlock(messageData, videoBlock, index) {
     background.classList.add("ag-translucent");
     block.appendChild(background);
 
+    // Notes
+    var notesContainer = document.createElement("div")
+    notesContainer.classList.add("ag-tile-container");
+    block.appendChild(notesContainer);
+    if (messageData.notes != null) {
+        var notesBlock = createNotesBlock(messageData.notes.url);
+        notesContainer.appendChild(notesBlock);
+    } else {
+        notesContainer.appendChild(createTextTag("h4", "Notes", ["ag-tile-title"]));
+        var unavailableBlock = createTextTag("h5", "Unavailable");
+        notesContainer.append(unavailableBlock);
+    }
+
+    block.appendChild(createSeparator());
+
+    // Audio
+    var audioContainer = document.createElement("div")
+    audioContainer.classList.add("ag-tile-container");
+    block.appendChild(audioContainer);
+    audioContainer.appendChild(createTextTag("h4", "Audio", ["ag-tile-title"]));
+    if (messageData.audio != null) {
+        var audioBlock = createAudioBlock(messageData.audio.downloadUrl);
+        audioContainer.appendChild(audioBlock);
+    } else {
+        var unavailableBlock = createTextTag("h5", "Unavailable");
+        audioContainer.append(unavailableBlock);
+    }
+
+    block.appendChild(createSeparator());
+
+    // Video
+    var videoContainer = document.createElement("div");
+    videoContainer.classList.add("ag-tile-container");
+    block.appendChild(videoContainer);
+    videoContainer.appendChild(createTextTag("h4", "Video", ["ag-tile-title"]));
     if (messageData.video != null) {
         console.log("Creating video");
         $(document).ready(() =>
@@ -144,23 +179,35 @@ function createMessageBlock(messageData, videoBlock, index) {
                 console.log(event);
                 if (event.to == index) {
                     console.log(`Moving videoBlock to carousel item ${index}`)
-                    console.log(block);
                     console.log(videoBlock);
-                    block.appendChild(videoBlock);
+                    videoContainer.appendChild(videoBlock);
                 }
             }));
     } else {
-        var videoUnavailableBlock = document.createElement("div");
-        var header = document.createElement("h5");
-        header.innerHTML = "Video Unavailable";
-        videoUnavailableBlock.appendChild(header);
-        block.appendChild(videoUnavailableBlock);
+        var unavailableBlock = createTextTag("h5", "Unavailable");
+        videoContainer.append(unavailableBlock);
     }
-
-
 
     block.appendChild(videoBlock); // Add video to newest block by default
     return block;
+}
+
+function createTextTag(tagType, text, classList) {
+    var tag = document.createElement(tagType);
+    if (classList) {
+        classList.forEach(class_ => tag.classList.add(class_));
+    }
+    tag.innerHTML = text;
+    return tag;
+}
+
+function createNotesBlock(link) {
+    var notesTag = document.createElement('a');
+    notesTag.classList.add("ag-btn");
+    notesTag.classList.add("ag-btn-round");
+    notesTag.href = link;
+    notesTag.text = "Sermon Notes & Branches";
+    return notesTag;
 }
 
 function createPlayerFragment(playerElement, controls) {
@@ -188,6 +235,23 @@ function createPlayerFragment(playerElement, controls) {
 
     fragment.appendChild(block);
     return fragment;
+}
+
+function createAudioBlock(link) {
+    var audioTag = document.createElement('audio');
+    audioTag.controls = "controls";
+    audioTag.classList.add("embed-responsive");
+    var sourceTag = document.createElement('source');
+    sourceTag.src = link;
+    sourceTag.type = "audio/mp3";
+    audioTag.appendChild(sourceTag);
+    return audioTag;
+}
+
+function createSeparator() {
+    var sep = document.createElement("div");
+    sep.classList.add("ag-tile-separator");
+    return sep;
 }
 
 function getMessages(n, cb) {

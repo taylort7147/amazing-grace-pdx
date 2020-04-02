@@ -72,6 +72,10 @@
     padding: 13.5px 25px;
 }
 
+.ag-btn.ag-btn-padded {
+    margin: 1rem;
+}
+
 .ag-btn {
     text-transform: uppercase;
     color: var(--fg-color-primary);
