@@ -15,13 +15,17 @@
 }
 
 .carousel-caption {
+    position: relative;
+    margin: 0;
+    left: 0;
+    padding-bottom: 0;
     bottom: inherit;
 }
 
 .carousel-item {
     min-height: 300px;
     text-align: center;
-    padding: 0%;
+    padding: 0;
 }
 
 .ag-background {
@@ -41,17 +45,25 @@
 }
 
 .ag-translucent {
-    opacity: 25%;
+    opacity: 40%;
 }
 
 .ag-tile {
     width: 95%;
     height: 95%;
     margin: auto;
-    padding: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 5%;
+    padding-top: 2.5%;
     border-radius: 4.0rem;
 }
 
 .carousel-caption>h5 {
     color: var(--fg-color-secondary)
+}
+
+.carousel-indicator {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }

@@ -3,46 +3,53 @@
 //      load_youtube_iframe_api.js
 //      utilities.js
 
+class MessageVideoControls {
+    constructor() {
+        this.player = null;
+        this.createElements();
+    }
 
-// ************** Video details functions ****************
-function updateVideoDetails(videoDetails) {
-    var parentTag = document.getElementById("latest-message-video-details");
-    var messageDetails = videoDetails.message;
-    appendMessageDetailsTooltip(parentTag, messageDetails, "right");
-}
+    createElements() {
+        this.buttonGroup = document.createElement("div");
+        this.buttonGroup.classList.add("ag-btn-group");
+        this.buttonGroup.classList.add("ag-center");
+        this.buttonGroup.attributes["role"] = "group";
+        this.buttonGroup.attributes["aria-label"] = "Player controls";
 
-// ************** Button control functions ***************
-function initializeButtonCallbacks(player, videoDetails) {
-    console.log("initializeButtonCallbacks()");
-    $("#latest-message-video-controls-jump-to-beginning").on("click", () => jumpTo(player, 0));
-    $("#latest-message-video-controls-jump-to-message").on("click", () => jumpTo(player, videoDetails.messageStartTimeSeconds));
-}
+        this.jumpToBeginningButton = document.createElement("button");
+        this.jumpToBeginningButton.classList.add("ag-btn");
+        this.jumpToBeginningButton.classList.add("ag-btn-round");
+        this.jumpToBeginningButton.innerHTML = "Jump to Beginning";
+        this.jumpToBeginningButton.attributes["type"] = "button";
+        this.jumpToBeginningButton.onclick = () => this.player.seekTo(0);
+        this.buttonGroup.appendChild(this.jumpToBeginningButton);
 
-function createButtons(player, videoDetails) {
-    var buttonGroup = document.createElement("div");
-    buttonGroup.classList.add("ag-btn-group");
-    buttonGroup.classList.add("ag-center");
-    buttonGroup.attributes["role"] = "group";
-    buttonGroup.attributes["aria-label"] = "Player controls";
+        this.jumpToMessageButton = document.createElement("button");
+        this.jumpToMessageButton.classList.add("ag-btn");
+        this.jumpToMessageButton.classList.add("ag-btn");
+        this.jumpToMessageButton.classList.add("ag-btn-round");
+        this.jumpToMessageButton.innerHTML = "Jump to Message";
+        this.jumpToMessageButton.attributes["type"] = "button";
+        this.jumpToMessageButton.onclick = null;
+        this.buttonGroup.appendChild(this.jumpToMessageButton);
+    }
 
-    var jumpToBeginningButton = document.createElement("button");
-    jumpToBeginningButton.classList.add("ag-btn");
-    jumpToBeginningButton.classList.add("ag-btn-round");
-    jumpToBeginningButton.innerHTML = "Jump to Beginning";
-    jumpToBeginningButton.attributes["type"] = "button";
-    jumpToBeginningButton.onclick = () => jumpTo(player, 0);
-    buttonGroup.appendChild(jumpToBeginningButton);
+    setPlayer(player) {
+        console.log("setPlayer()");
+        this.player = player;
+    }
 
-    var jumpToMessageButton = document.createElement("button");
-    jumpToMessageButton.classList.add("ag-btn");
-    jumpToMessageButton.classList.add("ag-btn");
-    jumpToMessageButton.classList.add("ag-btn-round");
-    jumpToMessageButton.innerHTML = "Jump to Message";
-    jumpToMessageButton.attributes["type"] = "button";
-    jumpToMessageButton.onclick = () => jumpTo(player, videoDetails.messageStartTimeSeconds);
-    buttonGroup.appendChild(jumpToMessageButton);
-
-    return buttonGroup;
+    loadVideo(videoDetails) {
+        console.log("loadVideo()");
+        console.log(videoDetails);
+        if (this.player) {
+            this.player.loadVideoById({
+                "videoId": videoDetails.youTubeVideoId,
+                "startSeconds": videoDetails.messageStartTimeSeconds
+            });
+            this.jumpToMessageButton.onclick = () => this.player.seekTo(videoDetails.messageStartTimeSeconds);
+        }
+    }
 }
 
 function jumpTo(player, timeInSeconds) {
@@ -50,29 +57,30 @@ function jumpTo(player, timeInSeconds) {
     player.seekTo(timeInSeconds);
 }
 
-// ************** YouTube player event handlers ***************
-function onPlayerReady(event, player, videoDetails) {
-    console.log(`onPlayerReady(${event}, ${videoDetails})`);
-}
-
-function onPlayerStateChange(event) {}
-
 // ************** Create a YouTube player *********************
-function createPlayer(selector, videoDetails) {
+function createPlayer(selector, videoDetails, onReady, onStateChange) {
+    console.log("createPlayer()");
+    console.log(selector);
+    console.log(videoDetails);
     var player = new YT.Player(selector, {
-        height: '390',
-        width: '640',
-        videoId: videoDetails.youTubeVideoId,
+        height: '100%',
+        width: '100%',
         playerVars: {
-            start: videoDetails.messageStartTimeSeconds,
             color: "white",
             modestbranding: 1,
             rel: 0
         },
         events: {
-            'onReady': (event) => onPlayerReady(event, player, videoDetails),
-            'onStateChange': onPlayerStateChange
+            'onReady': (event) => onReady(event, player),
+            'onStateChange': onStateChange
         }
     });
+
+    if (videoDetails) {
+        player.loadVideoById({
+            "videoId": videoDetails.youTubeVideoId,
+            "startSeconds": videoDetails.messageStartTimeSeconds
+        });
+    }
     return player;
 }

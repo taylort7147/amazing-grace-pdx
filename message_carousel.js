@@ -7,6 +7,7 @@
 class Carousel {
     constructor(id) {
         this.id = id;
+        this.data = {};
         this.createElements();
     }
 
@@ -60,9 +61,16 @@ class Carousel {
         this.root.appendChild(this.controlNext);
     }
 
-    addItem(item, caption) {
+    getData(index) {
+        return this.data[index];
+    }
+
+    addItem(item, caption, data) {
         var index = this.size();
         console.log(index);
+
+        this.data[index] = data;
+
         // Create carousel item wrapper
         var carouselItem = document.createElement("div");
         carouselItem.classList.add("carousel-item");
@@ -105,47 +113,6 @@ class Carousel {
     }
 }
 
-function createVideoBlock(messageData) {
-    /*
-    <h3>Video <span id="latest-message-video-details">[+]</span></h3>
-
-    <div align="center" class="" >
-        <!-- YouTube iframe container -->
-        <div class="ag-embed-responsive">
-            <div id="latest-message-video" class="ag-embed-responsive-item"></div>
-        </div>
-
-        <!-- Controls for the YouTube player -->
-        <div id="latest-message-video-controls" class="ag-btn-group ag-center" role="group" aria-label="Player controls">
-            <button id="latest-message-video-controls-jump-to-beginning" type="button" class="ag-btn ag-btn-round">Jump To Beginning</button>
-            <button id="latest-message-video-controls-jump-to-message" type="button" class="ag-btn ag-btn-round">Jump To Message</button>
-        </div>
-    </div>
-
-    <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/latest_message_video.js"></script>
-    */
-    var videoData = messageData.video;
-
-    var block = document.createElement("div");
-    block.style.textAlign = "center";
-
-    var embededVideo = document.createElement("div");
-    embededVideo.classList.add("ag-embed-responsive");
-
-    var embededVideoItem = document.createElement("div");
-    embededVideoItem.classList.add("ag-embed-responsive-item");
-    embededVideoItem.id = "embeded_video_" + videoData.youTubeVideoId;
-    var player = createPlayer(embededVideoItem.id, videoData);
-
-    var buttonBlock = createButtons(player, videoData);
-
-    embededVideo.appendChild(embededVideoItem);
-    block.appendChild(embededVideo);
-    block.appendChild(buttonBlock);
-
-    return block;
-}
-
 function createMessageCaption(messageData) {
     var caption = document.createElement("div");
 
@@ -164,7 +131,7 @@ function createMessageCaption(messageData) {
     return caption;
 }
 
-function createMessageBlock(messageData) {
+function createMessageBlock(messageData, videoBlock, index) {
     console.log(messageData);
 
     var block = document.createElement("div");
@@ -174,13 +141,52 @@ function createMessageBlock(messageData) {
     background.classList.add("ag-background");
     background.classList.add("ag-translucent");
     block.appendChild(background);
+
     if (messageData.video != null) {
         console.log("Creating video");
         console.log(messageData.video);
-        var videoBlock = createVideoBlock(messageData);
-        block.appendChild(videoBlock);
+        $(document).ready(() =>
+            $(document).on("slide.bs.carousel", (event) => {
+                console.log(event);
+                if (event.to == index) {
+                    console.log(`Moving videoBlock to carousel item ${index}`)
+                    console.log(block);
+                    console.log(videoBlock);
+                    block.appendChild(videoBlock);
+                }
+            }));
     }
+    block.appendChild(videoBlock); // Add video to newest block by default
     return block;
+}
+
+function createPlayerFragment(playerElement, controls) {
+    console.log("createPlayerFragment()");
+    console.log(playerElement);
+    console.log(controls);
+    playerElement.id = "player";
+
+    // var fragment = document.createDocumentFragment();
+    var fragment = document.createElement("div");
+
+    var block = document.createElement("div");
+    block.style.textAlign = "center";
+
+    var embededVideo = document.createElement("div");
+    embededVideo.classList.add("ag-embed-responsive");
+
+    var embededVideoItem = document.createElement("div");
+    embededVideoItem.classList.add("ag-embed-responsive-item");
+
+    var buttonBlock = controls.buttonGroup;
+
+    embededVideoItem.appendChild(playerElement);
+    embededVideo.appendChild(embededVideoItem);
+    block.appendChild(embededVideo);
+    block.appendChild(buttonBlock);
+
+    fragment.appendChild(block);
+    return fragment;
 }
 
 function getMessages(n, cb) {
@@ -192,13 +198,44 @@ function getMessages(n, cb) {
 
 function onResultsReady(results, carousel) {
     console.log("onResultsReady()");
+
+    var playerId = "player";
+    var playerElement = document.createElement("div", { "id": playerId });
+    var messageVideoControls = new MessageVideoControls();
+    var playerFragment = createPlayerFragment(playerElement, messageVideoControls);
+
     var allMessages = results["allMessages"];
+    var index = 0;
     allMessages.forEach(messageData => {
-        var messageBlock = createMessageBlock(messageData);
+        var messageBlock = createMessageBlock(messageData, playerFragment, index);
         var caption = createMessageCaption(messageData);
-        carousel.addItem(messageBlock, caption);
+        carousel.addItem(messageBlock, caption, messageData);
+        index += 1;
     });
-    $(carousel.root).carousel(carousel.size() - 1);
+    $(document).ready(() => $(carousel.root).carousel(carousel.size() - 1));
+
+    // Must create the player after the fragment has been added to each item
+    var player = createPlayer(playerId,
+        /*videoDetails*/
+        null,
+        /*onReady*/
+        (event, player) => {
+            console.log("onReady");
+            console.log(event);
+            messageVideoControls.setPlayer(player);
+        },
+        /*onStateChange*/
+        (event) => {
+            console.log("onStateChange");
+        });
+
+    $(document).ready(() => {
+        $(document).on("slide.bs.carousel", (event) => {
+            var data = carousel.getData(event.to);
+            messageVideoControls.loadVideo(data);
+        });
+    });
+
 }
 
 container = $(".ag-carousel");
