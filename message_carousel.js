@@ -150,8 +150,15 @@ function createMessageBlock(messageData, videoBlock, index) {
                 }
             }));
     } else {
-        // TODO: insert element to indicate video is not available
+        var videoUnavailableBlock = document.createElement("div");
+        var header = document.createElement("h5");
+        header.innerHTML = "Video Unavailable";
+        videoUnavailableBlock.appendChild(header);
+        block.appendChild(videoUnavailableBlock);
     }
+
+
+
     block.appendChild(videoBlock); // Add video to newest block by default
     return block;
 }
@@ -230,6 +237,7 @@ function onResultsReady(results, carousel) {
     $(document).ready(() => {
         $(document).on("slide.bs.carousel", (event) => {
             var data = carousel.getData(event.to);
+            player.pauseVideo();
             messageVideoControls.setVideo(data.video);
         });
     });

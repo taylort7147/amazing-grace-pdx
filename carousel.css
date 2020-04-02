@@ -64,6 +64,10 @@
     color: var(--fg-color-secondary)
 }
 
+.ag-tile h5 {
+    color: var(--fg-color-secondary)
+}
+
 .carousel-indicator {
     margin-bottom: 1rem;
     margin-top: 1rem;

@@ -1,6 +1,8 @@
 :root {
     --bg-color-primary: #F9AF0D;
+    --bg-color-secondary: #F9AF0D;
     --fg-color-primary: #FFFFFF;
+    --fg-color-secondary: #FFFFFF;
     --border-color-primary: #00000000;
     --shadow-color: #F7B00680;
     --hover-bg-color: #FEE0AC;
