@@ -342,6 +342,8 @@ function getMessages(n, cb) {
 
 function onResultsReady(results, carousel) {
     console.log("onResultsReady()");
+    console.log(results);
+    console.log(carousel);
 
     var playerId = "player";
     var playerElement = document.createElement("div", { "id": playerId });
