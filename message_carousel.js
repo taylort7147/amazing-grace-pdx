@@ -63,6 +63,10 @@ class Carousel {
     }
 
     addItem(item, caption, data) {
+        console.log("addItem()");
+        console.log(item);
+        console.log(caption);
+        console.log(data);
         var index = this.size();
 
         this.data[index] = data;
