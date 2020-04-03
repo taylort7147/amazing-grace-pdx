@@ -137,6 +137,10 @@ function createMessageBlock(messageData, videoBlock, index) {
     background.classList.add("ag-translucent");
     block.appendChild(background);
 
+    block.appendChild(createSeparator("1rem", true));
+    block.appendChild(createSeparator("1px", false));
+    block.appendChild(createSeparator("1rem", true));
+
     // Notes
     var notesContainer = document.createElement("div")
     notesContainer.classList.add("ag-tile-container");
@@ -150,45 +154,112 @@ function createMessageBlock(messageData, videoBlock, index) {
         notesContainer.append(unavailableBlock);
     }
 
-    block.appendChild(createSeparator());
+    block.appendChild(createSeparator("1rem", true));
+    block.appendChild(createSeparator("1px", false));
 
-    // Audio
-    var audioContainer = document.createElement("div")
-    audioContainer.classList.add("ag-tile-container");
-    block.appendChild(audioContainer);
-    audioContainer.appendChild(createTextTag("h4", "Audio", ["ag-tile-title"]));
-    if (messageData.audio != null) {
-        var audioBlock = createAudioBlock(messageData.audio.downloadUrl);
-        audioContainer.appendChild(audioBlock);
-    } else {
-        var unavailableBlock = createTextTag("h5", "Unavailable");
-        audioContainer.append(unavailableBlock);
+    var mediaContainer = document.createElement("div");
+    mediaContainer.classList.add("ag-tile-container");
+    block.appendChild(mediaContainer);
+
+    var mediaTabs = document.createElement("ul");
+    mediaTabs.id = "media-tabs-message-" + messageData.id;
+    mediaTabs.classList.add("nav");
+    mediaTabs.classList.add("ag-btn-group");
+    // mediaTabs.classList.add("nav-tabs");
+    mediaTabs.classList.add("nav-pills");
+    mediaTabs.setAttribute("role", "tablist");
+    mediaContainer.appendChild(mediaTabs);
+    mediaContainer.appendChild(createSeparator("0.5rem", true));
+
+
+    var mediaTabContent = document.createElement("div");
+    mediaTabContent.id = "media-tab-content-message-" + messageData.id;
+    mediaTabContent.classList.add("tab-content");
+    mediaContainer.appendChild(mediaTabContent);
+
+
+    {
+        // Video
+        // Tab
+        var videoTabItem = document.createElement("li");
+        videoTabItem.classList.add("nav-item");
+        mediaTabs.appendChild(videoTabItem);
+        var videoTabLink = createTextTag("a", "Video");
+        videoTabLink.id = "video-message-" + messageData.id + "-tab";
+        videoTabLink.classList.add("nav-link");
+        videoTabLink.classList.add("ag-btn");
+        videoTabLink.classList.add("ag-btn-round");
+        videoTabLink.href = "#video-message-" + messageData.id;
+        videoTabLink.setAttribute("role", "tab");
+        videoTabLink.setAttribute("data-toggle", "tab");
+        videoTabLink.setAttribute("aria-controls", "video");
+        videoTabLink.setAttribute("aria-selected", "false");
+        videoTabItem.appendChild(videoTabLink);
+
+        // Tab pane
+        var videoTabPane = document.createElement("div");
+        videoTabPane.id = "video-message-" + messageData.id;
+        videoTabPane.classList.add("tab-pane");
+        videoTabPane.classList.add("fade");
+        videoTabPane.classList.add("active");
+        videoTabPane.setAttribute("role", "tabpanel");
+        videoTabPane.setAttribute("aria-labeledby", "video-message-" + messageData.id + "-tab");
+
+        // videoContainer.appendChild(createTextTag("h4", "Video", ["ag-tile-title"]));
+        if (messageData.video != null) {
+            console.log("Creating video");
+            $(document).ready(() =>
+                $(document).on("slide.bs.carousel", (event) => {
+                    console.log(event);
+                    if (event.to == index) {
+                        console.log(`Moving videoBlock to carousel item ${index}`)
+                        console.log(videoBlock);
+                        videoTabPane.appendChild(videoBlock);
+                        $(videoTabLink).tab("show");
+                    }
+                }));
+            videoTabPane.appendChild(videoBlock);
+        } else {
+            var unavailableBlock = createTextTag("h5", "Unavailable");
+            videoTabPane.append(unavailableBlock);
+        }
+        mediaTabContent.appendChild(videoTabPane);
+
+        // Audio
+        // Tab
+        var audioTabItem = document.createElement("li");
+        audioTabItem.classList.add("nav-item");
+        mediaTabs.appendChild(audioTabItem);
+        var audioTabLink = createTextTag("a", "Audio");
+        audioTabLink.id = "audio-message-" + messageData.id + "-tab";
+        audioTabLink.classList.add("nav-link");
+        audioTabLink.classList.add("ag-btn");
+        audioTabLink.classList.add("ag-btn-round");
+        audioTabLink.href = "#audio-message-" + messageData.id;
+        audioTabLink.setAttribute("role", "tab");
+        audioTabLink.setAttribute("data-toggle", "tab");
+        audioTabLink.setAttribute("aria-controls", "audio");
+        audioTabLink.setAttribute("aria-selected", "false");
+        audioTabItem.appendChild(audioTabLink);
+
+        // Tab pane
+        var audioTabPane = document.createElement("div");
+        audioTabPane.id = "audio-message-" + messageData.id;
+        audioTabPane.classList.add("tab-pane");
+        audioTabPane.classList.add("fade");
+        audioTabPane.setAttribute("role", "tabpanel");
+        audioTabPane.setAttribute("aria-labeledby", "audio-message-" + messageData.id + "-tab");
+        if (messageData.audio != null) {
+            var audioBlock = createAudioBlock(messageData.audio.downloadUrl);
+            audioTabPane.appendChild(audioBlock);
+        } else {
+            var unavailableBlock = createTextTag("h5", "Unavailable");
+            audioTabPane.append(unavailableBlock);
+        }
+        mediaTabContent.appendChild(audioTabPane);
     }
 
-    block.appendChild(createSeparator());
 
-    // Video
-    var videoContainer = document.createElement("div");
-    videoContainer.classList.add("ag-tile-container");
-    block.appendChild(videoContainer);
-    videoContainer.appendChild(createTextTag("h4", "Video", ["ag-tile-title"]));
-    if (messageData.video != null) {
-        console.log("Creating video");
-        $(document).ready(() =>
-            $(document).on("slide.bs.carousel", (event) => {
-                console.log(event);
-                if (event.to == index) {
-                    console.log(`Moving videoBlock to carousel item ${index}`)
-                    console.log(videoBlock);
-                    videoContainer.appendChild(videoBlock);
-                }
-            }));
-    } else {
-        var unavailableBlock = createTextTag("h5", "Unavailable");
-        videoContainer.append(unavailableBlock);
-    }
-
-    block.appendChild(videoBlock); // Add video to newest block by default
     return block;
 }
 
@@ -248,9 +319,13 @@ function createAudioBlock(link) {
     return audioTag;
 }
 
-function createSeparator() {
+function createSeparator(height, isTransparent) {
     var sep = document.createElement("div");
-    sep.classList.add("ag-tile-separator");
+    sep.classList.add("ag-separator");
+    sep.style.height = height;
+    if (isTransparent) {
+        sep.classList.add("ag-transparent");
+    }
     return sep;
 }
 
@@ -317,4 +392,15 @@ container.each((i, tag) => {
     var videoBarrier = new Barrier(["youtubeApi", "allMessages"], (results) => onResultsReady(results, carousel));
     registerYouTubeIframeAPIReadyCallback(data => videoBarrier.addResult("youtubeApi", data));
     getMessages(n, allMessages => videoBarrier.addResult("allMessages", allMessages));
+});
+
+$(document).ready(() => {
+    $(document).on("show.bs.tab", (event) => {
+        console.log("show.bs.tab");
+        console.log(event);
+    });
+    $(document).on("shown.bs.tab", (event) => {
+        console.log("shown.bs.tab");
+        console.log(event);
+    });
 });

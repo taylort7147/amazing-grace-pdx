@@ -49,15 +49,13 @@
     opacity: 40%;
 }
 
-.ag-tile-container {}
-
 .ag-tile {
     width: 95%;
     height: 95%;
     margin: auto;
     padding-left: 10%;
     padding-right: 10%;
-    padding-bottom: 2.0rem;
+    padding-bottom: 3.5rem;
     padding-top: 0;
     border-radius: 4.0rem;
 }
@@ -71,14 +69,8 @@
     color: var(--fg-color-secondary)
 }
 
-.ag-tile-separator {
-    height: 1px;
-    width: 100%;
-    padding-left: 25%;
-    padding-right: 25%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--fg-color-secondary);
+.ag-tile-container .ag-btn-group {
+    margin-bottom: 0;
 }
 
 .ag-tile-title {
