@@ -27,7 +27,7 @@ if (typeof YouTubeIframeAPILoaded === "undefined") {
 
     function loadYouTubeIframeAPI() {
         if (YouTubeIframeAPILoaded) { return; }
-        console.log("injectYouTubeIframeAPILoadScript()");
+        console.log("loadYouTubeIframeAPI()");
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         tag.type = "application/javascript";

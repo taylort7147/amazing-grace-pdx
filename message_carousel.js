@@ -1,6 +1,107 @@
 // Requires 
 //      utilities.js
 
+class Swiper {
+    constructor(id) {
+        this.id = id;
+        this.data = {};
+        this.createElements();
+    }
+
+    createElements() {
+        // Root node
+        this.root = document.createElement("div");
+        this.root.id = this.id;
+        this.root.classList.add("pages-items");
+        this.root.classList.add("mobile-swiper");
+        this.root.classList.add("loaded"); // TODO: Is this done automatically?
+        this.root.classList.add("ag-mobile-swiper");
+
+        // Swiper container
+        this.swiperContainer = document.createElement("div");
+        this.swiperContainer.classList.add("swiper-container");
+        this.swiperContainer.classList.add("nucleus-slider");
+        this.swiperContainer.classList.add("swiper-container-initialized"); // TODO: Is this done automatically?
+        this.swiperContainer.classList.add("swiper-container-horizontal");
+        this.swiperContainer.classList.add("ag-swiper-container");
+
+        // Swiper wrapper
+        this.swiperWrapper = document.createElement("div");
+        this.swiperWrapper.classList.add("swiper-wrapper");
+        this.swiperWrapper.classList.add("ag-swiper-wrapper");
+
+        // Swiper pagination
+        this.swiperPagination = document.createElement("ol");
+        this.swiperPagination.classList.add("swiper-pagination");
+        this.swiperPagination.classList.add("swiper-pagination-bullets");
+        this.swiperPagination.classList.add("swiper-pagination-bullets-dynamic");
+        this.swiperPagination.classList.add("ag-swiper-pagination");
+
+        // Add elements to root node
+        this.swiperContainer.appendChild(this.swiperWrapper);
+        this.swiperContainer.appendChild(this.swiperPagination);
+        this.root.appendChild(this.swiperContainer);
+    }
+    getData(index) {
+        console.log(`getData(${index})`);
+        console.log("data map:");
+        console.log(this.data);
+        return this.data[index];
+    }
+
+    addItem(item, caption, data) {
+        console.log("addItem()");
+        console.log(item);
+        console.log(caption);
+        console.log(data);
+        var index = this.size();
+
+        this.data[index] = data;
+
+        // Create carousel item wrapper
+        var swiperSlide = document.createElement("div");
+        swiperSlide.classList.add("swiper-slide");
+
+        // Add caption
+        var captionBlock = document.createElement("div");
+        captionBlock.classList.add("carousel-caption");
+        captionBlock.classList.add("d-none");
+        captionBlock.classList.add("d-md-block");
+        captionBlock.appendChild(caption);
+        swiperSlide.appendChild(captionBlock);
+
+        // Add the item to the carousel item
+        swiperSlide.appendChild(item);
+
+        // Add the carousel item to the carousel
+        this.swiperWrapper.appendChild(swiperSlide);
+
+        // Select this index if it is the first item
+        if (index == 0) {
+            swiperSlide.classList.add("active");
+        }
+
+        // Add indicator
+        var indicator = document.createElement("span");
+        indicator.classList.add("swiper-pagination-bullet");
+        indicator.setAttribute("data-target", "#" + this.id);
+        indicator.setAttribute("data-slide-to", index);
+        if (index == 0) {
+            indicator.classList.add("active");
+        }
+        this.swiperPagination.appendChild(indicator);
+    }
+
+    size() {
+        return this.swiperWrapper.children.length;
+    }
+
+    select(n) {
+        $(`#${this.id}`).carousel(n);
+    }
+
+}
+
 class Carousel {
     constructor(id) {
         this.id = id;
@@ -378,7 +479,7 @@ function populateCarousel(carousel, allMessages) {
         });
 
     $(document).ready(() => {
-        $(document).on("slide.bs.carousel", (event) => {
+        $(carousel.inner).on("slide.bs.carousel", (event) => {
             console.log("slide.bs.carousel");
             console.log(event);
             var data = carousel.getData(event.to);
