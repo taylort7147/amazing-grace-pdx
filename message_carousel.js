@@ -59,6 +59,9 @@ class Carousel {
     }
 
     getData(index) {
+        console.log(`getData(${index})`);
+        console.log("data map:");
+        console.log(this.data);
         return this.data[index];
     }
 
@@ -340,17 +343,12 @@ function getMessages(n, cb) {
     $.getJSON(uri, cb);
 }
 
-function onResultsReady(results, carousel) {
-    console.log("onResultsReady()");
-    console.log(results);
-    console.log(carousel);
-
+function populateCarousel(carousel, allMessages) {
     var playerId = "player";
     var playerElement = document.createElement("div", { "id": playerId });
     var messageVideoControls = new MessageVideoControls();
     var playerFragment = createPlayerFragment(playerElement, messageVideoControls);
 
-    var allMessages = results["allMessages"].reverse();
     var index = 0;
     var lastMessageData = null;
     allMessages.forEach(messageData => {
@@ -364,7 +362,7 @@ function onResultsReady(results, carousel) {
     $(document).ready(() => $(carousel.root).carousel(carousel.size() - 1));
 
     // Must create the player after the fragment has been added to each item
-    var player = createPlayer(playerId,
+    createPlayer(playerId,
         /*videoDetails*/
         null,
         /*onReady*/
@@ -381,23 +379,34 @@ function onResultsReady(results, carousel) {
 
     $(document).ready(() => {
         $(document).on("slide.bs.carousel", (event) => {
+            console.log("slide.bs.carousel");
+            console.log(event);
             var data = carousel.getData(event.to);
-            player.pauseVideo();
+            messageVideoControls.pauseVideo();
             messageVideoControls.setVideo(data.video);
         });
     });
 }
 
-container = $(".ag-carousel");
-container.each((i, tag) => {
-    var n = tag.getAttribute("n");
-    var carouselId = tag.id + "_" + i;
-    var carousel = new Carousel(carouselId);
-    tag.appendChild(carousel.root);
+function onResultsReady(results, carousel) {
+    console.log("onResultsReady()");
+    console.log(results);
+    console.log(carousel);
 
-    var videoBarrier = new Barrier(["youtubeApi", "allMessages"], (results) => onResultsReady(results, carousel));
-    registerYouTubeIframeAPIReadyCallback(data => videoBarrier.addResult("youtubeApi", data));
-    getMessages(n, allMessages => videoBarrier.addResult("allMessages", allMessages));
+    var allMessages = results["allMessages"].reverse();
+    populateCarousel(carousel, allMessages);
+}
+
+$(document).ready(() => {
+    container = $(".ag-carousel");
+    container.each((i, tag) => {
+        var n = tag.getAttribute("n");
+        var carouselId = tag.id + "_" + i;
+        var carousel = new Carousel(carouselId);
+        tag.appendChild(carousel.root);
+
+        getMessages(n, allMessages => populateCarousel(carousel, allMessages.reverse()));
+    });
 });
 
 $(document).ready(() => {

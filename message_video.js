@@ -55,8 +55,16 @@ class MessageVideoControls {
     }
 
     loadVideo() {
-        this.cueVideo();
-        this.player.playVideo();
+        if (this.player) {
+            this.cueVideo();
+            this.player.playVideo();
+        }
+    }
+
+    pauseVideo() {
+        if (this.player) {
+            this.player.pauseVideo();
+        }
     }
 }
 
@@ -68,25 +76,27 @@ function jumpTo(player, timeInSeconds) {
 // ************** Create a YouTube player *********************
 function createPlayer(selector, videoDetails, onReady, onStateChange) {
     console.log("createPlayer()");
-    var player = new YT.Player(selector, {
-        height: '100%',
-        width: '100%',
-        playerVars: {
-            color: "white",
-            modestbranding: 1,
-            rel: 0
-        },
-        events: {
-            'onReady': (event) => onReady(event, player),
-            'onStateChange': onStateChange
+    registerYouTubeIframeAPIReadyCallback(() => {
+        console.log("Creating player.");
+        var player = new YT.Player(selector, {
+            height: '100%',
+            width: '100%',
+            playerVars: {
+                color: "white",
+                modestbranding: 1,
+                rel: 0
+            },
+            events: {
+                'onReady': (event) => onReady(event, player),
+                'onStateChange': onStateChange
+            }
+        });
+
+        if (videoDetails) {
+            player.cueVideoById({
+                "videoId": videoDetails.youTubeVideoId,
+                "startSeconds": videoDetails.messageStartTimeSeconds
+            });
         }
     });
-
-    if (videoDetails) {
-        player.cueVideoById({
-            "videoId": videoDetails.youTubeVideoId,
-            "startSeconds": videoDetails.messageStartTimeSeconds
-        });
-    }
-    return player;
 }

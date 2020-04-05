@@ -5,6 +5,7 @@ if (typeof YouTubeIframeAPILoaded === "undefined") {
 
     function registerYouTubeIframeAPIReadyCallback(cb) {
         console.log("registerYouTubeIframeAPIReadyCallback()");
+        console.log(YouTubeIframeAPILoaded);
         if (YouTubeIframeAPILoaded) {
             cb(); // Call the API is ready
         } else {
