@@ -81,6 +81,8 @@ This will give you the link to play the file.
 Audio Link:
 
     https://drive.google.com/open?id=1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA
+    or
+    https://drive.google.com/file/d/1ThZTdv-HXmDYuqLZxszIQMECSgffpgWA/view?usp=sharing
 
 From the audio link, get extract the ID:
 
