@@ -63,8 +63,11 @@ function appendMessageBlockDescription(tag, description) {
     tag.appendChild(descriptionTag);
     return descriptionTag;
 }
+
 function appendMessageBlock(parentTag, data) {
     console.log(`appendMessageBlock() called for ${parentTag.id}`);
+    console.log("Data:");
+    console.log(data);
     if (data == null) { return; }
 
     // Tag
@@ -105,7 +108,7 @@ function populateMessageSeriesBlock(parentTag, series) {
     }
     console.log(`Series: (${series.length} entries)`);
     console.log(series);
-    console.log(typeof (series));
+    console.log(typeof(series));
     series.forEach((message) => appendMessageBlock(parentTag, message));
 }
 
