@@ -66,8 +66,6 @@ function appendMessageBlockDescription(tag, description) {
 
 function appendMessageBlock(parentTag, data) {
     console.log(`appendMessageBlock() called for ${parentTag.id}`);
-    console.log("Data:");
-    console.log(data);
     if (data == null) { return; }
 
     // Tag
@@ -89,6 +87,10 @@ function appendMessageBlock(parentTag, data) {
     appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(data.notes));
     appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(data.audio));
     appendMessageBlockLink(buttonGroupTag, "Video", getVideoLink(data.video));
+    console.log("Tag:")
+    console.log(tag)
+    console.log("Parent tag:")
+    console.log(parentTag)
     return tag;
 }
 
