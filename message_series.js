@@ -114,7 +114,9 @@ function populateMessageSeriesBlock(parentTag, series) {
     series.forEach((message) => appendMessageBlock(parentTag, message));
 }
 
-messageSeriesBlocks = $("div.message-series-block");
-console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
-messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
-    populateMessageSeriesBlock(tag, data)));
+$(document).ready(function() {
+    messageSeriesBlocks = $("div.message-series-block");
+    console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
+    messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
+        populateMessageSeriesBlock(tag, data)));
+});
