@@ -1,0 +1,47 @@
+@model MessageManager.Models.Message
+@using System;
+<tr>
+    <td>
+        @Html.DisplayFor(model => model.Date)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Title)
+    </td>
+    <td>
+        @{
+            var description = @Model.Description;
+            var maxDisplayLength = 20;
+            if(!String.IsNullOrEmpty(description) && description.Length > 20)
+            {
+                description = @description.Substring(0, maxDisplayLength - 3) + "...";
+            }
+            @description;
+        }
+    </td>
+    <td>
+        @if(Model.SeriesId != null)
+        {
+            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.SeriesId" role="button">@Model.Series.Name</a>
+        }
+    </td>
+    <td>
+        @if(Model.VideoId != null){
+            <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@Model.VideoId" role="button">Video</a>
+        }
+    </td>
+    <td>
+        @if(Model.AudioId != null){
+            <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@Model.AudioId" role="button">Audio</a>
+        }
+    </td>
+    <td>
+        @if(Model.NotesId != null){
+            <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@Model.NotesId" role="button">Notes</a>
+        }
+    </td>
+    <td>
+        <partial name="_EditLink" model="new { Id = @Model.Id, User = @User }">
+        <a asp-page="./Details" asp-route-id="@Model.Id">Details</a>
+        <partial name="_DeleteLink" model="new { Id = @Model.Id, User = @User }">
+    </td>
+</tr>

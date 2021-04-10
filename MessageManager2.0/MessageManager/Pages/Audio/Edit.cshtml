@@ -1,0 +1,45 @@
+@page
+@model MessageManager.Pages.Audio.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Audio</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Audio.Id" />
+            <div class="form-group">
+                <label asp-for="Audio.StreamUrl" class="control-label"></label>
+                <input asp-for="Audio.StreamUrl" class="form-control" />
+                <span asp-validation-for="Audio.StreamUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Audio.DownloadUrl" class="control-label"></label>
+                <input asp-for="Audio.DownloadUrl" class="form-control" />
+                <span asp-validation-for="Audio.DownloadUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Audio.MessageId" class="control-label"></label>
+                <select asp-for="Audio.MessageId" class="form-control" asp-items="ViewBag.MessageId"></select>
+                <span asp-validation-for="Audio.MessageId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

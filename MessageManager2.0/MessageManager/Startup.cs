@@ -26,6 +26,7 @@ namespace MessageManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages();
             services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MessageDb")));
             services.AddControllersWithViews();
         }
@@ -39,7 +40,7 @@ namespace MessageManager
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -52,9 +53,10 @@ namespace MessageManager
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Messages}/{action=Index}/{id?}");
             });
         }
     }
