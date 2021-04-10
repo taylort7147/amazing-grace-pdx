@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MessageManager.Models
 {
@@ -34,6 +35,8 @@ namespace MessageManager.Models
         public Notes Notes { get; set; }
 
         public int? SeriesId { get; set; }
+
+        [JsonIgnore]
         public Series Series { get; set; }
 
         public override string ToString()
