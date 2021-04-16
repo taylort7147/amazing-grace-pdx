@@ -2,26 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MessageManager.Data;
-using MessageManager.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Messages
 {
     public class CreateModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
+        private readonly ILogger _logger;
 
-        public CreateModel(MessageManager.Data.MessageContext context)
+        public CreateModel(MessageManager.Data.MessageContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGetAsync()
         {
-        ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Name");
+            var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
+            var selected = seriesSelectList.Where(x => x.Value == null).FirstOrDefault();
+            if (selected != null)
+            {
+                selected.Selected = true;
+            }
+            ViewData["SeriesSelectList"] = seriesSelectList;
             return Page();
         }
 
@@ -38,8 +47,9 @@ namespace MessageManager.Pages.Messages
 
             _context.Message.Add(Message);
             await _context.SaveChangesAsync();
+            _logger.LogCritical($"User '{User.Identity.Name}' created '{Message.ToString()}'.");
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Edit", new { id = Message.Id });
         }
     }
 }

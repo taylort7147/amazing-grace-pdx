@@ -1,4 +1,5 @@
-@page
+@page "{messageId}"
+
 @model MessageManager.Pages.Audio.CreateModel
 
 @{
@@ -14,14 +15,14 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Audio.StreamUrl" class="control-label"></label>
-                <input asp-for="Audio.StreamUrl" class="form-control" />
-                <span asp-validation-for="Audio.StreamUrl" class="text-danger"></span>
-            </div>
+            <!-- For now, all audio files are stored in Google Drive. -->
+            <!-- A proxy is used to set the URLs by providing the Google Drive ID. -->
+            <input type="hidden" asp-for="Audio.StreamUrl" />
+            <input type="hidden" asp-for="Audio.DownloadUrl" />
             <div class="form-group">
-                <label asp-for="Audio.DownloadUrl" class="control-label"></label>
-                <input asp-for="Audio.DownloadUrl" class="form-control" />
-                <span asp-validation-for="Audio.DownloadUrl" class="text-danger"></span>
+                <label asp-for="Audio.GoogleDriveId" class="control-label"></label>
+                <input asp-for="Audio.GoogleDriveId" class="form-control" />
+                <span asp-validation-for="Audio.GoogleDriveId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Audio.MessageId" class="control-label"></label>

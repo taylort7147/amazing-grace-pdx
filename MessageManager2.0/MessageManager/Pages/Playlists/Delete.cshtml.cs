@@ -2,21 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Data;
-using MessageManager.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Playlists
 {
     public class DeleteModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
+        private readonly ILogger _logger;
 
-        public DeleteModel(MessageManager.Data.MessageContext context)
+        public DeleteModel(MessageManager.Data.MessageContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -50,11 +53,22 @@ namespace MessageManager.Pages.Playlists
 
             if (Playlist != null)
             {
+                var series = await _context.Series.FindAsync(Playlist.SeriesId);
+
                 _context.Playlist.Remove(Playlist);
+
+                if (series != null)
+                {
+                    series.PlaylistId = null;
+                    _context.Series.Update(series);
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("/Series/Edit", new { id = series.Id });
+                }
                 await _context.SaveChangesAsync();
+                _logger.LogCritical($"User '{User.Identity.Name}' deleted '{Playlist.ToString()}'.");
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Series/Index");
         }
     }
 }

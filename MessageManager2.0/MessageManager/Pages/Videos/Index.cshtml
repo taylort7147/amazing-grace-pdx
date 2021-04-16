@@ -7,9 +7,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +14,7 @@
                 @Html.DisplayNameFor(model => model.Video[0].YouTubeVideoId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Video[0].MessageStartTimeSeconds)
+                @Html.DisplayNameFor(model => model.Video[0].MessageStartTimeString)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Video[0].Message)
@@ -32,15 +29,15 @@
                 @Html.DisplayFor(modelItem => item.YouTubeVideoId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MessageStartTimeSeconds)
+                @Html.DisplayFor(modelItem => item.MessageStartTimeString)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message.Title)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
             </td>
         </tr>
 }

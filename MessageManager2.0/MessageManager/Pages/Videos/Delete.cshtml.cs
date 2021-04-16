@@ -2,21 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Data;
-using MessageManager.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Videos
 {
     public class DeleteModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
+        private readonly ILogger _logger;
 
-        public DeleteModel(MessageManager.Data.MessageContext context)
+        public DeleteModel(MessageManager.Data.MessageContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -50,11 +53,23 @@ namespace MessageManager.Pages.Videos
 
             if (Video != null)
             {
+                var message = await _context.Message.FindAsync(Video.MessageId);
+                	
                 _context.Video.Remove(Video);
+
+                if (message != null)
+                {
+                    message.VideoId = null;
+                    _context.Message.Update(message);
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("/Messages/Edit", new { id = message.Id });
+                }
+
                 await _context.SaveChangesAsync();
+                _logger.LogCritical($"User '{User.Identity.Name}' deleted '{Video.ToString()}'.");
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Messages/Index");
         }
     }
 }

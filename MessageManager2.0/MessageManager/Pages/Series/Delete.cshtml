@@ -18,6 +18,19 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Series.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Series.Messages)
+        </dt>
+        <dd class="col-sm-10">
+            <ul>
+                @foreach(var item in @Model.Series.Messages)
+                {
+                    <li class="col-sm-10">    
+                        @item.Title  
+                    </li>
+                }
+            </ul>
+        </dd>
     </dl>
     
     <form method="post">

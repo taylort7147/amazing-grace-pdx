@@ -13,6 +13,12 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Message.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Message.Date)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Message.Title)
         </dt>
         <dd class="col-sm-10">
@@ -30,35 +36,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Message.BibleReferences)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.Date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.Date)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.VideoId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.VideoId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.AudioId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.AudioId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.NotesId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.NotesId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message.Series)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.Series.Name)
         </dd>
     </dl>
     

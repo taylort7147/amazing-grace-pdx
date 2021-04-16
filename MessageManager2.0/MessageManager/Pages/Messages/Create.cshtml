@@ -20,12 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Message.Description" class="control-label"></label>
-                <input asp-for="Message.Description" class="form-control" />
+                <textarea asp-for="Message.Description" class="form-control"></textarea>
                 <span asp-validation-for="Message.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Message.BibleReferences" class="control-label"></label>
-                <input asp-for="Message.BibleReferences" class="form-control" />
+                <textarea asp-for="Message.BibleReferences" class="form-control" />
                 <span asp-validation-for="Message.BibleReferences" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,23 +34,11 @@
                 <span asp-validation-for="Message.Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Message.VideoId" class="control-label"></label>
-                <input asp-for="Message.VideoId" class="form-control" />
-                <span asp-validation-for="Message.VideoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message.AudioId" class="control-label"></label>
-                <input asp-for="Message.AudioId" class="form-control" />
-                <span asp-validation-for="Message.AudioId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message.NotesId" class="control-label"></label>
-                <input asp-for="Message.NotesId" class="form-control" />
-                <span asp-validation-for="Message.NotesId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message.SeriesId" class="control-label"></label>
-                <select asp-for="Message.SeriesId" class ="form-control" asp-items="ViewBag.SeriesId"></select>
+                <label asp-for="Message.Series" class="control-label"></label>
+                <select asp-for="Message.SeriesId" class ="form-control" asp-items="ViewBag.SeriesSelectList" >
+                    <option selected></option>
+                </select>
+                <span asp-validation-for="Message.SeriesId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

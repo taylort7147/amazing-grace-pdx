@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Data;
-using MessageManager.Models;
 
 namespace MessageManager.Pages.Series
 {
@@ -28,7 +28,9 @@ namespace MessageManager.Pages.Series
                 return NotFound();
             }
 
-            Series = await _context.Series.FirstOrDefaultAsync(m => m.Id == id);
+            Series = await _context.Series
+                     .Include(s => s.Playlist)
+                     .Include(s => s.Messages).FirstOrDefaultAsync(s => s.Id == id);
 
             if (Series == null)
             {

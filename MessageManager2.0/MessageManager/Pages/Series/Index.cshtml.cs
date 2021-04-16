@@ -23,7 +23,8 @@ namespace MessageManager.Pages.Series
 
         public async Task OnGetAsync()
         {
-            Series = await _context.Series.ToListAsync();
+            Series = await _context.Series
+                     .Include(s => s.Messages).ToListAsync();
         }
     }
 }

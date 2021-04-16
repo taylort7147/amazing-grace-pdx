@@ -7,30 +7,46 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="text-center">
+    <a class="btn btn-primary btn-large" asp-page="/Series/Create" role="button">Add a New Series</a>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Series[0].Name)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model=> model.Series[0].Playlist)
+            </th>
+            <th>
+                Messages
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Series) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Series)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @if (item.PlaylistId != null)
+                    {
+                        <a class="btn btn-light" asp-page="/Playlists/Details" asp-route-id="@item.PlaylistId"
+                            role="button">Playlist</a>
+                    }
+                </td>
+                <td>
+                    @item.Messages.Count()
+                </td>
+                <td>
+                    <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -2,21 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Data;
-using MessageManager.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Messages
 {
     public class DeleteModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
+        private readonly ILogger _logger;
 
-        public DeleteModel(MessageManager.Data.MessageContext context)
+        public DeleteModel(MessageManager.Data.MessageContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -29,8 +32,7 @@ namespace MessageManager.Pages.Messages
                 return NotFound();
             }
 
-            Message = await _context.Message
-                .Include(m => m.Series).FirstOrDefaultAsync(m => m.Id == id);
+            Message = await _context.Message.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Message == null)
             {
@@ -50,8 +52,24 @@ namespace MessageManager.Pages.Messages
 
             if (Message != null)
             {
+                if (Message.Video != null)
+                {
+                    _context.Video.Remove(Message.Video);
+                }
+
+                if (Message.Audio != null)
+                {
+                    _context.Audio.Remove(Message.Audio);
+                }
+
+                if (Message.Notes != null)
+                {
+                    _context.Notes.Remove(Message.Notes);
+                }
+
                 _context.Message.Remove(Message);
                 await _context.SaveChangesAsync();
+                _logger.LogCritical($"User '{User.Identity.Name}' deleted '{Message.ToString()}'.");
             }
 
             return RedirectToPage("./Index");

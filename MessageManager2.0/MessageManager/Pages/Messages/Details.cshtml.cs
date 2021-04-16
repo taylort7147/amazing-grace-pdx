@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Data;
-using MessageManager.Models;
 
 namespace MessageManager.Pages.Messages
 {
@@ -29,7 +29,8 @@ namespace MessageManager.Pages.Messages
             }
 
             Message = await _context.Message
-                .Include(m => m.Series).FirstOrDefaultAsync(m => m.Id == id);
+                      .Include(m => m.Series)
+                      .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Message == null)
             {

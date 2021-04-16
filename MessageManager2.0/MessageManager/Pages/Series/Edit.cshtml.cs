@@ -2,22 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Data;
-using MessageManager.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Series
 {
     public class EditModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
+        private readonly ILogger _logger;
 
-        public EditModel(MessageManager.Data.MessageContext context)
+        public EditModel(MessageManager.Data.MessageContext context, ILogger<EditModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -30,7 +33,8 @@ namespace MessageManager.Pages.Series
                 return NotFound();
             }
 
-            Series = await _context.Series.FirstOrDefaultAsync(m => m.Id == id);
+            Series = await _context.Series
+                     .Include(s => s.Messages).FirstOrDefaultAsync(s => s.Id == id);
 
             if (Series == null)
             {
@@ -48,11 +52,12 @@ namespace MessageManager.Pages.Series
                 return Page();
             }
 
-            _context.Attach(Series).State = EntityState.Modified;
+            _context.Update(Series);
 
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogCritical($"User '{User.Identity.Name}' edited object with new values'{Series.ToString()}'.");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -67,6 +72,39 @@ namespace MessageManager.Pages.Series
             }
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostUnlinkSeriesAsync(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var message = await _context.Message.FindAsync(id);
+
+            if (message != null)
+            {
+                message.SeriesId = null;
+                _context.Update(message);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    _logger.LogCritical($"User '{User.Identity.Name}' unlinked message '{message.Title}' from series '{Series.ToString()}'.");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Message.Any(m => m.Id == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToPage("./Edit", new { id = Series.Id });
         }
 
         private bool SeriesExists(int id)

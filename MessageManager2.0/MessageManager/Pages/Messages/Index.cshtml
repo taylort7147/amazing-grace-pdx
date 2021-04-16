@@ -24,37 +24,37 @@
                 <th>
                     <a asp-page="Index" asp-route-sortOrder="@ViewData["DateSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
-                        @Html.DisplayNameFor(model => model.Message[0].Date)</a>
+                        @Html.DisplayNameFor(model => model.Messages[0].Date)</a>
                 </th>
                 <th>
                     <a asp-page="Index" asp-route-sortOrder="@ViewData["TitleSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
-                        @Html.DisplayNameFor(model => model.Message[0].Title)</a>
+                        @Html.DisplayNameFor(model => model.Messages[0].Title)</a>
                 </th>
                 <th>
                     <a asp-page="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
-                        @Html.DisplayNameFor(model => model.Message[0].Description)</a>
+                        @Html.DisplayNameFor(model => model.Messages[0].Description)</a>
                 </th>
                 <th>
                     <a asp-page="Index" asp-route-sortOrder="@ViewData["SeriesSortParam"]"
                         asp-route-searchString="@ViewData["CurrentSearch"]">
-                        @Html.DisplayNameFor(model => model.Message[0].Series)</a>
+                        @Html.DisplayNameFor(model => model.Messages[0].Series)</a>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Message[0].Video)
+                    @Html.DisplayNameFor(model => model.Messages[0].Video)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Message[0].Audio)
+                    @Html.DisplayNameFor(model => model.Messages[0].Audio)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Message[0].Notes)
+                    @Html.DisplayNameFor(model => model.Messages[0].Notes)
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var message in Model.Message)
+            @foreach (var message in Model.Messages)
             {
                 @await Html.PartialAsync("_MessageTableRow", message)
                 ;

@@ -1,4 +1,4 @@
-@page
+@page "{messageId}"
 @model MessageManager.Pages.Videos.CreateModel
 
 @{
@@ -19,9 +19,9 @@
                 <span asp-validation-for="Video.YouTubeVideoId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Video.MessageStartTimeSeconds" class="control-label"></label>
-                <input asp-for="Video.MessageStartTimeSeconds" class="form-control" />
-                <span asp-validation-for="Video.MessageStartTimeSeconds" class="text-danger"></span>
+                <label asp-for="Video.MessageStartTimeString" class="control-label"></label>
+                <input asp-for="Video.MessageStartTimeString" class="form-control" />
+                <span asp-validation-for="Video.MessageStartTimeString" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Video.MessageId" class="control-label"></label>

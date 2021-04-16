@@ -15,14 +15,15 @@
             @Html.DisplayNameFor(model => model.Playlist.YouTubePlaylistId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Playlist.YouTubePlaylistId)
+            <a class="btn btn-light" href="https://www.youtube.com/playlist?list=@Model.Playlist.YouTubePlaylistId"
+                role="button">@Model.Playlist.YouTubePlaylistId</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Playlist.Series)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Playlist.Series.Name)
-        </dd>
+            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.Playlist.SeriesId"
+                role="button">@Model.Playlist.Series.Name</a>
     </dl>
 </div>
 <div>

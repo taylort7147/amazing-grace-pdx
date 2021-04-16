@@ -34,7 +34,7 @@ namespace MessageManager.Pages.Messages
             _context = context;
         }
 
-        public IList<Message> Message { get; set; }
+        public IList<Message> Messages { get; set; }
 
         private static bool Search(Message message, string searchString)
         {
@@ -52,9 +52,10 @@ namespace MessageManager.Pages.Messages
 
         private static Expression<Func<Message, bool>> SearchExpression(string searchString)
         {
+            searchString = searchString.ToLower();
             return m =>
-                m.Title.ToLower().Contains(searchString.ToLower()) ||
-                m.Description.ToLower().Contains(searchString.ToLower());
+                m.Title.ToLower().Contains(searchString) ||
+                m.Description.ToLower().Contains(searchString);
         }
 
         public async Task OnGetAsync(string sortOrder, string searchString)
@@ -102,7 +103,7 @@ namespace MessageManager.Pages.Messages
                     messages = messages.OrderByDescending(m => m.Date);
                     break;
             }
-            Message = await messages.ToListAsync();
+            Messages = await messages.ToListAsync();
         }
     }
 }

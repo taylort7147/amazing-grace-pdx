@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MessageManager.Data;
+using Microsoft.Extensions.Logging;
 using MessageManager.Models;
 
 namespace MessageManager.Pages.Series
@@ -13,10 +13,12 @@ namespace MessageManager.Pages.Series
     public class CreateModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
+        private readonly ILogger _logger;
 
-        public CreateModel(MessageManager.Data.MessageContext context)
+        public CreateModel(MessageManager.Data.MessageContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
@@ -37,6 +39,7 @@ namespace MessageManager.Pages.Series
 
             _context.Series.Add(Series);
             await _context.SaveChangesAsync();
+            _logger.LogCritical($"User '{User.Identity.Name}' created '{Series.ToString()}'.");
 
             return RedirectToPage("./Index");
         }

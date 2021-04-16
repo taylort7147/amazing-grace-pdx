@@ -14,19 +14,20 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Video.Id" />
+            <input type="hidden" asp-for="OriginalMessageId" />
             <div class="form-group">
                 <label asp-for="Video.YouTubeVideoId" class="control-label"></label>
                 <input asp-for="Video.YouTubeVideoId" class="form-control" />
                 <span asp-validation-for="Video.YouTubeVideoId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Video.MessageStartTimeSeconds" class="control-label"></label>
-                <input asp-for="Video.MessageStartTimeSeconds" class="form-control" />
-                <span asp-validation-for="Video.MessageStartTimeSeconds" class="text-danger"></span>
+                <label asp-for="Video.MessageStartTimeString" class="control-label"></label>
+                <input asp-for="Video.MessageStartTimeString" class="form-control" />
+                <span asp-validation-for="Video.MessageStartTimeString" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Video.MessageId" class="control-label"></label>
-                <select asp-for="Video.MessageId" class="form-control" asp-items="ViewBag.MessageId"></select>
+                <label asp-for="Video.Message" class="control-label"></label>
+                <select asp-for="Video.MessageId" class="form-control" asp-items="Model.MessageIdList"></select>
                 <span asp-validation-for="Video.MessageId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,6 +35,10 @@
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a class="btn btn-danger" asp-page="/Videos/Delete" asp-route-id="@Model.Video.Id" role="button">Delete</a>
 </div>
 
 <div>
