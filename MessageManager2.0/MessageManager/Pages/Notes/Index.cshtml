@@ -5,8 +5,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
 <table class="table">
     <thead>
         <tr>
@@ -20,20 +18,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Notes) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Url)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message.Title)
-            </td>
-            <td>
-                <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Notes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message.Title)
+                </td>
+                <td>
+                    <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

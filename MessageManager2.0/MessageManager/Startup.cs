@@ -56,6 +56,9 @@ namespace MessageManager
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
+                    pattern: "{controller=Messages}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "api",
                     pattern: "api/{controller=Messages}/{action=Index}/{id?}");
             });
         }
