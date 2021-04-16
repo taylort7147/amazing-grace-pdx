@@ -14,7 +14,7 @@ namespace MessageManager.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AudioController : ControllerBase
+    public class AudioController : Controller
     {
         private readonly MessageContext _context;
 

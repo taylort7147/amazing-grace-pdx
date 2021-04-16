@@ -12,7 +12,7 @@ namespace MessageManager.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class PlaylistsController : ControllerBase
+    public class PlaylistsController : Controller
     {
         private readonly MessageContext _context;
 

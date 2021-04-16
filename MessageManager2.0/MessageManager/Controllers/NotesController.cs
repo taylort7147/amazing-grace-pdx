@@ -14,7 +14,7 @@ namespace MessageManager.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class NotesController : ControllerBase
+    public class NotesController : Controller
     {
         private readonly MessageContext _context;
 

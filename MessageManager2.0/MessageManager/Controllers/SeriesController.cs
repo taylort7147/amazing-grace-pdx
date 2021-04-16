@@ -12,7 +12,7 @@ namespace MessageManager.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class SeriesController : ControllerBase
+    public class SeriesController : Controller
     {
         private readonly MessageContext _context;
 

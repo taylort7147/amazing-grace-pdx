@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace MessageManager.Areas.Api.Controllers
+namespace MessageManager.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
-    public class MessagesController : ControllerBase
+    public class MessagesController : Controller
     {
         private readonly MessageContext _context;
 

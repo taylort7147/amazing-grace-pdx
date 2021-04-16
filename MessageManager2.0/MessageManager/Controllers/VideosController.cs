@@ -14,7 +14,7 @@ namespace MessageManager.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class VideosController : ControllerBase
+    public class VideosController : Controller
     {
         private readonly MessageContext _context;
 
