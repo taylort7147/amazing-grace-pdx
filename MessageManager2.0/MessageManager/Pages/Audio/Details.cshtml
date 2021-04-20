@@ -31,6 +31,9 @@
                 role="button">@Model.Audio.Message.Title</a>
         </dd>
     </dl>
+    <audio controls="" class="embed-responsive">
+        <source src="@Model.Audio.DownloadUrl" type="audio/mp3">
+    </audio>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Audio.Id">Edit</a> |
