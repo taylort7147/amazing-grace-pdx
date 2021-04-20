@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Data;
-using MessageManager.Models;
 
 namespace MessageManager.Pages.Notes
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class DeleteModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
@@ -56,7 +59,7 @@ namespace MessageManager.Pages.Notes
                 var message = await _context.Message.FindAsync(Notes.MessageId);
 
                 _context.Notes.Remove(Notes);
-                if(message != null)
+                if (message != null)
                 {
                     message.NotesId = null;
                     _context.Message.Update(message);

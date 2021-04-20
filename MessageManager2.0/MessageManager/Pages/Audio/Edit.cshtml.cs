@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Data;
-using MessageManager.Models;
 
 namespace MessageManager.Pages.Audio
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class EditModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
@@ -65,17 +68,17 @@ namespace MessageManager.Pages.Audio
             }
 
             var message = await _context.Message.FindAsync(Audio.MessageId);
-            if(message == null)
+            if (message == null)
             {
                 Console.Error.WriteLine("Unexpected null message with ID: " + Audio.MessageId);
                 return Page();
             }
 
             // Unlink the original message if linking to a new message
-            if(OriginalMessageId != null)
+            if (OriginalMessageId != null)
             {
                 var originalMessage = await _context.Message.FindAsync(OriginalMessageId);
-                if(originalMessage != null &&
+                if (originalMessage != null &&
                         originalMessage.AudioId != message.AudioId)
                 {
                     originalMessage.AudioId = null;

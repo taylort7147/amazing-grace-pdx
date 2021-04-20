@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Data;
 using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Videos
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class DeleteModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
@@ -54,7 +57,7 @@ namespace MessageManager.Pages.Videos
             if (Video != null)
             {
                 var message = await _context.Message.FindAsync(Video.MessageId);
-                	
+
                 _context.Video.Remove(Video);
 
                 if (message != null)

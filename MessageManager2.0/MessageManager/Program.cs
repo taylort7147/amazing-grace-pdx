@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,7 @@ namespace MessageManager
                 try
                 {
                     SeedData.Initialize(services);
+                    CreateUserRoles(services).Wait();
                 }
                 catch (Exception ex)
                 {
@@ -41,5 +44,21 @@ namespace MessageManager
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await CreateRoleIfMissingAsync(roleManager, Constants.ReadOnlyRole);
+            await CreateRoleIfMissingAsync(roleManager, Constants.ReadWriteRole);
+            await CreateRoleIfMissingAsync(roleManager, Constants.AdministratorRole);
+        }
+
+        private static async Task CreateRoleIfMissingAsync(RoleManager<IdentityRole> roleManager, string role)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
     }
 }

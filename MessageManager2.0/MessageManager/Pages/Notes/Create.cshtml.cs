@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using MessageManager.Models;
 
 namespace MessageManager.Pages.Notes
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
@@ -28,7 +31,7 @@ namespace MessageManager.Pages.Notes
 
             var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Title");
             var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
-            if(selected != null)
+            if (selected != null)
             {
                 selected.Selected = true;
             }
@@ -48,7 +51,7 @@ namespace MessageManager.Pages.Notes
             }
 
             var message = await _context.Message.FindAsync(Notes.MessageId);
-            if(message == null)
+            if (message == null)
             {
                 Console.Error.WriteLine("Unexpected null message with ID: " + Notes.MessageId);
                 return Page();

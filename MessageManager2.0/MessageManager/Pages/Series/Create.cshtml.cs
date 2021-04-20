@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using MessageManager.Models;
 
 namespace MessageManager.Pages.Series
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;

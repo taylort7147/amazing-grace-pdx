@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Data;
 using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MessageManager.Pages.Audio
 {
+    [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
         private readonly MessageManager.Data.MessageContext _context;
