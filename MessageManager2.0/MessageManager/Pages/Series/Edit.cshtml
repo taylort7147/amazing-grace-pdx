@@ -59,11 +59,14 @@
                         <input type="hidden" asp-for="Series.PlaylistId"/>
                     </li>
                 </form>
-
             }
+            <li>
+                <a class="btn btn-primary" asp-page="/Messages/Create" asp-route-seriesId="@Model.Series.Id" role="button">Add a New Message</a>
+            </li>
     </div>
 </div>
 
+<hr>
 
 <div>
     <a class="btn btn-danger" asp-page="/Series/Delete" asp-route-id="@Model.Series.Id" role="button">Delete Series</a>

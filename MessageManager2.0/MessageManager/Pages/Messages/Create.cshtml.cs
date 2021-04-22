@@ -25,10 +25,10 @@ namespace MessageManager.Pages.Messages
             _logger = logger;
         }
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGetAsync(int? seriesId)
         {
             var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
-            var selected = seriesSelectList.Where(x => x.Value == null).FirstOrDefault();
+            var selected = seriesSelectList.Where(x => x.Value == seriesId.ToString()).FirstOrDefault();
             if (selected != null)
             {
                 selected.Selected = true;
@@ -36,6 +36,7 @@ namespace MessageManager.Pages.Messages
             ViewData["SeriesSelectList"] = seriesSelectList;
             return Page();
         }
+
 
         [BindProperty]
         public Message Message { get; set; }
