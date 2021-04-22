@@ -60,9 +60,10 @@
                     </li>
                 </form>
             }
-            <li>
-                <a class="btn btn-primary" asp-page="/Messages/Create" asp-route-seriesId="@Model.Series.Id" role="button">Add a New Message</a>
-            </li>
+            <p>
+                <a asp-page="/Messages/Create" asp-route-seriesId="@Model.Series.Id" role="button">Add a New Message</a>
+            </p>
+            
     </div>
 </div>
 
