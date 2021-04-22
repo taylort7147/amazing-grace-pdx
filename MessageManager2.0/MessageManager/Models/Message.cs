@@ -14,10 +14,10 @@ namespace MessageManager.Models
         [Required]
         public string Title { get; set; }
 
-        [StringLength(4095)]
+        [StringLength(1024)]
         public string Description { get; set; }
 
-        [StringLength(4096)]
+        [StringLength(512)]
         [Display(Name = "Bible References")]
         public string BibleReferences { get; set; }
 
