@@ -32,9 +32,7 @@
                         @Html.DisplayNameFor(model => model.Messages[0].Title)</a>
                 </th>
                 <th>
-                    <a asp-page="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
-                        asp-route-searchString="@ViewData["CurrentSearch"]">
-                        @Html.DisplayNameFor(model => model.Messages[0].Description)</a>
+                    @Html.DisplayNameFor(model => model.Messages[0].BibleReferences)</a>
                 </th>
                 <th>
                     <a asp-page="Index" asp-route-sortOrder="@ViewData["SeriesSortParam"]"
