@@ -2,30 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Authorization;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Notes
+namespace MessageManager.Pages.Notes
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class DeleteModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public DeleteModel(MessageContext context, ILogger<DeleteModel> logger)
+        public DeleteModel(MessageManager.Data.MessageContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
             _logger = logger;
         }
 
         [BindProperty]
-        public Notes Notes { get; set; }
+        public MessageManager.Models.Notes Notes { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -35,7 +36,7 @@ namespace MessageManager.Pages_Notes
             }
 
             Notes = await _context.Notes
-                    .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Notes == null)
             {
@@ -56,18 +57,20 @@ namespace MessageManager.Pages_Notes
             if (Notes != null)
             {
                 var message = await _context.Message.FindAsync(Notes.MessageId);
-                if(message != null)
+
+                _context.Notes.Remove(Notes);
+                if (message != null)
                 {
                     message.NotesId = null;
                     _context.Message.Update(message);
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("/Messages/Edit", new { id = message.Id });
                 }
-
-                _context.Notes.Remove(Notes);
                 await _context.SaveChangesAsync();
-                _logger.LogCritical($"User {User.Identity.Name} deleted '{Notes.ToString()}.");
+                _logger.LogCritical($"User '{User.Identity.Name}' deleted '{Notes.ToString()}'.");
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Messages/Index");
         }
     }
 }

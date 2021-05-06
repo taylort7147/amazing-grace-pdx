@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MessageManager.Models
 {
@@ -13,9 +14,12 @@ namespace MessageManager.Models
         [Required]
         public string Title { get; set; }
 
-        [StringLength(4095)]
-        [Required]
+        [StringLength(1024)]
         public string Description { get; set; }
+
+        [StringLength(512)]
+        [Display(Name = "Bible References")]
+        public string BibleReferences { get; set; }
 
         [DataType(DataType.Date)]
         [Required]
@@ -31,6 +35,8 @@ namespace MessageManager.Models
         public Notes Notes { get; set; }
 
         public int? SeriesId { get; set; }
+
+        [JsonIgnore]
         public Series Series { get; set; }
 
         public override string ToString()

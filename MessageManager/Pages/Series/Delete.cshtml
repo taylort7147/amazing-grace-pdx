@@ -1,5 +1,5 @@
 @page
-@model MessageManager.Pages_Series.DeleteModel
+@model MessageManager.Pages.Series.DeleteModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -19,20 +19,26 @@
             @Html.DisplayFor(model => model.Series.Name)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Series.Description)
+        </dt>
+        <dd class="col-sm-10">
+            <textarea readonly class="form-control" placeholder="No description">@Model.Series.Description</textarea>
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Series.Messages)
         </dt>
         <dd class="col-sm-10">
             <ul>
-                @foreach(var item in @Model.Series.Messages)
+                @foreach (var item in @Model.Series.Messages)
                 {
-                    <li class="col-sm-10">    
-                        @item.Title  
+                    <li class="col-sm-10">
+                        @item.Title
                     </li>
                 }
             </ul>
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Series.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

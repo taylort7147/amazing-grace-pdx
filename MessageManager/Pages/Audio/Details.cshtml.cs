@@ -2,25 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Audio
+namespace MessageManager.Pages.Audio
 {
     [AllowAnonymous]
     public class DetailsModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
 
-        public DetailsModel(MessageContext context)
+        public DetailsModel(MessageManager.Data.MessageContext context)
         {
             _context = context;
         }
 
-        public Audio Audio { get; set; }
+        public MessageManager.Models.Audio Audio { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,7 +31,7 @@ namespace MessageManager.Pages_Audio
             }
 
             Audio = await _context.Audio
-                    .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Audio == null)
             {

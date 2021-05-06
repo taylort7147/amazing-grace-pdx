@@ -1,5 +1,5 @@
 @page
-@model MessageManager.Pages_Messages.CreateModel
+@model MessageManager.Pages.Messages.CreateModel
 
 @{
     ViewData["Title"] = "Create";
@@ -22,6 +22,11 @@
                 <label asp-for="Message.Description" class="control-label"></label>
                 <textarea asp-for="Message.Description" class="form-control"></textarea>
                 <span asp-validation-for="Message.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.BibleReferences" class="control-label"></label>
+                <textarea asp-for="Message.BibleReferences" class="form-control"></textarea>
+                <span asp-validation-for="Message.BibleReferences" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Message.Date" class="control-label"></label>

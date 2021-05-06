@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
 
 namespace MessageManager.Models
 {
@@ -10,6 +10,13 @@ namespace MessageManager.Models
 
         [Required]
         public string Name { get; set; }
+
+        [StringLength(4095)]
+        public string Description { get; set; }
+
+        public int? PlaylistId { get; set; }
+
+        public Playlist Playlist { get; set; }
 
         public IEnumerable<Message> Messages { get; set; }
 

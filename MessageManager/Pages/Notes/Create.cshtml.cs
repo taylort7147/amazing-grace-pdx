@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using MessageManager.Models;
-using MessageManager.Authorization;
 
-namespace MessageManager.Pages_Notes
+namespace MessageManager.Pages.Notes
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public CreateModel(MessageContext context, ILogger<CreateModel> logger)
+        public CreateModel(MessageManager.Data.MessageContext context, ILogger<CreateModel> logger)
         {
             _context = context;
             _logger = logger;
@@ -31,7 +31,7 @@ namespace MessageManager.Pages_Notes
 
             var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Title");
             var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
-            if(selected != null)
+            if (selected != null)
             {
                 selected.Selected = true;
             }
@@ -40,8 +40,9 @@ namespace MessageManager.Pages_Notes
         }
 
         [BindProperty]
-        public Notes Notes { get; set; }
+        public MessageManager.Models.Notes Notes { get; set; }
 
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -50,7 +51,7 @@ namespace MessageManager.Pages_Notes
             }
 
             var message = await _context.Message.FindAsync(Notes.MessageId);
-            if(message == null)
+            if (message == null)
             {
                 Console.Error.WriteLine("Unexpected null message with ID: " + Notes.MessageId);
                 return Page();
@@ -63,9 +64,9 @@ namespace MessageManager.Pages_Notes
             message.NotesId = Notes.Id;
             _context.Message.Update(message);
             await _context.SaveChangesAsync();
-            _logger.LogCritical($"User {User.Identity.Name} created '{Notes.ToString()}.");
+            _logger.LogCritical($"User '{User.Identity.Name}' created '{Notes.ToString()}'.");
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Messages/Edit", new { id = message.Id });
         }
     }
 }

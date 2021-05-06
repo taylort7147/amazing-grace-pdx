@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Areas.Identity.Data;
+using MessageManager.Pages.Shared;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Areas.Identity.Data;
-using MessageManager.Authorization;
-using MessageManager.Pages.Shared;
 
 namespace MessageManager.Areas.Identity.Pages.Administrator.Users
 {
@@ -18,10 +18,10 @@ namespace MessageManager.Areas.Identity.Pages.Administrator.Users
     public class EditModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IdentityDbContext _context;
+        private readonly IdentityContext _context;
 
         public EditModel(UserManager<IdentityUser> userManager,
-                         IdentityDbContext context)
+                         IdentityContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -49,10 +49,10 @@ namespace MessageManager.Areas.Identity.Pages.Administrator.Users
                 return NotFound();
             }
 
-            ReadOnlyPermission = new CheckBoxModel{DisplayName="Read Only"};
+            ReadOnlyPermission = new CheckBoxModel { DisplayName = "Read Only" };
             ReadOnlyPermission.IsChecked = await _userManager.IsInRoleAsync(IdentityUser, Constants.ReadOnlyRole);
 
-            ReadWritePermission = new CheckBoxModel{DisplayName="Read/Write"};
+            ReadWritePermission = new CheckBoxModel { DisplayName = "Read/Write" };
             ReadWritePermission.IsChecked = await _userManager.IsInRoleAsync(IdentityUser, Constants.ReadWriteRole);
 
             return Page();
@@ -73,14 +73,14 @@ namespace MessageManager.Areas.Identity.Pages.Administrator.Users
 
         private async Task UpdateRole(string role, bool isChecked)
         {
-            if(!isChecked &&
+            if (!isChecked &&
                     await _userManager.IsInRoleAsync(IdentityUser, role))
             {
                 await _userManager.UpdateSecurityStampAsync(IdentityUser);
                 await _userManager.RemoveFromRoleAsync(IdentityUser, role);
                 await _context.SaveChangesAsync();
             }
-            else if(isChecked &&
+            else if (isChecked &&
                     !(await _userManager.IsInRoleAsync(IdentityUser, role)))
             {
                 await _userManager.UpdateSecurityStampAsync(IdentityUser);

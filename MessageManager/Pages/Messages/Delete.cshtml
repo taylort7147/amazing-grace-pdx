@@ -1,5 +1,5 @@
 @page
-@model MessageManager.Pages_Messages.DeleteModel
+@model MessageManager.Pages.Messages.DeleteModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -29,6 +29,13 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Message.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Message.BibleReferences)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Message.BibleReferences)
+        </dd>
         </dd>
     </dl>
     

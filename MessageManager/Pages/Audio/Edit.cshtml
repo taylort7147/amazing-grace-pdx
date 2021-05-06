@@ -1,5 +1,5 @@
 @page
-@model MessageManager.Pages_Audio.EditModel
+@model MessageManager.Pages.Audio.EditModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -36,6 +36,8 @@
         </form>
     </div>
 </div>
+
+<hr>
 
 <div>
     <a class="btn btn-danger" asp-page="/Audio/Delete" asp-route-id="@Model.Audio.Id" role="button">Delete</a>

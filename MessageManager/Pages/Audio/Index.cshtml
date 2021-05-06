@@ -1,11 +1,9 @@
 @page
-@model MessageManager.Pages_Audio.IndexModel
+@model MessageManager.Pages.Audio.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
 
 <table class="table">
     <thead>
@@ -23,23 +21,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Audio) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StreamUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DownloadUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message.Title)
-            </td>
-            <td>
-                <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Audio)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StreamUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DownloadUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message.Title)
+                </td>
+                <td>
+                    <partial name="_EditLink" model="new { Id = @item.Id, User = @User }">
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        <partial name="_DeleteLink" model="new { Id = @item.Id, User = @User }">
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

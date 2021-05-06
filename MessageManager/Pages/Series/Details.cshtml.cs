@@ -2,25 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Series
+namespace MessageManager.Pages.Series
 {
     [AllowAnonymous]
     public class DetailsModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
 
-        public DetailsModel(MessageContext context)
+        public DetailsModel(MessageManager.Data.MessageContext context)
         {
             _context = context;
         }
 
-        public Series Series { get; set; }
+        public MessageManager.Models.Series Series { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,6 +31,7 @@ namespace MessageManager.Pages_Series
             }
 
             Series = await _context.Series
+                     .Include(s => s.Playlist)
                      .Include(s => s.Messages).FirstOrDefaultAsync(s => s.Id == id);
 
             if (Series == null)

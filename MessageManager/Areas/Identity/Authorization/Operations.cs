@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace MessageManager.Authorization
+namespace MessageManager.Areas.Identity.Authorization
 {
     public static class ContactOperations
     {
         public static OperationAuthorizationRequirement Create =
-            new OperationAuthorizationRequirement {Name=Constants.CreateOperationName};
+            new OperationAuthorizationRequirement { Name = Constants.CreateOperationName };
         public static OperationAuthorizationRequirement View =
-            new OperationAuthorizationRequirement {Name=Constants.ViewOperationName};
+            new OperationAuthorizationRequirement { Name = Constants.ViewOperationName };
         public static OperationAuthorizationRequirement Edit =
-            new OperationAuthorizationRequirement {Name=Constants.EditOperationName};
+            new OperationAuthorizationRequirement { Name = Constants.EditOperationName };
         public static OperationAuthorizationRequirement Delete =
-            new OperationAuthorizationRequirement {Name=Constants.DeleteOperationName};
+            new OperationAuthorizationRequirement { Name = Constants.DeleteOperationName };
     }
 
     public class Constants

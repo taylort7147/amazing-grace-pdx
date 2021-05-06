@@ -2,20 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages.Messages
 {
     [AllowAnonymous]
     public class DetailsModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
 
-        public DetailsModel(MessageContext context)
+        public DetailsModel(MessageManager.Data.MessageContext context)
         {
             _context = context;
         }

@@ -1,160 +1,132 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Areas.Identity.Data;
+using MessageManager.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Identity;
-using MessageManager.Areas.Identity.Data;
-using MessageManager.Authorization;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
 
 namespace MessageManager
 {
-public class Startup {
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-    readonly string CorsPolicy = "_allowSpecificOrigins";
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddCors(options =>
+        public Startup(IConfiguration configuration)
         {
-            options.AddPolicy(CorsPolicy,
-                              builder =>
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRazorPages();
+            services.Configure<IdentityOptions>(options =>
             {
-                builder.AllowAnyOrigin() // TODO: Limit origins
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
             });
-        });
 
-        services.Configure<CookiePolicyOptions>(options =>
-        {
-            // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            options.CheckConsentNeeded = context => true;
-            options.MinimumSameSitePolicy = SameSiteMode.None;
-        });
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromDays(15);
 
-        services.Configure<IdentityOptions>(options =>
-        {
-            // Password settings.
-            options.Password.RequireDigit = true;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequiredLength = 6;
-            options.Password.RequiredUniqueChars = 1;
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
 
-            // Lockout settings.
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            options.Lockout.MaxFailedAccessAttempts = 5;
-            options.Lockout.AllowedForNewUsers = true;
+            services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MessageDb")));
+            services.AddMvc(config =>
+                    {
+                        var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                        config.Filters.Add(new AuthorizeFilter(policy));
+                    });
 
-            // User settings.
-            options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            options.User.RequireUniqueEmail = false;
-        });
 
-        services.ConfigureApplicationCookie(options =>
-        {
-            // Cookie settings
-            options.Cookie.HttpOnly = true;
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+            services.AddControllersWithViews();
+            services.AddSingleton<IAuthorizationHandler,
+                                  ReadWriteAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler,
+                                  AdministratorsAuthorizationHandler>();
 
-            options.LoginPath = "/Identity/Account/Login";
-            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-            options.SlidingExpiration = true;
-        });
-
-        services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MessageDb")));
-
-        services.AddMvc(config =>
-        {
-            var policy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-            config.Filters.Add(new AuthorizeFilter(policy));
-        })
-        .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-        .AddJsonOptions(options =>
-        {
-            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        });
-
-        services.AddSingleton<IAuthorizationHandler,
-                              ReadWriteAuthorizationHandler>();
-        services.AddSingleton<IAuthorizationHandler,
-                              AdministratorsAuthorizationHandler>();
-
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy(
-                Constants.ReadWritePolicy, policy => policy.RequireRole(
-                    Constants.AdministratorRole,
-                    Constants.ReadWriteRole));
-            options.AddPolicy(
-                Constants.ReadOnlyPolicy, policy => policy.RequireRole(
-                    Constants.AdministratorRole,
-                    Constants.ReadWriteRole,
-                    Constants.ReadOnlyRole));
-        });
-
-    }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
-    {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    Constants.ReadWritePolicy, policy => policy.RequireRole(
+                        Constants.AdministratorRole,
+                        Constants.ReadWriteRole));
+                options.AddPolicy(
+                    Constants.ReadOnlyPolicy, policy => policy.RequireRole(
+                        Constants.AdministratorRole,
+                        Constants.ReadWriteRole,
+                        Constants.ReadOnlyRole));
+            });
         }
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseCors(CorsPolicy);
-        app.UseCookiePolicy();
-
-        app.UseAuthentication();
-        app.UseMvc();
-
-        CreateUserRoles(serviceProvider).Wait();
-    }
-    private async Task CreateUserRoles(IServiceProvider serviceProvider)
-    {
-        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        await CreateRoleIfMissingAsync(roleManager, Constants.ReadOnlyRole);
-        await CreateRoleIfMissingAsync(roleManager, Constants.ReadWriteRole);
-        await CreateRoleIfMissingAsync(roleManager, Constants.AdministratorRole);
-    }
-
-    private async Task CreateRoleIfMissingAsync(RoleManager<IdentityRole> roleManager, string role)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            await roleManager.CreateAsync(new IdentityRole(role));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+            app.UseCookiePolicy();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Messages}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "api",
+                    pattern: "api/{controller=Messages}/{action=Index}/{id?}");
+            });
         }
     }
-}
 }

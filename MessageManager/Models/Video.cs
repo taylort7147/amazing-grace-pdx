@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MessageManager.Models
 {
@@ -13,11 +14,6 @@ namespace MessageManager.Models
         [RegularExpression("[a-zA-Z0-9_-]{11}")] // Current implementation, not guaranteed by spec
         [Required]
         public string YouTubeVideoId { get; set; }
-
-
-        [Display(Name = "Playlist ID")]
-        [RegularExpression("[a-zA-Z0-9_-]{34}")] // Current implementation, not guaranteed by spec
-        public string YouTubePlaylistId { get; set; }
 
         public int MessageStartTimeSeconds { get; set; }
 
@@ -32,7 +28,7 @@ namespace MessageManager.Models
             }
             set
             {
-                MessageStartTimeSeconds = (int) value.TotalSeconds;
+                MessageStartTimeSeconds = (int)value.TotalSeconds;
             }
         }
 
@@ -43,12 +39,13 @@ namespace MessageManager.Models
         [RegularExpression("^((((([0-9]{0,2}:)?[0-5])?[0-9]:)?[0-5])?[0-9])?$")]
         public string MessageStartTimeString
         {
-            get {
+            get
+            {
                 return MessageStartTimeSpan.ToString(@"hh\:mm\:ss");
             }
             set
             {
-                if(value == null || value.Length == 0)
+                if (value == null || value.Length == 0)
                 {
                     MessageStartTimeSpan = new TimeSpan(0);
                 }
@@ -66,13 +63,13 @@ namespace MessageManager.Models
         public int MessageId { get; set; }
 
         [ForeignKey(nameof(MessageId))]
+        [JsonIgnore]
         public Message Message { get; set; }
 
         public override string ToString()
         {
             return $"Video(Id={Id}, " +
                    $"YouTubeVideoId={YouTubeVideoId}, " +
-                   $"YouTubePlaylistId={YouTubePlaylistId}, " +
                    $"MessageStartTimeSeconds={MessageStartTimeSeconds}, " +
                    $"MessageId={MessageId})";
         }
