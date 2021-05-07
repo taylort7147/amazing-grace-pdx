@@ -1,14 +1,14 @@
 // Requires 
 //      no dependencies
 
-function onAudioReady(data) {
-    console.log("onAudioReady()");
-    console.log(data);
+function onMessageReady(message) {
+    console.log("onMessageReady()");
+    console.log(message);
     appendMessageDetailsTooltip(
         $("#latest-message-audio-details")[0],
-        data.message,
+        message,
         "right");
-    appendAudioBlock($("#latest-message-audio")[0], data.downloadUrl)
+    appendAudioBlock($("#latest-message-audio")[0], message.audio.downloadUrl)
 }
 
 function appendAudioBlock(tag, link) {
@@ -23,6 +23,6 @@ function appendAudioBlock(tag, link) {
     tag.appendChild(audioTag);
 }
 
-$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/audio/latest", function(data) {
-    onAudioReady(data);
+$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_audio", function(data) {
+    onMessageReady(data[0]);
 });
