@@ -2,23 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using MessageManager.Authorization;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Videos
+namespace MessageManager.Pages.Videos
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public CreateModel(MessageContext context, ILogger<CreateModel> logger)
+        public CreateModel(MessageManager.Data.MessageContext context, ILogger<CreateModel> logger)
         {
             _context = context;
             _logger = logger;
@@ -31,7 +32,7 @@ namespace MessageManager.Pages_Videos
 
             var unlinkedMessageSelectList = new SelectList(unlinkedMessages, "Id", "Title");
             var selected = unlinkedMessageSelectList.Where(x => x.Value == messageId.ToString()).FirstOrDefault();
-            if(selected != null)
+            if (selected != null)
             {
                 selected.Selected = true;
             }
@@ -42,6 +43,7 @@ namespace MessageManager.Pages_Videos
         [BindProperty]
         public Video Video { get; set; }
 
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -50,7 +52,7 @@ namespace MessageManager.Pages_Videos
             }
 
             var message = await _context.Message.FindAsync(Video.MessageId);
-            if(message == null)
+            if (message == null)
             {
                 Console.Error.WriteLine("Unexpected null message with ID: " + Video.MessageId);
                 return Page();
@@ -63,9 +65,9 @@ namespace MessageManager.Pages_Videos
             message.VideoId = Video.Id;
             _context.Message.Update(message);
             await _context.SaveChangesAsync();
-            _logger.LogCritical($"User {User.Identity.Name} created '{Video.ToString()}.");
+            _logger.LogCritical($"User '{User.Identity.Name}' created '{Video.ToString()}'.");
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Messages/Edit", new { id = message.Id });
         }
     }
 }

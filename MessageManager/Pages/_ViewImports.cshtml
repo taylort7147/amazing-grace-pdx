@@ -1,7 +1,8 @@
-@using MessageManager
-@namespace MessageManager.Pages
-@using MessageManager.Authorization
+﻿@using MessageManager
+@using MessageManager.Models
+@using MessageManager.Pages
 @using Microsoft.AspNetCore.Authorization
+@using MessageManager.Areas.Identity.Authorization
 @using System.Security.Claims;
 @inject IAuthorizationService AuthorizationService
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

@@ -55,7 +55,7 @@ function getNotesLink(details) {
 function appendMessageBlockDescription(tag, description) {
     if (!description)
         return;
-    var descriptionTag = document.createElement("p");
+    var descriptionTag = document.createElement("pre");
     descriptionTag.classList.add("message-block-description");
     descriptionTag.classList.add("ag-center");
     descriptionTag.classList.add("ag-text");
@@ -63,6 +63,7 @@ function appendMessageBlockDescription(tag, description) {
     tag.appendChild(descriptionTag);
     return descriptionTag;
 }
+
 function appendMessageBlock(parentTag, data) {
     console.log(`appendMessageBlock() called for ${parentTag.id}`);
     if (data == null) { return; }
@@ -86,13 +87,17 @@ function appendMessageBlock(parentTag, data) {
     appendMessageBlockLink(buttonGroupTag, "Notes", getNotesLink(data.notes));
     appendMessageBlockLink(buttonGroupTag, "Audio", getAudioLink(data.audio));
     appendMessageBlockLink(buttonGroupTag, "Video", getVideoLink(data.video));
+    console.log("Tag:")
+    console.log(tag)
+    console.log("Parent tag:")
+    console.log(parentTag)
     return tag;
 }
 
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
     var seriesUri = encodeURIComponent(seriesName);
-    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages?series=${seriesUri}`
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages?series=${seriesUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
@@ -105,11 +110,13 @@ function populateMessageSeriesBlock(parentTag, series) {
     }
     console.log(`Series: (${series.length} entries)`);
     console.log(series);
-    console.log(typeof (series));
+    console.log(typeof(series));
     series.forEach((message) => appendMessageBlock(parentTag, message));
 }
 
-messageSeriesBlocks = $("div.message-series-block");
-console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
-messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
-    populateMessageSeriesBlock(tag, data)));
+$(document).ready(function() {
+    messageSeriesBlocks = $("div.message-series-block");
+    console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
+    messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
+        populateMessageSeriesBlock(tag, data)));
+});

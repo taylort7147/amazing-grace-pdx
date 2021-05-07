@@ -1,17 +1,20 @@
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
+using MessageManager.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
 namespace MessageManager.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
-    public class VideosController : ControllerBase
+    public class VideosController : Controller
     {
         private readonly MessageContext _context;
 
@@ -37,7 +40,7 @@ namespace MessageManager.Controllers
                         .Include(v => v.Message)
                         .FirstOrDefaultAsync(v => v.Id == id);
 
-            if(video == null)
+            if (video == null)
             {
                 return NotFound();
             }
@@ -51,12 +54,15 @@ namespace MessageManager.Controllers
         {
             var video = await _context.Video
                         .Include(v => v.Message)
-                        .Where(v => v.Message.Date.DayOfWeek == System.DayOfWeek.Sunday)
+                        .Where(v => EF.Functions.DateDiffDay(
+                            DateTools.GetNominalDateForDayOfWeek(
+                                DayOfWeek.Sunday),
+                            v.Message.Date) % 7 == 0)
                         .OrderByDescending(v => v.Message.Date)
                         .FirstOrDefaultAsync();
 
 
-            if(video == null)
+            if (video == null)
             {
                 return NotFound();
             }

@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using MessageManager.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageManager.Models
 {
@@ -13,7 +14,7 @@ namespace MessageManager.Models
                 serviceProvider.GetRequiredService<
                 DbContextOptions<MessageContext>>()))
             {
-                if(!context.Message.Any())
+                if (!context.Message.Any())
                 {
                     ClearDatabase(context);
                     SeedDatabase(context);
@@ -28,48 +29,70 @@ namespace MessageManager.Models
             context.RemoveRange(context.Audio);
             context.RemoveRange(context.Notes);
             context.RemoveRange(context.Video);
+            context.RemoveRange(context.Series);
+            context.RemoveRange(context.Playlist);
             context.SaveChanges();
         }
 
         // Debug method
         private static void SeedDatabase(MessageContext context)
         {
-            for(var i = 1; i <= 10; ++i)
+
+            // Series
+            var series0 = new Series();
+            series0.Name = "Series 0";
+            context.Series.Add(series0);
+
+            var series1 = new Series();
+            series1.Name = "Series 1";
+            context.Series.Add(series1);
+
+            context.SaveChanges();
+
+            // Playlists
+            var playlist0 = new Playlist();
+            playlist0.YouTubePlaylistId = "abcdefghijklmnopqrstuvwxyz01234567";
+            playlist0.SeriesId = series0.Id;
+            context.Playlist.Add(playlist0);
+
+            context.SaveChanges();
+
+            // Messages
+            for (var i = 1; i <= 10; ++i)
             {
                 var message = new Message();
-                message.Id = i;
                 message.Title = "Message " + i;
                 message.Description = "Description for message " + i;
                 message.Date = new DateTime(i, i, i);
-                if(i % 2 == 1)
+                message.SeriesId = series0.Id;
+                context.Message.Add(message);
+                context.SaveChanges();
+
+                if (i % 2 == 1)
                 {
                     var audio = new Audio();
-                    audio.Id = i;
                     audio.DownloadUrl = "http://dl.audio.com/" + i;
                     audio.StreamUrl = "http://stream.audio.com/" + i;
-                    audio.MessageId = i;
+                    audio.MessageId = message.Id;
                     context.Audio.Add(audio);
 
                     var notes = new Notes();
-                    notes.Id = i;
                     notes.Url = "http://notes.com/" + i;
-                    notes.MessageId = i;
+                    notes.MessageId = message.Id;
                     context.Notes.Add(notes);
 
                     var video = new Video();
-                    video.Id = i;
                     video.YouTubeVideoId = String.Format("Video{0:000000}", i);
-                    video.YouTubePlaylistId = String.Format("Playlist{0:0000000000}", i);
                     video.MessageStartTimeSeconds = i;
-                    video.MessageId = i;
+                    video.MessageId = message.Id;
                     context.Video.Add(video);
 
-                    message.AudioId = i;
-                    message.NotesId = i;
-                    message.VideoId = i;
+                    context.SaveChanges();
+                    message.AudioId = audio.Id;
+                    message.NotesId = notes.Id;
+                    message.VideoId = video.Id;
                 }
 
-                context.Message.Add(message);
             }
 
             context.SaveChanges();
