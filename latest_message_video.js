@@ -51,16 +51,16 @@ function createPlayer(videoDetails) {
 
 function onResultsReady(results) {
     console.log("onResultsReady()");
-    message = results["data"][0];
+    message = results["message"];
     console.log(message);
     var player = createPlayer(message.video);
     updateVideoDetails(message);
     initializeButtonCallbacks(player, message.video);
 }
 
-var videoBarrier = new Barrier(["api", "data"], onResultsReady);
+var videoBarrier = new Barrier(["api", "message"], onResultsReady);
 $.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_video", function(data) {
-    videoBarrier.addResult("data", data[0]);
+    videoBarrier.addResult("message", data[0]);
 });
 
 registerYouTubeIframeAPIReadyCallback(() => videoBarrier.addResult("api", true));
