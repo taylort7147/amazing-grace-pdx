@@ -1,14 +1,14 @@
 // Requires 
 //      no dependencies
 
-function onNotesReady(data) {
+function onNotesReady(message) {
     console.log("onNotesReady()");
-    console.log(data);
+    console.log(message);
     appendMessageDetailsTooltip(
         $("#latest-message-notes-details")[0],
-        data.message,
+        message,
         "right");
-    appendNotesBlock($("#latest-message-notes")[0], data.url)
+    appendNotesBlock($("#latest-message-notes")[0], message.notes.url)
 }
 
 function appendNotesBlock(tag, link) {
@@ -19,6 +19,6 @@ function appendNotesBlock(tag, link) {
     tag.appendChild(notesTag);
 }
 
-$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/notes/latest", function(data) {
-    onNotesReady(data);
+$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_notes", function(data) {
+    onNotesReady(data[0]);
 });

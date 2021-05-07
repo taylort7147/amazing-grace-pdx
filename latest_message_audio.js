@@ -1,8 +1,8 @@
 // Requires 
 //      no dependencies
 
-function onMessageReady(message) {
-    console.log("onMessageReady()");
+function onAudioReady(message) {
+    console.log("onAudioReady()");
     console.log(message);
     appendMessageDetailsTooltip(
         $("#latest-message-audio-details")[0],
@@ -24,5 +24,5 @@ function appendAudioBlock(tag, link) {
 }
 
 $.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_audio", function(data) {
-    onMessageReady(data[0]);
+    onAudioReady(data[0]);
 });
