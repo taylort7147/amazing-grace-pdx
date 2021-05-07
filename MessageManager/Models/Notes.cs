@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MessageManager.Models
 {
@@ -15,6 +16,7 @@ namespace MessageManager.Models
         public int MessageId { get; set; }
 
         [ForeignKey(nameof(MessageId))]
+        [JsonIgnore]
         public Message Message { get; set; }
 
         public override string ToString()

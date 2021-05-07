@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Areas.Identity.Data;
-using MessageManager.Authorization;
 
 namespace MessageManager.Areas.Identity.Pages.Administrator.Users
 {
     [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel
     {
-        private readonly IdentityDbContext _context;
+        private readonly IdentityContext _context;
 
-        public IndexModel(IdentityDbContext context)
+        public IndexModel(IdentityContext context)
         {
             _context = context;
         }

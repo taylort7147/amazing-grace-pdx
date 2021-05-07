@@ -16,13 +16,13 @@ namespace MessageManager.Areas.Identity
         {
             builder.ConfigureServices((context, services) =>
             {
-                services.AddDbContext<IdentityDbContext>(options =>
-                        options.UseSqlServer(
-                            context.Configuration.GetConnectionString("IdentityDb")));
+                services.AddDbContext<IdentityContext>(options =>
+                    options.UseSqlServer(
+                        context.Configuration.GetConnectionString("IdentityDb")));
 
-                services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<IdentityDbContext>();
+                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<IdentityContext>();
             });
         }
     }

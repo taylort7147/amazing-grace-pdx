@@ -1,17 +1,20 @@
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
+using MessageManager.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
 namespace MessageManager.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AudioController : ControllerBase
+    public class AudioController : Controller
     {
         private readonly MessageContext _context;
 
@@ -37,7 +40,7 @@ namespace MessageManager.Controllers
                         .Include(a => a.Message)
                         .FirstOrDefaultAsync(a => a.Id == id);
 
-            if(Audio == null)
+            if (Audio == null)
             {
                 return NotFound();
             }
@@ -51,12 +54,14 @@ namespace MessageManager.Controllers
         {
             var audio = await _context.Audio
                         .Include(a => a.Message)
-                        .Where(a => a.Message.Date.DayOfWeek == System.DayOfWeek.Sunday)
+                        .Where(a => EF.Functions.DateDiffDay(
+                            DateTools.GetNominalDateForDayOfWeek(
+                                DayOfWeek.Sunday),
+                            a.Message.Date) % 7 == 0)
                         .OrderByDescending(a => a.Message.Date)
                         .FirstOrDefaultAsync();
 
-
-            if(audio == null)
+            if (audio == null)
             {
                 return NotFound();
             }

@@ -2,33 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
-using MessageManager.Authorization;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages.Messages
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class CreateModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public CreateModel(MessageContext context, ILogger<CreateModel> logger)
+        public CreateModel(MessageManager.Data.MessageContext context, ILogger<CreateModel> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGetAsync(int? seriesId)
         {
             var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
-            var selected = seriesSelectList.Where(x => x.Value == null).FirstOrDefault();
-            if(selected != null)
+            var selected = seriesSelectList.Where(x => x.Value == seriesId.ToString()).FirstOrDefault();
+            if (selected != null)
             {
                 selected.Selected = true;
             }
@@ -36,11 +37,11 @@ namespace MessageManager.Pages_Messages
             return Page();
         }
 
+
         [BindProperty]
         public Message Message { get; set; }
 
-
-
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -50,9 +51,9 @@ namespace MessageManager.Pages_Messages
 
             _context.Message.Add(Message);
             await _context.SaveChangesAsync();
-            _logger.LogCritical($"User {User.Identity.Name} created '{Message.ToString()}.");
+            _logger.LogCritical($"User '{User.Identity.Name}' created '{Message.ToString()}'.");
 
-            return RedirectToPage("./Edit/", new {id = Message.Id});
+            return RedirectToPage("./Edit", new { id = Message.Id });
         }
     }
 }

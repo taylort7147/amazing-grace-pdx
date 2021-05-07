@@ -2,24 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Authorization;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages.Messages
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class EditModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public EditModel(MessageContext context, ILogger<EditModel> logger)
+        public EditModel(MessageManager.Data.MessageContext context, ILogger<EditModel> logger)
         {
             _context = context;
             _logger = logger;
@@ -39,7 +40,7 @@ namespace MessageManager.Pages_Messages
 
             var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
             var selected = seriesSelectList.Where(x => x.Value == Message.SeriesId.ToString()).FirstOrDefault();
-            if(selected != null)
+            if (selected != null)
             {
                 selected.Selected = true;
             }
@@ -52,6 +53,8 @@ namespace MessageManager.Pages_Messages
             return Page();
         }
 
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -64,7 +67,7 @@ namespace MessageManager.Pages_Messages
             try
             {
                 await _context.SaveChangesAsync();
-                _logger.LogCritical($"User {User.Identity.Name} edited object with new values'{Message.ToString()}.");
+                _logger.LogCritical($"User '{User.Identity.Name}' edited object with new values'{Message.ToString()}'.");
             }
             catch (DbUpdateConcurrencyException)
             {

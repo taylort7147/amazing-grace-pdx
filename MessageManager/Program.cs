@@ -1,16 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
+using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Areas.Identity.Data;
+using MessageManager.Data;
+using MessageManager.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace MessageManager
 {
@@ -18,32 +20,49 @@ namespace MessageManager
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            var host = CreateHostBuilder(args).Build();
+
 
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                 try
                 {
-                    var context=services.
-                                GetRequiredService<MessageContext>();
-                    context.Database.Migrate();
-                    services.GetRequiredService<IdentityDbContext>().Database.Migrate();
+                    services.GetRequiredService<MessageContext>().Database.Migrate();
+                    services.GetRequiredService<IdentityContext>().Database.Migrate();
+                    CreateUserRoles(services).Wait();
                 }
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
+                    logger.LogError(ex, "An error occurred migrating databases.");
                 }
             }
 
             host.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        WebHost.CreateDefaultBuilder(args)
-        .UseStartup<Startup>();
-    }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
 
+        private static async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await CreateRoleIfMissingAsync(roleManager, Constants.ReadOnlyRole);
+            await CreateRoleIfMissingAsync(roleManager, Constants.ReadWriteRole);
+            await CreateRoleIfMissingAsync(roleManager, Constants.AdministratorRole);
+        }
+
+        private static async Task CreateRoleIfMissingAsync(RoleManager<IdentityRole> roleManager, string role)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
 }

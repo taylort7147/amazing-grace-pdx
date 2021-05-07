@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MessageManager.Areas.Identity.Data
 {
-    public class IdentityDbContext : IdentityDbContext<IdentityUser>
+    public class IdentityContext : IdentityDbContext<IdentityUser>
     {
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
+        public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)
         {
         }

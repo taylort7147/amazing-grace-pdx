@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Messages
+namespace MessageManager.Pages.Messages
 {
     [AllowAnonymous]
     public class IndexModel : PageModel
@@ -32,20 +34,28 @@ namespace MessageManager.Pages_Messages
             _context = context;
         }
 
-        public IList<Message> Message { get; set; }
+        public IList<Message> Messages { get; set; }
 
-        private bool Search(Message message, string searchString)
+        private static bool Search(Message message, string searchString)
         {
             var lowerSearchString = searchString.ToLower();
-            if(message.Title.ToLower().Contains(lowerSearchString))
+            if (message.Title.ToLower().Contains(lowerSearchString))
             {
                 return true;
             }
-            if(message.Description.ToLower().Contains(lowerSearchString))
+            if (message.Description.ToLower().Contains(lowerSearchString))
             {
                 return true;
             }
             return false;
+        }
+
+        private static Expression<Func<Message, bool>> SearchExpression(string searchString)
+        {
+            searchString = searchString.ToLower();
+            return m =>
+                m.Title.ToLower().Contains(searchString) ||
+                m.Description.ToLower().Contains(searchString);
         }
 
         public async Task OnGetAsync(string sortOrder, string searchString)
@@ -58,42 +68,43 @@ namespace MessageManager.Pages_Messages
 
             var messages = from m in _context.Message.Include(m => m.Series) select m;
 
-            if(!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
-                messages = messages.Where(m => Search(m, searchString));
+                messages = messages.Where(SearchExpression(searchString));
             }
 
-            switch(sortOrder)
+            switch (sortOrder)
             {
 
-            case SortOrder.Title:
-                messages = messages.OrderBy(m => m.Title);
-                break;
-            case SortOrder.TitleDescending:
-                messages = messages.OrderByDescending(m => m.Title);
-                break;
+                case SortOrder.Title:
+                    messages = messages.OrderBy(m => m.Title);
+                    break;
+                case SortOrder.TitleDescending:
+                    messages = messages.OrderByDescending(m => m.Title);
+                    break;
 
-            case SortOrder.Description:
-                messages = messages.OrderBy(m => m.Description);
-                break;
-            case SortOrder.DescriptionDescending:
-                messages = messages.OrderByDescending(m => m.Description);
-                break;
-            case SortOrder.Series:
-                messages = messages.OrderBy(m => m.Series.Name);
-                break;
-            case SortOrder.SeriesDescending:
-                messages = messages.OrderByDescending(m => m.Series.Name);
-                break;
-            case SortOrder.Date:
-                messages = messages.OrderBy(m => m.Date);
-                break;
-            case SortOrder.DateDescending:
-            default:
-                messages = messages.OrderByDescending(m=>m.Date);
-                break;
+                case SortOrder.Description:
+                    messages = messages.OrderBy(m => m.Description);
+                    break;
+                case SortOrder.DescriptionDescending:
+                    messages = messages.OrderByDescending(m => m.Description);
+                    break;
+                case SortOrder.Series:
+                    messages = messages.OrderBy(m => m.Series.Name);
+                    break;
+                case SortOrder.SeriesDescending:
+                    messages = messages.OrderByDescending(m => m.Series.Name);
+                    break;
+                case SortOrder.Date:
+                    messages = messages.OrderBy(m => m.Date);
+                    break;
+                case SortOrder.DateDescending:
+                default:
+                    messages = messages.OrderByDescending(m => m.Date);
+                    break;
             }
-            Message = await messages.ToListAsync();
+            Messages = await messages.ToListAsync();
         }
     }
 }
+

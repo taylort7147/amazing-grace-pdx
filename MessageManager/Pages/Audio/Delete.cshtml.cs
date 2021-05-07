@@ -2,30 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Authorization;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Audio
+namespace MessageManager.Pages.Audio
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class DeleteModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public DeleteModel(MessageContext context, ILogger<DeleteModel> logger)
+        public DeleteModel(MessageManager.Data.MessageContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
             _logger = logger;
         }
 
         [BindProperty]
-        public Audio Audio { get; set; }
+        public MessageManager.Models.Audio Audio { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -35,7 +36,7 @@ namespace MessageManager.Pages_Audio
             }
 
             Audio = await _context.Audio
-                    .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(a => a.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Audio == null)
             {
@@ -56,18 +57,20 @@ namespace MessageManager.Pages_Audio
             if (Audio != null)
             {
                 var message = await _context.Message.FindAsync(Audio.MessageId);
-                if(message != null)
+
+                _context.Audio.Remove(Audio);
+                if (message != null)
                 {
                     message.AudioId = null;
                     _context.Message.Update(message);
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("/Messages/Edit", new { id = message.Id });
                 }
-
-                _context.Audio.Remove(Audio);
                 await _context.SaveChangesAsync();
-                _logger.LogCritical($"User {User.Identity.Name} deleted '{Audio.ToString()}.");
+                _logger.LogCritical($"User '{User.Identity.Name}' deleted '{Audio.ToString()}'.");
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Messages/Index");
         }
     }
 }

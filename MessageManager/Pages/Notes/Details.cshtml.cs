@@ -2,25 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Notes
+namespace MessageManager.Pages.Notes
 {
     [AllowAnonymous]
     public class DetailsModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
 
-        public DetailsModel(MessageContext context)
+        public DetailsModel(MessageManager.Data.MessageContext context)
         {
             _context = context;
         }
 
-        public Notes Notes { get; set; }
+        public MessageManager.Models.Notes Notes { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,7 +31,7 @@ namespace MessageManager.Pages_Notes
             }
 
             Notes = await _context.Notes
-                    .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Notes == null)
             {

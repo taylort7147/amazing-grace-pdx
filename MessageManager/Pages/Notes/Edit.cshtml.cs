@@ -2,31 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageManager.Areas.Identity.Authorization;
+using MessageManager.Data;
+using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MessageManager.Authorization;
-using MessageManager.Models;
 
-namespace MessageManager.Pages_Notes
+namespace MessageManager.Pages.Notes
 {
     [Authorize(Policy = Constants.ReadWritePolicy)]
     public class EditModel : PageModel
     {
-        private readonly MessageContext _context;
+        private readonly MessageManager.Data.MessageContext _context;
         private readonly ILogger _logger;
 
-        public EditModel(MessageContext context, ILogger<EditModel> logger)
+        public EditModel(MessageManager.Data.MessageContext context, ILogger<EditModel> logger)
         {
             _context = context;
             _logger = logger;
         }
 
         [BindProperty]
-        public Notes Notes { get; set; }
+        public MessageManager.Models.Notes Notes { get; set; }
 
         [BindProperty]
         public int? OriginalMessageId { get; set; }
@@ -41,7 +42,7 @@ namespace MessageManager.Pages_Notes
             }
 
             Notes = await _context.Notes
-                    .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(n => n.Message).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Notes == null)
             {
@@ -57,6 +58,8 @@ namespace MessageManager.Pages_Notes
             return Page();
         }
 
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -65,17 +68,17 @@ namespace MessageManager.Pages_Notes
             }
 
             var message = await _context.Message.FindAsync(Notes.MessageId);
-            if(message == null)
+            if (message == null)
             {
                 Console.Error.WriteLine("Unexpected null message with ID: " + Notes.MessageId);
                 return Page();
             }
 
             // Unlink the original message if linking to a new message
-            if(OriginalMessageId != null)
+            if (OriginalMessageId != null)
             {
                 var originalMessage = await _context.Message.FindAsync(OriginalMessageId);
-                if(originalMessage != null &&
+                if (originalMessage != null &&
                         originalMessage.NotesId != message.NotesId)
                 {
                     originalMessage.NotesId = null;
@@ -86,10 +89,11 @@ namespace MessageManager.Pages_Notes
             message.NotesId = Notes.Id;
             _context.Update(Notes);
             _context.Update(message);
+
             try
             {
                 await _context.SaveChangesAsync();
-                _logger.LogCritical($"User {User.Identity.Name} edited object with new values'{Notes.ToString()}.");
+                _logger.LogCritical($"User '{User.Identity.Name}' edited object with new values'{Notes.ToString()}'.");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -103,7 +107,7 @@ namespace MessageManager.Pages_Notes
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Messages/Details", new { id = Notes.MessageId });
         }
 
         private bool NotesExists(int id)

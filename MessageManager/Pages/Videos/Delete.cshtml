@@ -1,5 +1,5 @@
 @page
-@model MessageManager.Pages_Videos.DeleteModel
+@model MessageManager.Pages.Videos.DeleteModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -17,12 +17,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Video.YouTubeVideoId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Video.YouTubePlaylistId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Video.YouTubePlaylistId)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Video.MessageStartTimeString)
