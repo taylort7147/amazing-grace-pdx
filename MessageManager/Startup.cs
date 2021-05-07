@@ -41,7 +41,8 @@ namespace MessageManager
                     builder =>
                     {
                         builder.WithOrigins("http://www.amazinggracepdx.com",
-                                            "https://www.amazinggracepdx.com")
+                                            "https://www.amazinggracepdx.com",
+                                            "https://nucleus.church")
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
