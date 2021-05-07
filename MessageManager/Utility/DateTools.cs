@@ -9,7 +9,7 @@ namespace MessageManager.Utility
     {
         public static DateTime GetNominalDateForDayOfWeek(DayOfWeek day)
         {
-            var nominalSunday = new DateTime(2021, 04, 09);
+            var nominalSunday = new DateTime(2021, 04, 11);
             return nominalSunday.AddDays((double)(day - DayOfWeek.Sunday));
         }
 
