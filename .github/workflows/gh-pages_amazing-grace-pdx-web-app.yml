@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - amazing-grace-pdx-web
 on:
   push:
     branches:
-      - migrate-to-net5-0
+      - gh-pages
   workflow_dispatch:
 
 jobs:
