@@ -105,5 +105,66 @@ namespace MessageManager.Controllers
 
             return messages;
         }
+
+        [AllowAnonymous]
+        [HttpGet("latest_audio")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetLatestNMessagesWithAudio(int? n)
+        {
+            var messages = await _context.Message
+                          .Include(m => m.Audio)
+                          .Include(m => m.Series)
+                          .Where(m => m.Audio != null)
+                          .OrderByDescending(m => m.Date)
+                          .Take(n.GetValueOrDefault(1))
+                          .ToListAsync();
+
+            if (messages == null)
+            {
+                return NotFound();
+            }
+
+            return messages;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("latest_notes")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetLatestNMessagesWithNotes(int? n)
+        {
+            var messages = await _context.Message
+                          .Include(m => m.Notes)
+                          .Include(m => m.Series)
+                          .Where(m => m.Notes != null)
+                          .OrderByDescending(m => m.Date)
+                          .Take(n.GetValueOrDefault(1))
+                          .ToListAsync();
+
+            if (messages == null)
+            {
+                return NotFound();
+            }
+
+            return messages;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("latest_video")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetLatestNMessagesWithVideo(int? n)
+        {
+            var messages = await _context.Message
+                          .Include(m => m.Video)
+                          .Include(m => m.Series)
+                          .Where(m => m.Video != null)
+                          .OrderByDescending(m => m.Date)
+                          .Take(n.GetValueOrDefault(1))
+                          .ToListAsync();
+
+            if (messages == null)
+            {
+                return NotFound();
+            }
+
+            return messages;
+        }
+
     }
 }
