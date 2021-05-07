@@ -40,9 +40,7 @@ namespace MessageManager
                 options.AddPolicy(name: CorsPolicy,
                     builder =>
                     {
-                        builder.WithOrigins("http://www.amazinggracepdx.com",
-                                            "https://www.amazinggracepdx.com",
-                                            "https://nucleus.church")
+                        builder.AllowAnyOrigin()
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
