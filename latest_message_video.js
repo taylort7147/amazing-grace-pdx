@@ -5,10 +5,9 @@
 
 
 // ************** Video details functions ****************
-function updateVideoDetails(videoDetails) {
+function updateVideoDetails(message) {
     var parentTag = document.getElementById("latest-message-video-details");
-    var messageDetails = videoDetails.message;
-    appendMessageDetailsTooltip(parentTag, messageDetails, "right");
+    appendMessageDetailsTooltip(parentTag, message, "right");
 }
 
 // ************** Button control functions ***************
@@ -52,16 +51,16 @@ function createPlayer(videoDetails) {
 
 function onResultsReady(results) {
     console.log("onResultsReady()");
-    videoDetails = results["data"];
-    console.log(videoDetails);
-    var player = createPlayer(videoDetails);
-    updateVideoDetails(videoDetails);
-    initializeButtonCallbacks(player, videoDetails);
+    message = results["data"][0];
+    console.log(message);
+    var player = createPlayer(message.video);
+    updateVideoDetails(message);
+    initializeButtonCallbacks(player, message.video);
 }
 
 var videoBarrier = new Barrier(["api", "data"], onResultsReady);
-$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/videos/latest", function(data) {
-    videoBarrier.addResult("data", data);
+$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_video", function(data) {
+    videoBarrier.addResult("data", data[0]);
 });
 
 registerYouTubeIframeAPIReadyCallback(() => videoBarrier.addResult("api", true));
