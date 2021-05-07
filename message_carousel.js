@@ -439,7 +439,7 @@ function createSeparator(height, isTransparent) {
 
 function getMessages(n, cb) {
     console.log(`Number of messages to retrieve: ${n}`);
-    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages/latest?n=${n}`
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest?n=${n}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }

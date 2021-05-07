@@ -28,8 +28,7 @@ function onPlayerReady(event, player, videoDetails) {
     console.log(`onPlayerReady(${event}, ${videoDetails})`);
 }
 
-function onPlayerStateChange(event) {
-}
+function onPlayerStateChange(event) {}
 
 // ************** Create a YouTube player *********************
 function createPlayer(videoDetails) {
@@ -61,7 +60,7 @@ function onResultsReady(results) {
 }
 
 var videoBarrier = new Barrier(["api", "data"], onResultsReady);
-$.getJSON("https://amazing-grace-pdx.azurewebsites.net/api/videos/latest", function (data) {
+$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/videos/latest", function(data) {
     videoBarrier.addResult("data", data);
 });
 
