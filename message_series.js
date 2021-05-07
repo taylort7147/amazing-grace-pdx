@@ -97,7 +97,7 @@ function appendMessageBlock(parentTag, data) {
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
     var seriesUri = encodeURIComponent(seriesName);
-    var uri = `https://amazing-grace-pdx.azurewebsites.net/api/messages?series=${seriesUri}`
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages?series=${seriesUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
