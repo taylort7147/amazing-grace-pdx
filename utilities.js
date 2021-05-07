@@ -41,9 +41,9 @@ function appendMessageDetailsTooltip(parentTag, details, position = "top") {
     dateTag.innerHTML = formatDate(details.date);
     tooltipTag.appendChild(dateTag);
 
-    var descriptionTag = document.createElement("pre")
-    descriptionTag.classList.add("ag-text");
-    descriptionTag.innerHTML = details.description
-    tooltipTag.appendChild(descriptionTag);
+    // var descriptionTag = document.createElement("pre")
+    // descriptionTag.classList.add("ag-text");
+    // descriptionTag.innerHTML = details.description
+    // tooltipTag.appendChild(descriptionTag);
     return tooltipTag;
 }
