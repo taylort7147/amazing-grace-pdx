@@ -79,9 +79,8 @@ def get_input_data(conn):
 
 
 def get_series_id(conn, series):
-    series_name_sanitized = series.name.replace("'", "''")
     series_result = pd.read_sql_query(
-        f"SELECT TOP 1 [Id], [Name] FROM [Series] WHERE [Name]='{series_name_sanitized}'", conn)
+        f"SELECT TOP 1 [Id], [Name] FROM [Series] WHERE [Name]=?", conn, params=(series.name,))
     if(not series_result.empty):
         return int(series_result["Id"].iloc[0])
 
@@ -97,9 +96,10 @@ def try_insert_series(conn, series):
 
 
 def get_message_id(conn, message):
-    message_title_sanitized = message.title.replace("'", "''")
     message_result = pd.read_sql_query(
-        f"SELECT TOP 1 [Id], [Title] FROM [Message] WHERE [Title]='{message_title_sanitized}'", conn)
+        f"SELECT TOP 1 [Id], [Title] FROM [Message] WHERE [Title]=? AND [Date]=?",
+        conn,
+        params=(message.title, message.date))
     if(not message_result.empty):
         return int(message_result["Id"].iloc[0])
 
@@ -131,7 +131,7 @@ def update_message(conn, message):
 
 def get_audio_id(conn, audio):
     audio_result = pd.read_sql_query(
-        f"SELECT TOP 1 [Id], [StreamUrl] [DownloadUrl] FROM [Audio] WHERE [MessageId]='{audio.message_id}'", conn)
+        f"SELECT TOP 1 [Id], [StreamUrl] [DownloadUrl] FROM [Audio] WHERE [MessageId]=?", conn, params=(audio.message_id,))
     if(not audio_result.empty):
         return int(audio_result["Id"].iloc[0])
 
@@ -153,7 +153,7 @@ def try_insert_audio(conn, audio):
 
 def get_notes_id(conn, notes):
     notes_result = pd.read_sql_query(
-        f"SELECT TOP 1 [Id], [Url] FROM [Notes] WHERE [MessageId]='{notes.message_id}'", conn)
+        f"SELECT TOP 1 [Id], [Url] FROM [Notes] WHERE [MessageId]=?", conn, params=(notes.message_id,))
     if(not notes_result.empty):
         return int(notes_result["Id"].iloc[0])
 
@@ -175,7 +175,7 @@ def try_insert_notes(conn, notes):
 
 def get_video_id(conn, video):
     video_result = pd.read_sql_query(
-        f"SELECT TOP 1 [Id], [YouTubeVideoId], [MessageStartTimeSeconds] FROM [Video] WHERE [MessageId]='{video.message_id}'", conn)
+        f"SELECT TOP 1 [Id], [YouTubeVideoId], [MessageStartTimeSeconds] FROM [Video] WHERE [MessageId]=?", conn, params=(video.message_id,))
     if(not video_result.empty):
         return int(video_result["Id"].iloc[0])
 
@@ -193,30 +193,6 @@ def try_insert_video(conn, video):
                        (video.youtube_video_id, video.message_start_time_seconds, video.message_id))
         return int(cursor.fetchval())
     return video_id
-
-
-def read_table(conn, table_name):
-    return pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-
-
-def insert_row(conn, table_name, cols, values):
-    conn.execute(f"INSERT INTO {table_name} ({cols}) VALUES ({values})", conn)
-
-
-def insert_series(conn, data):
-    data_out = data.copy()
-
-    if("Description" not in data.columns):
-        data_out["Description"] = None
-    # data_out = data_out.drop(columns=["Id"])
-    del data_out["Id"]
-
-    cols = ",".join([f"'{col}'" for col in data_out.columns.tolist()])
-    value_rows = data_out.values
-    print(cols)
-    print(value_rows)
-    for row in value_rows:
-        print(row[0] + ", " + str(row[1]))
 
 
 print("Input database")
@@ -345,4 +321,6 @@ new_message = pd.read_sql_query("SELECT * FROM [Message]", conn_out)
 print(new_message)
 print()
 
-conn_out.commit()
+should_commit_prompt = input("Commit? [y/N] ")
+if len(should_commit_prompt) > 0 and should_commit_prompt.lower() in ("y", "yes"):
+    conn_out.commit()
