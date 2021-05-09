@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="data\bible_details.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="data\bible_details.json" />
+  </ItemGroup>
+
+</Project>
