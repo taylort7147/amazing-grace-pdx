@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -18,7 +19,6 @@ namespace MessageManager.Models
         public string Description { get; set; }
 
         [StringLength(512)]
-        [Display(Name = "Bible References")]
         public string BibleReferences { get; set; }
 
         [DataType(DataType.Date)]
