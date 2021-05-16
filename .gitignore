@@ -2,4 +2,6 @@
 **/obj/
 **/bin/
 *.swp
-
+**/.antlr/
+**/Generated/
+MessageManager/scripts/data

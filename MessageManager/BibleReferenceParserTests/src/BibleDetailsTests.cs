@@ -1,9 +1,9 @@
 using System;
 using System.Text.Json;
-using BibleReferenceValidator;
+using BibleReferenceParser.Data;
 using NUnit.Framework;
 
-namespace BibleReferenceValidatorTests
+namespace BibleReferenceParserTests
 {
     public class BibleDetailsTests
     {

@@ -1,16 +1,24 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
-namespace BibleReferenceValidator
+namespace BibleReferenceParser.Data
 {
     public static class BibleDetails
     {
-        private static readonly string BibleDetailsResourceName = "BibleReferenceValidator.data.bible_details.json";
+        private static readonly string BibleDetailsResourceName = "BibleReferenceParser.Embedded.bible_details.json";
 
-        public static BookDescription[] BookDescriptions = GetBookDescriptions();
+        public static BookDescription[] BookDescriptions;
+        public static string[] Books;
+
+        static BibleDetails()
+        {
+            BookDescriptions = GetBookDescriptions();
+            Books = GetBooks();
+        }
 
         private static BookDescription[] GetBookDescriptions()
         {
@@ -29,6 +37,12 @@ namespace BibleReferenceValidator
                 var bibleStats = JsonSerializer.Deserialize<BookDescription[]>(bibleStatsJson);
                 return bibleStats;
             }
+        }
+
+        private static string[] GetBooks()
+        {
+            var books = BookDescriptions.Select(x => x.Name).ToArray();
+            return books;
         }
     }
 }
