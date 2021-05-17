@@ -52,5 +52,5 @@ jobs:
       with:
         app-name: 'amazing-grace-pdx'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_fcd63d43ae4f40e68390ed9844a75082 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_10bf62b0b68546509c1024e444c1fc26 }}
         package: .
