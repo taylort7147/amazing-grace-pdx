@@ -14,6 +14,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Embedded\bible_details.json" />
   </ItemGroup>
+  
+  <Target Name="Generate Grammars"  BeforeTargets="BeforeBuild">
+    <Message Text="Generating grammars" />
+    <Exec Command="call $(MSBuildProjectDirectory)\scripts\build_grammar.bat" />
+    <ItemGroup>
+      <Compile Include="$(MSBuildProjectDirectory)\src\Grammar\Generated\*.cs" Exclude="@(Compile)" />
+    </ItemGroup>
+  </Target>
 
 </Project>
  
