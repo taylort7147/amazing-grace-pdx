@@ -7,13 +7,13 @@ namespace BibleReferenceParser.Data
     public class BookDescription
     {
         [JsonIgnore]
-        public string Name { get; set; }
+        public BibleBook Book { get; set; }
 
         [JsonIgnore]
         public Dictionary<int, int> VerseCountsByChapter { get; set; }
 
         [JsonInclude]
-        public string name { get { return Name; } set { Name = value; } }
+        public string book { get { return Book.ToFriendlyString(); } set { Book = BibleBookExtensions.ToBibleBook(value); } }
 
         [JsonInclude]
         public Dictionary<string, int> verse_count_by_chapter

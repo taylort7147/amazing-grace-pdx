@@ -50,7 +50,8 @@ namespace BibleReferenceParser.Data
                 throw new InvalidOperationException("Book required");
             }
 
-            var reference = new BibleReference { Book = Book, Chapter = Chapter, Verse = Verse };
+            var bibleBook = BibleBookExtensions.ToBibleBook(Book);
+            var reference = new BibleReference { Book = bibleBook, Chapter = Chapter, Verse = Verse };
             return reference;
         }
 

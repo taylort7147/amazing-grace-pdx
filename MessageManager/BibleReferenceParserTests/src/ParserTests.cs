@@ -1,3 +1,4 @@
+using BibleReferenceParser.Data;
 using BibleReferenceParser.Parsing;
 using NUnit.Framework;
 
@@ -22,7 +23,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -44,7 +45,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -58,7 +59,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Mark", reference.Book);
+                    Assert.AreEqual(BibleBook.Mark, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -72,7 +73,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Luke", reference.Book);
+                    Assert.AreEqual(BibleBook.Luke, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -86,7 +87,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("John", reference.Book);
+                    Assert.AreEqual(BibleBook.John, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -108,7 +109,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -130,14 +131,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(19, reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -155,7 +156,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
@@ -177,14 +178,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(2, reference.Verse);
                 }
@@ -202,7 +203,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
@@ -216,7 +217,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(4, reference.Verse);
                 }
@@ -238,14 +239,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(2, reference.Verse);
                 }
@@ -255,7 +256,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(4, reference.Verse);
                 }
@@ -277,7 +278,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
@@ -291,14 +292,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(3, reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(4, reference.Verse);
                 }
@@ -316,7 +317,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
@@ -330,14 +331,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(3, reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(4, reference.Verse);
                 }
@@ -347,7 +348,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(4, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
@@ -361,7 +362,7 @@ namespace BibleReferenceParserTests
         [Test]
         public void ParseBookRange()
         {
-            var references = Parser.Parse("Psalms-Song of Songs");
+            var references = Parser.Parse("Psalms-Song of Solomon");
             Assert.IsNotNull(references);
             Assert.AreEqual(1, references.Count);
             {
@@ -369,14 +370,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Psalms", reference.Book);
+                    Assert.AreEqual(BibleBook.Psalms, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Song of Songs", reference.Book);
+                    Assert.AreEqual(BibleBook.Song_Of_Songs, reference.Book);
                     Assert.IsNull(reference.Chapter);
                     Assert.IsNull(reference.Verse);
                 }
@@ -394,7 +395,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(1, reference.Verse);
                 }
@@ -408,7 +409,7 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("Matthew", reference.Book);
+                    Assert.AreEqual(BibleBook.Matthew, reference.Book);
                     Assert.AreEqual(3, reference.Chapter);
                     Assert.AreEqual(4, reference.Verse);
                 }
@@ -422,14 +423,14 @@ namespace BibleReferenceParserTests
                 {
                     var reference = referenceRange.First;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("John", reference.Book);
+                    Assert.AreEqual(BibleBook.John, reference.Book);
                     Assert.AreEqual(6, reference.Chapter);
                     Assert.AreEqual(8, reference.Verse);
                 }
                 {
                     var reference = referenceRange.Last;
                     Assert.IsNotNull(reference);
-                    Assert.AreEqual("John", reference.Book);
+                    Assert.AreEqual(BibleBook.John, reference.Book);
                     Assert.AreEqual(6, reference.Chapter);
                     Assert.AreEqual(9, reference.Verse);
                 }

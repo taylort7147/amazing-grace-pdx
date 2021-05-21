@@ -19,7 +19,7 @@ namespace BibleReferenceParserTests
             Assert.AreEqual(66, descriptions.Length);
 
             {
-                var book = Array.Find(descriptions, x => x.Name == "Genesis");
+                var book = Array.Find(descriptions, x => x.Book == BibleBook.Genesis);
                 Assert.NotNull(book);
                 var chapterCount = 50;
                 Assert.AreEqual(chapterCount, book.VerseCountsByChapter.Count);
@@ -28,7 +28,7 @@ namespace BibleReferenceParserTests
             }
 
             {
-                var book = Array.Find(descriptions, x => x.Name == "Revelation");
+                var book = Array.Find(descriptions, x => x.Book == BibleBook.Revelation);
                 Assert.NotNull(book);
                 var chapterCount = 22;
                 Assert.AreEqual(22, book.VerseCountsByChapter.Count);

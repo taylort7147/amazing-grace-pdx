@@ -2,7 +2,7 @@ namespace BibleReferenceParser.Data
 {
     public class BibleReference
     {
-        public string Book { get; set; }
+        public BibleBook Book { get; set; }
 
         public int? Chapter { get; set; }
 

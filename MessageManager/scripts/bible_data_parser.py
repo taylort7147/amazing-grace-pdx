@@ -45,7 +45,7 @@ Expected input format:
 Output format:
 [
     {
-        "name": "<book_name>",
+        "book": "<book_name>",
         "verse_count_by_chapter":{
             "<chapter>": <number_of_verses>,
             "<chapter>": <number_of_verses>,
@@ -53,7 +53,7 @@ Output format:
         }
     },
     {
-        "name": "<book_name>",
+        "book": "<book_name>",
         "verse_count_by_chapter":{
             "<chapter>": <number_of_verses>,
             "<chapter>": <number_of_verses>,
@@ -86,7 +86,7 @@ for book, book_content in bible.items():
     for chapter, chapter_content in book_content.items():
         verses_by_chapter[chapter] = len(chapter_content)
     bible_stats.append(
-        {"name": book, "verse_count_by_chapter": verses_by_chapter})
+        {"book": book, "verse_count_by_chapter": verses_by_chapter})
 
 with open(bible_stats_json_path, "w") as fh:
     json.dump(bible_stats, fh, separators=(',', ':'), indent=4)

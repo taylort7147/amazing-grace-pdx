@@ -12,7 +12,7 @@ namespace BibleReferenceParser.Data
         private static readonly string BibleDetailsResourceName = "BibleReferenceParser.Embedded.bible_details.json";
 
         public static BookDescription[] BookDescriptions;
-        public static string[] Books;
+        public static BibleBook[] Books;
 
         static BibleDetails()
         {
@@ -39,9 +39,9 @@ namespace BibleReferenceParser.Data
             }
         }
 
-        private static string[] GetBooks()
+        private static BibleBook[] GetBooks()
         {
-            var books = BookDescriptions.Select(x => x.Name).ToArray();
+            var books = BookDescriptions.Select(x => x.Book).ToArray();
             return books;
         }
     }
