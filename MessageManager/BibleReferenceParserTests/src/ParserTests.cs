@@ -1,3 +1,4 @@
+using System;
 using BibleReferenceParser.Data;
 using BibleReferenceParser.Parsing;
 using NUnit.Framework;
@@ -435,6 +436,24 @@ namespace BibleReferenceParserTests
                     Assert.AreEqual(9, reference.Verse);
                 }
             }
+        }
+
+        [Test]
+        public void ParseInvalidBook()
+        {
+            Assert.Throws<InvalidOperationException>(() => Parser.Parse("FakeBook"));
+        }
+
+        [Test]
+        public void ParseValidBookAndInvalidBook()
+        {
+            Assert.Throws<InvalidOperationException>(() => Parser.Parse("Matthew, FakeBook"));
+        }
+
+        [Test]
+        public void ParseValidBookChapterAndInvalidBookChapter()
+        {
+            Assert.Throws<InvalidOperationException>(() => Parser.Parse("Matthew 3, FakeBook 3"));
         }
     }
 }

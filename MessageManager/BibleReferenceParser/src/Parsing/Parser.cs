@@ -13,6 +13,8 @@ namespace BibleReferenceParser.Parsing
         {
             var inputStream = CharStreams.fromString(input);
             var bibleReferenceLexer = new BibleReferenceLexer(inputStream);
+            bibleReferenceLexer.RemoveErrorListeners();
+            bibleReferenceLexer.AddErrorListener(ThrowingErrorListener.Instance);
             var commonTokenStream = new CommonTokenStream(bibleReferenceLexer);
             var bibleReferenceParser = new BibleReferenceParser.Grammar.Generated.BibleReferenceParser(commonTokenStream);
             var referenceContext = bibleReferenceParser.reference();
