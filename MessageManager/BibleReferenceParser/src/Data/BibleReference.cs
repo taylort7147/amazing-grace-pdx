@@ -41,14 +41,26 @@ namespace BibleReferenceParser.Data
                 return 1;
             }
 
-            return ((IComparable)new Tuple<BibleBook, int?, int?>(this.Book, this.Chapter, this.Verse))
-                .CompareTo(new Tuple<BibleBook, int?, int?>(otherReference.Book, otherReference.Chapter, otherReference.Verse));
+            return GetHashCode().CompareTo(otherReference.GetHashCode());
+        }
 
+        public int GetId()
+        {
+            int bookPart = (int)Book;
+            int chapterPart = Chapter.GetValueOrDefault(0);
+            int versePart = Verse.GetValueOrDefault(0);
+            int hashCode = (bookPart * 1000000) + (chapterPart * 1000) + (versePart);
+            return hashCode;
         }
 
         public override bool Equals(object obj)
         {
             return CompareTo(obj) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return GetId();
         }
     }
 }
