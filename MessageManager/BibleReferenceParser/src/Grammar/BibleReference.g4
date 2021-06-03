@@ -78,9 +78,10 @@ BOOK:
     | 'Esther'
     | 'Job'
     | 'Psalms'
+    | 'Psalm'
     | 'Proverbs'
     | 'Ecclesiastes'
-    | 'Song of ' ('Songs' | 'Solomon')
+    | 'Song ' ('o' | 'O') 'f ' ('Songs' | 'Solomon')
     | 'Isaiah'
     | 'Jeremiah'
     | 'Lamentations'

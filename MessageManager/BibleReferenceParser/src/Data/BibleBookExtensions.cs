@@ -27,6 +27,7 @@ namespace BibleReferenceParser.Data
                 case "nehemiah": return BibleBook.Nehemiah;
                 case "esther": return BibleBook.Esther;
                 case "job": return BibleBook.Job;
+                case "psalm":
                 case "psalms": return BibleBook.Psalms;
                 case "proverbs": return BibleBook.Proverbs;
                 case "ecclesiastes": return BibleBook.Ecclesiastes;
@@ -80,7 +81,7 @@ namespace BibleReferenceParser.Data
             throw new ArgumentException($"'{book}' is not a recognized book.");
         }
 
-        public static string ToFriendlyString(this BibleBook book)
+        public static string ToFriendlyString(this BibleBook book, Boolean hasChapter = false)
         {
             switch (book)
             {
@@ -102,10 +103,20 @@ namespace BibleReferenceParser.Data
                 case BibleBook.Nehemiah: return "Nehemiah";
                 case BibleBook.Esther: return "Esther";
                 case BibleBook.Job: return "Job";
-                case BibleBook.Psalms: return "Psalms";
+                case BibleBook.Psalms:
+                    {
+                        if (hasChapter)
+                        {
+                            return "Psalm";
+                        }
+                        else
+                        {
+                            return "Psalms";
+                        }
+                    }
                 case BibleBook.Proverbs: return "Proverbs";
                 case BibleBook.Ecclesiastes: return "Ecclesiastes";
-                case BibleBook.Song_Of_Songs: return "Song_Of_Songs";
+                case BibleBook.Song_Of_Songs: return "Song of Songs";
                 case BibleBook.Isaiah: return "Isaiah";
                 case BibleBook.Jeremiah: return "Jeremiah";
                 case BibleBook.Lamentations: return "Lamentations";
