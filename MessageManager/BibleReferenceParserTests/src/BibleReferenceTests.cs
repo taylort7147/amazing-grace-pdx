@@ -179,5 +179,46 @@ namespace BibleReferenceParserTests
             var refB = new BibleReference { Book = BibleBook.Exodus, Chapter = 5, Verse = 11 };
             Assert.AreEqual(0, refA.CompareTo(refB));
         }
+        [Test]
+        public void ToFriendlyStringBook()
+        {
+            var reference = new BibleReference { Book = BibleBook.Chronicles_1 };
+            Assert.AreEqual("1 Chronicles", reference.ToFriendlyString());
+        }
+
+        [Test]
+        public void ToFriendlyStringBookChapter()
+        {
+            var reference = new BibleReference { Book = BibleBook.Chronicles_1, Chapter = 4 };
+            Assert.AreEqual("1 Chronicles 4", reference.ToFriendlyString());
+        }
+
+        [Test]
+        public void ToFriendlyStringBookChapterVerse()
+        {
+            var reference = new BibleReference { Book = BibleBook.Chronicles_1, Chapter = 4, Verse = 5 };
+            Assert.AreEqual("1 Chronicles 4:5", reference.ToFriendlyString());
+        }
+
+        [Test]
+        public void ToFriendlyStringPsalm3()
+        {
+            var reference = new BibleReference { Book = BibleBook.Psalms, Chapter = 3, };
+            Assert.AreEqual("Psalm 3", reference.ToFriendlyString());
+        }
+
+        [Test]
+        public void ToFriendlyStringPsalms()
+        {
+            var reference = new BibleReference { Book = BibleBook.Psalms };
+            Assert.AreEqual("Psalms", reference.ToFriendlyString());
+        }
+
+        [Test]
+        public void ToFriendlyStringSongOfSongs()
+        {
+            var reference = new BibleReference { Book = BibleBook.Song_Of_Songs };
+            Assert.AreEqual("Song of Songs", reference.ToFriendlyString());
+        }
     }
 }

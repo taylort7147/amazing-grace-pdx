@@ -1,8 +1,19 @@
 using System;
 namespace BibleReferenceParser.Data
 {
-    public class BibleReference : IComparable
+    public class BibleReference : IComparable, ICloneable
     {
+        public object Clone()
+        {
+            var clone = new BibleReference
+            {
+                Book = Book,
+                Chapter = Chapter,
+                Verse = Verse
+            };
+            return clone;
+        }
+
         public BibleBook Book { get; set; }
 
         public int? Chapter { get; set; }
@@ -11,7 +22,7 @@ namespace BibleReferenceParser.Data
 
         public string ToFriendlyString()
         {
-            var str = Book.ToFriendlyString();
+            var str = Book.ToFriendlyString(hasChapter: (Chapter != null));
             if (Chapter != null)
             {
                 str += $" {Chapter.Value}";

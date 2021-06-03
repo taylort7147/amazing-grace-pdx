@@ -386,6 +386,94 @@ namespace BibleReferenceParserTests
         }
 
         [Test]
+        public void ParsePsalm()
+        {
+            var references = Parser.Parse("Psalm 3:4");
+            Assert.IsNotNull(references);
+            Assert.AreEqual(1, references.Count);
+            {
+                var referenceRange = references[0];
+                {
+                    var reference = referenceRange.First;
+                    Assert.IsNotNull(reference);
+                    Assert.AreEqual(BibleBook.Psalms, reference.Book);
+                    Assert.AreEqual(3, reference.Chapter);
+                    Assert.AreEqual(4, reference.Verse);
+                }
+                {
+                    var reference = referenceRange.Last;
+                    Assert.IsNull(reference);
+                }
+            }
+        }
+
+        [Test]
+        public void ParsePsalms()
+        {
+            var references = Parser.Parse("Psalms 3:4");
+            Assert.IsNotNull(references);
+            Assert.AreEqual(1, references.Count);
+            {
+                var referenceRange = references[0];
+                {
+                    var reference = referenceRange.First;
+                    Assert.IsNotNull(reference);
+                    Assert.AreEqual(BibleBook.Psalms, reference.Book);
+                    Assert.AreEqual(3, reference.Chapter);
+                    Assert.AreEqual(4, reference.Verse);
+                }
+                {
+                    var reference = referenceRange.Last;
+                    Assert.IsNull(reference);
+                }
+            }
+        }
+
+        [Test]
+        public void ParseSongOfSongsLowercaseOf()
+        {
+            var references = Parser.Parse("Song of Songs");
+            Assert.IsNotNull(references);
+            Assert.AreEqual(1, references.Count);
+            {
+                var referenceRange = references[0];
+                {
+                    var reference = referenceRange.First;
+                    Assert.IsNotNull(reference);
+                    Assert.AreEqual(BibleBook.Song_Of_Songs, reference.Book);
+                    Assert.IsNull(reference.Chapter);
+                    Assert.IsNull(reference.Verse);
+                }
+                {
+                    var reference = referenceRange.Last;
+                    Assert.IsNull(reference);
+                }
+            }
+        }
+
+        [Test]
+        public void ParseSongOfSongsCapitalOf()
+        {
+            var references = Parser.Parse("Song Of Songs");
+            Assert.IsNotNull(references);
+            Assert.AreEqual(1, references.Count);
+            {
+                var referenceRange = references[0];
+                {
+                    var reference = referenceRange.First;
+                    Assert.IsNotNull(reference);
+                    Assert.AreEqual(BibleBook.Song_Of_Songs, reference.Book);
+                    Assert.IsNull(reference.Chapter);
+                    Assert.IsNull(reference.Verse);
+                }
+                {
+                    var reference = referenceRange.Last;
+                    Assert.IsNull(reference);
+                }
+            }
+        }
+
+        [Test]
         public void ParseBookChapterVerseAndVerseAndBookChapterVerseRange()
         {
             var references = Parser.Parse("Matthew 3:1, 4, John 6:8-9");
@@ -454,6 +542,13 @@ namespace BibleReferenceParserTests
         public void ParseValidBookChapterAndInvalidBookChapter()
         {
             Assert.Throws<InvalidOperationException>(() => Parser.Parse("Matthew 3, FakeBook 3"));
+        }
+
+        [Test]
+        [Ignore("TODO: Figure out why this is allowed")]
+        public void ParseValidBookToChapter()
+        {
+            Assert.Throws<InvalidOperationException>(() => Parser.Parse("John -1"));
         }
     }
 }
