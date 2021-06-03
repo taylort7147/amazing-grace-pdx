@@ -2,7 +2,8 @@ setlocal
 
 set "project_dir=%~dp0.."
 set "source_dir=%project_dir%\src"
-set "classpath=.;%project_dir%\ThirdParty\antlr4\antlr-4.9.2-complete.jar;%classpath%"
+set "antlr4_jar=%project_dir%\..\ThirdParty\antlr4\antlr-4.9.2-complete.jar"
+set "classpath=.;%antlr_jar%;%classpath%"
 set "file_list=%source_dir%\Grammar\*.g4"
 set "output_dir=%project_dir%\src\Grammar\Generated"
 set "flags=-Dlanguage=CSharp -package BibleReferenceParser.Grammar.Generated -listener -no-visitor"
