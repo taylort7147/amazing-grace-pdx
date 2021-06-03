@@ -1,5 +1,6 @@
+import os
+from os.path import dirname, join, isdir
 import json
-from os.path import dirname, join
 """
 This parser is written agains the Bible json found here:
 https://github.com/phillipsk/Open_Verse/blob/master/Bible_KJV.json
@@ -44,7 +45,7 @@ Expected input format:
 Output format:
 [
     {
-        "name": "<book_name>",
+        "book": "<book_name>",
         "verse_count_by_chapter":{
             "<chapter>": <number_of_verses>,
             "<chapter>": <number_of_verses>,
@@ -52,7 +53,7 @@ Output format:
         }
     },
     {
-        "name": "<book_name>",
+        "book": "<book_name>",
         "verse_count_by_chapter":{
             "<chapter>": <number_of_verses>,
             "<chapter>": <number_of_verses>,
@@ -67,7 +68,14 @@ Output format:
 working_dir = dirname(__file__)
 bible_json_path = join(working_dir, "data", "bible.json")
 bible_stats_json_path = join(
-    working_dir, "..", "BibleReferenceValidator", "data", "bible_details.json")
+    working_dir, "..", "BibleReferenceParser", "Embedded", "bible_details.json")
+bible_books_regex_path = join(working_dir, "data", "bible_books_regex.txt")
+
+# Create output paths
+if not isdir(dirname(bible_stats_json_path)):
+    os.makedirs(dirname(bible_stats_json_path))
+if not isdir(dirname(bible_books_regex_path)):
+    os.makedirs(dirname(bible_books_regex_path))
 
 with open(bible_json_path, "r") as fh:
     bible = json.load(fh)
@@ -78,7 +86,12 @@ for book, book_content in bible.items():
     for chapter, chapter_content in book_content.items():
         verses_by_chapter[chapter] = len(chapter_content)
     bible_stats.append(
-        {"name": book, "verse_count_by_chapter": verses_by_chapter})
+        {"book": book, "verse_count_by_chapter": verses_by_chapter})
 
 with open(bible_stats_json_path, "w") as fh:
     json.dump(bible_stats, fh, separators=(',', ':'), indent=4)
+
+book_regex = "(" + "|".join(f"'{book}'" for book in bible.keys()) + ")"
+with open(bible_books_regex_path, "w") as fh:
+    print("antlr:", file=fh)
+    print(book_regex, file=fh)

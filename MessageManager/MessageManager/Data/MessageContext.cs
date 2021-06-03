@@ -24,5 +24,7 @@ namespace MessageManager.Data
         public DbSet<MessageManager.Models.Series> Series { get; set; }
 
         public DbSet<MessageManager.Models.Playlist> Playlist { get; set; }
+
+        public DbSet<MessageManager.Models.BibleReferenceRange> BibleReferences { get; set; }
     }
 }

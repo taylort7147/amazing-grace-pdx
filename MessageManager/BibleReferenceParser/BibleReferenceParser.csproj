@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Embedded\bible_details.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Embedded\bible_details.json" />
+  </ItemGroup>
+  
+  <Target Name="Generate Grammars"  BeforeTargets="BeforeBuild">
+    <Message Text="Generating grammars" />
+    <Exec Command="call $(MSBuildProjectDirectory)\scripts\build_grammar.bat" />
+    <ItemGroup>
+      <Compile Include="$(MSBuildProjectDirectory)\src\Grammar\Generated\*.cs" Exclude="@(Compile)" />
+    </ItemGroup>
+  </Target>
+
+</Project>
+ 

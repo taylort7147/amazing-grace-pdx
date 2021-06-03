@@ -36,7 +36,9 @@ namespace MessageManager.Pages.Messages
                 return NotFound();
             }
 
-            Message = await _context.Message.FirstOrDefaultAsync(m => m.Id == id);
+            Message = await _context.Message
+                .Include(m => m.BibleReferences)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             var seriesSelectList = new SelectList(_context.Series, "Id", "Name");
             var selected = seriesSelectList.Where(x => x.Value == Message.SeriesId.ToString()).FirstOrDefault();
@@ -66,8 +68,44 @@ namespace MessageManager.Pages.Messages
 
             try
             {
+                // Bible reference handling
+                {
+                    Func<BibleReferenceRange, BibleReferenceRange, bool> referenceCompare = (x, y) =>
+                    {
+                        return
+                            x.StartBook == y.StartBook &&
+                            x.StartChapter == y.StartChapter &&
+                            x.StartVerse == y.StartVerse &&
+                            x.EndBook == y.EndBook &&
+                            x.EndChapter == y.EndChapter &&
+                            x.EndVerse == y.EndVerse;
+                    };
+
+                    var newReferences = new List<BibleReferenceRange>(Message.BibleReferences);
+                    var existingReferences = await _context.BibleReferences
+                        .Where(x => x.MessageId == Message.Id).ToListAsync();
+
+                    // Remove references that are no longer present
+                    foreach (var reference in existingReferences)
+                    {
+                        if (!newReferences.Any(x => referenceCompare(x, reference)))
+                        {
+                            _context.BibleReferences.Remove(reference);
+                        }
+                    }
+
+                    // Add new refernces
+                    foreach (var reference in newReferences)
+                    {
+                        if (!existingReferences.Any(x => referenceCompare(x, reference)))
+                        {
+                            _context.BibleReferences.Add(reference);
+                        }
+                    }
+                }
                 await _context.SaveChangesAsync();
                 _logger.LogCritical($"User '{User.Identity.Name}' edited object with new values'{Message.ToString()}'.");
+
             }
             catch (DbUpdateConcurrencyException)
             {

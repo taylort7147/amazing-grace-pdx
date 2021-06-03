@@ -1,6 +1,6 @@
 [
     {
-        "name":"Genesis",
+        "book":"Genesis",
         "verse_count_by_chapter":{
             "1":31,
             "2":25,
@@ -55,7 +55,7 @@
         }
     },
     {
-        "name":"Exodus",
+        "book":"Exodus",
         "verse_count_by_chapter":{
             "1":22,
             "2":25,
@@ -100,7 +100,7 @@
         }
     },
     {
-        "name":"Leviticus",
+        "book":"Leviticus",
         "verse_count_by_chapter":{
             "1":17,
             "2":16,
@@ -132,7 +132,7 @@
         }
     },
     {
-        "name":"Numbers",
+        "book":"Numbers",
         "verse_count_by_chapter":{
             "1":54,
             "2":34,
@@ -173,7 +173,7 @@
         }
     },
     {
-        "name":"Deuteronomy",
+        "book":"Deuteronomy",
         "verse_count_by_chapter":{
             "1":46,
             "2":37,
@@ -212,7 +212,7 @@
         }
     },
     {
-        "name":"Joshua",
+        "book":"Joshua",
         "verse_count_by_chapter":{
             "1":18,
             "2":24,
@@ -241,7 +241,7 @@
         }
     },
     {
-        "name":"Judges",
+        "book":"Judges",
         "verse_count_by_chapter":{
             "1":36,
             "2":23,
@@ -267,7 +267,7 @@
         }
     },
     {
-        "name":"Ruth",
+        "book":"Ruth",
         "verse_count_by_chapter":{
             "1":22,
             "2":23,
@@ -276,7 +276,7 @@
         }
     },
     {
-        "name":"1 Samuel",
+        "book":"1 Samuel",
         "verse_count_by_chapter":{
             "1":28,
             "2":36,
@@ -312,7 +312,7 @@
         }
     },
     {
-        "name":"2 Samuel",
+        "book":"2 Samuel",
         "verse_count_by_chapter":{
             "1":27,
             "2":32,
@@ -341,7 +341,7 @@
         }
     },
     {
-        "name":"1 Kings",
+        "book":"1 Kings",
         "verse_count_by_chapter":{
             "1":53,
             "2":46,
@@ -368,7 +368,7 @@
         }
     },
     {
-        "name":"2 Kings",
+        "book":"2 Kings",
         "verse_count_by_chapter":{
             "1":18,
             "2":25,
@@ -398,7 +398,7 @@
         }
     },
     {
-        "name":"1 Chronicles",
+        "book":"1 Chronicles",
         "verse_count_by_chapter":{
             "1":54,
             "2":55,
@@ -432,7 +432,7 @@
         }
     },
     {
-        "name":"2 Chronicles",
+        "book":"2 Chronicles",
         "verse_count_by_chapter":{
             "1":17,
             "2":18,
@@ -473,7 +473,7 @@
         }
     },
     {
-        "name":"Ezra",
+        "book":"Ezra",
         "verse_count_by_chapter":{
             "1":11,
             "2":70,
@@ -488,7 +488,7 @@
         }
     },
     {
-        "name":"Nehemiah",
+        "book":"Nehemiah",
         "verse_count_by_chapter":{
             "1":11,
             "2":20,
@@ -506,7 +506,7 @@
         }
     },
     {
-        "name":"Esther",
+        "book":"Esther",
         "verse_count_by_chapter":{
             "1":22,
             "2":23,
@@ -521,7 +521,7 @@
         }
     },
     {
-        "name":"Job",
+        "book":"Job",
         "verse_count_by_chapter":{
             "1":22,
             "2":13,
@@ -568,7 +568,7 @@
         }
     },
     {
-        "name":"Psalms",
+        "book":"Psalms",
         "verse_count_by_chapter":{
             "1":6,
             "2":12,
@@ -723,7 +723,7 @@
         }
     },
     {
-        "name":"Proverbs",
+        "book":"Proverbs",
         "verse_count_by_chapter":{
             "1":33,
             "2":22,
@@ -759,7 +759,7 @@
         }
     },
     {
-        "name":"Ecclesiastes",
+        "book":"Ecclesiastes",
         "verse_count_by_chapter":{
             "1":18,
             "2":26,
@@ -776,7 +776,7 @@
         }
     },
     {
-        "name":"Song of Solomon",
+        "book":"Song of Solomon",
         "verse_count_by_chapter":{
             "1":17,
             "2":17,
@@ -789,7 +789,7 @@
         }
     },
     {
-        "name":"Isaiah",
+        "book":"Isaiah",
         "verse_count_by_chapter":{
             "1":31,
             "2":22,
@@ -860,7 +860,7 @@
         }
     },
     {
-        "name":"Jeremiah",
+        "book":"Jeremiah",
         "verse_count_by_chapter":{
             "1":19,
             "2":37,
@@ -917,7 +917,7 @@
         }
     },
     {
-        "name":"Lamentations",
+        "book":"Lamentations",
         "verse_count_by_chapter":{
             "1":22,
             "2":22,
@@ -927,7 +927,7 @@
         }
     },
     {
-        "name":"Ezekiel",
+        "book":"Ezekiel",
         "verse_count_by_chapter":{
             "1":28,
             "2":10,
@@ -980,7 +980,7 @@
         }
     },
     {
-        "name":"Daniel",
+        "book":"Daniel",
         "verse_count_by_chapter":{
             "1":21,
             "2":49,
@@ -997,7 +997,7 @@
         }
     },
     {
-        "name":"Hosea",
+        "book":"Hosea",
         "verse_count_by_chapter":{
             "1":11,
             "2":23,
@@ -1016,7 +1016,7 @@
         }
     },
     {
-        "name":"Joel",
+        "book":"Joel",
         "verse_count_by_chapter":{
             "1":20,
             "2":32,
@@ -1024,7 +1024,7 @@
         }
     },
     {
-        "name":"Amos",
+        "book":"Amos",
         "verse_count_by_chapter":{
             "1":15,
             "2":16,
@@ -1038,13 +1038,13 @@
         }
     },
     {
-        "name":"Obadiah",
+        "book":"Obadiah",
         "verse_count_by_chapter":{
             "1":21
         }
     },
     {
-        "name":"Jonah",
+        "book":"Jonah",
         "verse_count_by_chapter":{
             "1":17,
             "2":10,
@@ -1053,7 +1053,7 @@
         }
     },
     {
-        "name":"Micah",
+        "book":"Micah",
         "verse_count_by_chapter":{
             "1":16,
             "2":13,
@@ -1065,7 +1065,7 @@
         }
     },
     {
-        "name":"Nahum",
+        "book":"Nahum",
         "verse_count_by_chapter":{
             "1":15,
             "2":13,
@@ -1073,7 +1073,7 @@
         }
     },
     {
-        "name":"Habakkuk",
+        "book":"Habakkuk",
         "verse_count_by_chapter":{
             "1":17,
             "2":20,
@@ -1081,7 +1081,7 @@
         }
     },
     {
-        "name":"Zephaniah",
+        "book":"Zephaniah",
         "verse_count_by_chapter":{
             "1":18,
             "2":15,
@@ -1089,14 +1089,14 @@
         }
     },
     {
-        "name":"Haggai",
+        "book":"Haggai",
         "verse_count_by_chapter":{
             "1":15,
             "2":23
         }
     },
     {
-        "name":"Zechariah",
+        "book":"Zechariah",
         "verse_count_by_chapter":{
             "1":21,
             "2":13,
@@ -1115,7 +1115,7 @@
         }
     },
     {
-        "name":"Malachi",
+        "book":"Malachi",
         "verse_count_by_chapter":{
             "1":14,
             "2":17,
@@ -1124,7 +1124,7 @@
         }
     },
     {
-        "name":"Matthew",
+        "book":"Matthew",
         "verse_count_by_chapter":{
             "1":25,
             "2":23,
@@ -1157,7 +1157,7 @@
         }
     },
     {
-        "name":"Mark",
+        "book":"Mark",
         "verse_count_by_chapter":{
             "1":45,
             "2":28,
@@ -1178,7 +1178,7 @@
         }
     },
     {
-        "name":"Luke",
+        "book":"Luke",
         "verse_count_by_chapter":{
             "1":80,
             "2":52,
@@ -1207,7 +1207,7 @@
         }
     },
     {
-        "name":"John",
+        "book":"John",
         "verse_count_by_chapter":{
             "1":51,
             "2":25,
@@ -1233,7 +1233,7 @@
         }
     },
     {
-        "name":"Acts",
+        "book":"Acts",
         "verse_count_by_chapter":{
             "1":26,
             "2":47,
@@ -1266,7 +1266,7 @@
         }
     },
     {
-        "name":"Romans",
+        "book":"Romans",
         "verse_count_by_chapter":{
             "1":32,
             "2":29,
@@ -1287,7 +1287,7 @@
         }
     },
     {
-        "name":"1 Corinthians",
+        "book":"1 Corinthians",
         "verse_count_by_chapter":{
             "1":31,
             "2":16,
@@ -1308,7 +1308,7 @@
         }
     },
     {
-        "name":"2 Corinthians",
+        "book":"2 Corinthians",
         "verse_count_by_chapter":{
             "1":24,
             "2":17,
@@ -1326,7 +1326,7 @@
         }
     },
     {
-        "name":"Galatians",
+        "book":"Galatians",
         "verse_count_by_chapter":{
             "1":24,
             "2":21,
@@ -1337,7 +1337,7 @@
         }
     },
     {
-        "name":"Ephesians",
+        "book":"Ephesians",
         "verse_count_by_chapter":{
             "1":23,
             "2":22,
@@ -1348,7 +1348,7 @@
         }
     },
     {
-        "name":"Philippians",
+        "book":"Philippians",
         "verse_count_by_chapter":{
             "1":30,
             "2":30,
@@ -1357,7 +1357,7 @@
         }
     },
     {
-        "name":"Colossians",
+        "book":"Colossians",
         "verse_count_by_chapter":{
             "1":29,
             "2":23,
@@ -1366,7 +1366,7 @@
         }
     },
     {
-        "name":"1 Thessalonians",
+        "book":"1 Thessalonians",
         "verse_count_by_chapter":{
             "1":10,
             "2":20,
@@ -1376,7 +1376,7 @@
         }
     },
     {
-        "name":"2 Thessalonians",
+        "book":"2 Thessalonians",
         "verse_count_by_chapter":{
             "1":12,
             "2":17,
@@ -1384,7 +1384,7 @@
         }
     },
     {
-        "name":"1 Timothy",
+        "book":"1 Timothy",
         "verse_count_by_chapter":{
             "1":20,
             "2":15,
@@ -1395,7 +1395,7 @@
         }
     },
     {
-        "name":"2 Timothy",
+        "book":"2 Timothy",
         "verse_count_by_chapter":{
             "1":18,
             "2":26,
@@ -1404,7 +1404,7 @@
         }
     },
     {
-        "name":"Titus",
+        "book":"Titus",
         "verse_count_by_chapter":{
             "1":16,
             "2":15,
@@ -1412,13 +1412,13 @@
         }
     },
     {
-        "name":"Philemon",
+        "book":"Philemon",
         "verse_count_by_chapter":{
             "1":25
         }
     },
     {
-        "name":"Hebrews",
+        "book":"Hebrews",
         "verse_count_by_chapter":{
             "1":14,
             "2":18,
@@ -1436,7 +1436,7 @@
         }
     },
     {
-        "name":"James",
+        "book":"James",
         "verse_count_by_chapter":{
             "1":27,
             "2":26,
@@ -1446,7 +1446,7 @@
         }
     },
     {
-        "name":"1 Peter",
+        "book":"1 Peter",
         "verse_count_by_chapter":{
             "1":25,
             "2":25,
@@ -1456,7 +1456,7 @@
         }
     },
     {
-        "name":"2 Peter",
+        "book":"2 Peter",
         "verse_count_by_chapter":{
             "1":21,
             "2":22,
@@ -1464,7 +1464,7 @@
         }
     },
     {
-        "name":"1 John",
+        "book":"1 John",
         "verse_count_by_chapter":{
             "1":10,
             "2":29,
@@ -1474,25 +1474,25 @@
         }
     },
     {
-        "name":"2 John",
+        "book":"2 John",
         "verse_count_by_chapter":{
             "1":13
         }
     },
     {
-        "name":"3 John",
+        "book":"3 John",
         "verse_count_by_chapter":{
             "1":14
         }
     },
     {
-        "name":"Jude",
+        "book":"Jude",
         "verse_count_by_chapter":{
             "1":25
         }
     },
     {
-        "name":"Revelation",
+        "book":"Revelation",
         "verse_count_by_chapter":{
             "1":20,
             "2":29,
