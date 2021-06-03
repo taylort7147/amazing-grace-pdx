@@ -10,19 +10,24 @@
     <td>
         @{
             var bibleReferences = @Model.BibleReferences;
-            var maxDisplayLength = 20;
-            if (!String.IsNullOrEmpty(bibleReferences) && bibleReferences.Length > 20)
+            if (bibleReferences != null)
             {
-                bibleReferences = @bibleReferences.Substring(0, maxDisplayLength - 3) + "...";
+                <ul>
+                    @foreach (var bibleReferenceRange in @bibleReferences)
+                    {
+                        <li>
+                            @bibleReferenceRange.ToFriendlyString()
+                        </li>
+                    }
+                </ul>
             }
-            @bibleReferences
         }
     </td>
     <td>
         @if (Model.SeriesId != null)
         {
             <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.SeriesId"
-                role="button">@Model.Series.Name</a>
+            role="button">@Model.Series.Name</a>
         }
     </td>
     <td>

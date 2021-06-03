@@ -66,7 +66,10 @@ namespace MessageManager.Pages.Messages
             ViewData["SeriesSortParam"] = (sortOrder == SortOrder.Series) ? SortOrder.SeriesDescending : SortOrder.Series;
             ViewData["CurrentSearch"] = searchString;
 
-            var messages = from m in _context.Message.Include(m => m.Series) select m;
+            var messages = from m in _context.Message
+                .Include(m => m.Series)
+                .Include(m => m.BibleReferences)
+                           select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {

@@ -34,11 +34,11 @@
             @Html.DisplayNameFor(model => model.Message.BibleReferences)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.BibleReferences)
+            @Html.DisplayFor(model => model.Message.BibleReferencesString)
         </dd>
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Message.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

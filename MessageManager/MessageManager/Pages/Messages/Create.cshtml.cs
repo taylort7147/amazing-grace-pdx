@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BibleReferenceParser.Parsing;
 using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Data;
 using MessageManager.Models;
@@ -50,7 +51,11 @@ namespace MessageManager.Pages.Messages
             }
 
             _context.Message.Add(Message);
+            await _context.SaveChangesAsync(); // Save message before linking references
+
+            _context.BibleReferences.AddRange(Message.BibleReferences);
             await _context.SaveChangesAsync();
+
             _logger.LogCritical($"User '{User.Identity.Name}' created '{Message.ToString()}'.");
 
             return RedirectToPage("./Edit", new { id = Message.Id });

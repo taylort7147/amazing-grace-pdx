@@ -32,6 +32,7 @@ namespace MessageManager.Pages.Messages
 
             Message = await _context.Message
                       .Include(m => m.Series)
+                      .Include(m => m.BibleReferences)
                       .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Message == null)

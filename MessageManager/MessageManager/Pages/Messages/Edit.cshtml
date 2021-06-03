@@ -26,9 +26,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Message.BibleReferences" class="control-label"></label>
-                <textarea asp-for="Message.BibleReferences" class="form-control" ></textarea>
-                <span asp-validation-for="Message.BibleReferences" class="text-danger"></span>
-            </div>  
+                <textarea asp-for="Message.BibleReferencesString" class="form-control"></textarea>
+                <span asp-validation-for="Message.BibleReferencesString" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Message.Date" class="control-label"></label>
                 <input asp-for="Message.Date" class="form-control" />
@@ -36,15 +36,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Message.Series" class="control-label"></label>
-                <select asp-for="Message.SeriesId" class ="form-control" asp-items="ViewBag.SeriesSelectList" >
+                <select asp-for="Message.SeriesId" class="form-control" asp-items="ViewBag.SeriesSelectList">
                     <option></option>
                 </select>
                 <span asp-validation-for="Message.SeriesId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="hidden" asp-for="Message.VideoId"/>
-                <input type="hidden" asp-for="Message.AudioId"/>
-                <input type="hidden" asp-for="Message.NotesId"/>
+                <input type="hidden" asp-for="Message.VideoId" />
+                <input type="hidden" asp-for="Message.AudioId" />
+                <input type="hidden" asp-for="Message.NotesId" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -57,38 +57,44 @@
     <h5>Links</h5>
     <div class="form-group">
         <label asp-for="Message.Video" class="control-label"></label>
-        @if(Model.Message.VideoId == null)
+        @if (Model.Message.VideoId == null)
         {
-            <a class="btn btn-light" asp-page="/Videos/Create" asp-route-id="@Model.Message.VideoId" asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
+            <a class="btn btn-light" asp-page="/Videos/Create" asp-route-id="@Model.Message.VideoId"
+            asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
         }
         else
         {
             <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@Model.Message.VideoId" role="button">View</a>
-            <a class="btn btn-danger" asp-page="/Videos/Delete" asp-route-id="@Model.Message.VideoId" role="button">Delete</a>
+            <a class="btn btn-danger" asp-page="/Videos/Delete" asp-route-id="@Model.Message.VideoId"
+            role="button">Delete</a>
         }
     </div>
     <div class="form-group">
         <label asp-for="Message.Audio" class="control-label"></label>
-        @if(Model.Message.AudioId == null)
+        @if (Model.Message.AudioId == null)
         {
-            <a class="btn btn-light" asp-page="/Audio/Create" asp-route-id="@Model.Message.AudioId" asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
+            <a class="btn btn-light" asp-page="/Audio/Create" asp-route-id="@Model.Message.AudioId"
+            asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
         }
         else
         {
             <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@Model.Message.AudioId" role="button">View</a>
-            <a class="btn btn-danger" asp-page="/Audio/Delete" asp-route-id="@Model.Message.AudioId" role="button">Delete</a>
+            <a class="btn btn-danger" asp-page="/Audio/Delete" asp-route-id="@Model.Message.AudioId"
+            role="button">Delete</a>
         }
     </div>
     <div class="form-group">
         <label asp-for="Message.Notes" class="control-label"></label>
-        @if(Model.Message.NotesId == null)
+        @if (Model.Message.NotesId == null)
         {
-            <a class="btn btn-light" asp-page="/Notes/Create" asp-route-id="@Model.Message.NotesId" asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
+            <a class="btn btn-light" asp-page="/Notes/Create" asp-route-id="@Model.Message.NotesId"
+            asp-route-messageId="@Model.Message.Id" role="button">Create New</a>
         }
         else
         {
             <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@Model.Message.NotesId" role="button">View</a>
-            <a class="btn btn-danger" asp-page="/Notes/Delete" asp-route-id="@Model.Message.NotesId" role="button">Delete</a>
+            <a class="btn btn-danger" asp-page="/Notes/Delete" asp-route-id="@Model.Message.NotesId"
+            role="button">Delete</a>
         }
     </div>
 </div>
@@ -96,7 +102,8 @@
 <hr>
 
 <div>
-    <a class="btn btn-danger" asp-page="/Messages/Delete" asp-route-id="@Model.Message.Id" role="button">Delete Message</a>
+    <a class="btn btn-danger" asp-page="/Messages/Delete" asp-route-id="@Model.Message.Id" role="button">Delete
+        Message</a>
 </div>
 
 <div>
@@ -104,5 +111,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -35,7 +35,10 @@ namespace MessageManager.Pages.Messages
                 return NotFound();
             }
 
-            Message = await _context.Message.FirstOrDefaultAsync(m => m.Id == id);
+            Message = await _context.Message
+                .Include(m => m.BibleReferences)
+                .Include(m => m.Series)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Message == null)
             {
@@ -69,6 +72,9 @@ namespace MessageManager.Pages.Messages
                 {
                     _context.Notes.Remove(Message.Notes);
                 }
+
+                var referencesToRemove = _context.BibleReferences.Where(x => x.MessageId == id);
+                _context.BibleReferences.RemoveRange(referencesToRemove);
 
                 _context.Message.Remove(Message);
                 await _context.SaveChangesAsync();

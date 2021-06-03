@@ -87,6 +87,17 @@ namespace MessageManager.Models
                     video.MessageId = message.Id;
                     context.Video.Add(video);
 
+                    var bibleReference0 = new BibleReferenceRange
+                    {
+                        StartBook = i,
+                        StartChapter = i,
+                        StartVerse = i * 2,
+                        EndBook = i,
+                        EndChapter = i,
+                        EndVerse = i * 2
+                    };
+                    context.BibleReferences.Add(bibleReference0);
+
                     context.SaveChanges();
                     message.AudioId = audio.Id;
                     message.NotesId = notes.Id;
