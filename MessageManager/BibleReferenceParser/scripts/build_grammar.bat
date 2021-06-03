@@ -11,6 +11,7 @@ set "flags=-Dlanguage=CSharp -package BibleReferenceParser.Grammar.Generated -li
 echo Project directory: %project_dir%
 echo Source directory: %source_dir%
 echo Output directory: %output_dir%
+echo Classpath: %classpath%
 echo Files: %file_list%
 
 java org.antlr.v4.Tool -o "%output_dir%" %flags% %file_list%
