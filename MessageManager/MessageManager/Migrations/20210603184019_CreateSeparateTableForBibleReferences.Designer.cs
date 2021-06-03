@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessageManager.Migrations
 {
     [DbContext(typeof(MessageContext))]
-    [Migration("20210521012256_Move bible references to separate table")]
-    partial class Movebiblereferencestoseparatetable
+    [Migration("20210603184019_CreateSeparateTableForBibleReferences")]
+    partial class CreateSeparateTableForBibleReferences
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
