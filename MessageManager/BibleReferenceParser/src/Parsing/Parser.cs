@@ -33,5 +33,17 @@ namespace BibleReferenceParser.Parsing
 
             return listener.References;
         }
+
+        public static List<BibleReferenceRange> TryParse(string input)
+        {
+            try
+            {
+                return Parse(input);
+            }
+            catch (Exception)
+            {
+            }
+            return null;
+        }
     }
 }
