@@ -71,6 +71,7 @@ namespace MessageManager.Pages.Messages
                 .Include(m => m.Series)
                 .Include(m => m.BibleReferences)
                            select m;
+            IQueryable<Message> bibleReferenceSearchResults = null;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -93,15 +94,20 @@ namespace MessageManager.Pages.Messages
                                                  (y.StartBook == x.EndBook && y.StartChapter == x.EndChapter && y.StartVerse <= x.EndVerse)
                                              )
                                              select y;
-                    messages = messages
+                    bibleReferenceSearchResults = messages
                         .Join(matchingReferences,
                             m => m.Id,
                             r => r.MessageId,
                             (m, r) => m);
                 }
-                else
+
+                // Filter text search results
+                messages = messages.Where(SearchExpression(searchString));
+
+                // Append Bible reference results
+                if (bibleReferenceSearchResults != null)
                 {
-                    messages = messages.Where(SearchExpression(searchString));
+                    messages = messages.Union(bibleReferenceSearchResults);
                 }
             }
 
