@@ -1,22 +1,33 @@
-@model MessageManager.Models.Message
+@model MessageManager.Pages.Shared._MessageTableRowModel;
 @using System;
+@using System.Collections.Generic;
+
 <tr>
     <td>
-        @Html.DisplayFor(model => model.Date)
+        @Html.DisplayFor(model => model.Message.Date)
     </td>
     <td>
-        @Html.DisplayFor(model => model.Title)
+        @Html.DisplayFor(model => model.Message.Title)
     </td>
     <td style="white-space: nowrap">
         @{
-            var bibleReferences = @Model.BibleReferences;
+            var bibleReferences = @Model.Message.BibleReferences;
             if (bibleReferences != null)
             {
                 <ul>
                     @foreach (var bibleReferenceRange in @bibleReferences)
                     {
+                        var text = @bibleReferenceRange.ToFriendlyString();
+                        if (Model.MatchingBibleReferences != null)
+                        {
+                            foreach (var matchingReference in Model.MatchingBibleReferences)
+                            {
+                                text = text.Replace(matchingReference, "<mark>" + matchingReference + "</mark>");
+                            }
+                        }
+
                         <li>
-                            @bibleReferenceRange.ToFriendlyString()
+                            @Html.Raw(text)
                         </li>
                     }
                 </ul>
@@ -24,33 +35,34 @@
         }
     </td>
     <td>
-        @if (Model.SeriesId != null)
+        @if (Model.Message.SeriesId != null)
         {
-            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.SeriesId"
-            role="button">@Model.Series.Name</a>
+            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.Message.SeriesId"
+            role="button">@Model.Message.Series.Name</a>
         }
     </td>
     <td>
-        @if (Model.VideoId != null)
+        @if (Model.Message.VideoId != null)
         {
-            <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@Model.VideoId" role="button">Video</a>
+            <a class="btn btn-light" asp-page="/Videos/Details" asp-route-id="@Model.Message.VideoId"
+            role="button">Video</a>
         }
     </td>
     <td>
-        @if (Model.AudioId != null)
+        @if (Model.Message.AudioId != null)
         {
-            <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@Model.AudioId" role="button">Audio</a>
+            <a class="btn btn-light" asp-page="/Audio/Details" asp-route-id="@Model.Message.AudioId" role="button">Audio</a>
         }
     </td>
     <td>
-        @if (Model.NotesId != null)
+        @if (Model.Message.NotesId != null)
         {
-            <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@Model.NotesId" role="button">Notes</a>
+            <a class="btn btn-light" asp-page="/Notes/Details" asp-route-id="@Model.Message.NotesId" role="button">Notes</a>
         }
     </td>
     <td>
-        <partial name="_EditLink" model="new { Id = @Model.Id, User = @User }">
-            <a asp-page="./Details" asp-route-id="@Model.Id">Details</a>
-            <partial name="_DeleteLink" model="new { Id = @Model.Id, User = @User }">
+        <partial name="_EditLink" model="new { Id = @Model.Message.Id, User = @User }">
+            <a asp-page="./Details" asp-route-id="@Model.Message.Id">Details</a>
+            <partial name="_DeleteLink" model="new { Id = @Model.Message.Id, User = @User }">
     </td>
 </tr>

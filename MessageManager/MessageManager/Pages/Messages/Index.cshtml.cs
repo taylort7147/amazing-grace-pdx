@@ -37,6 +37,8 @@ namespace MessageManager.Pages.Messages
 
         public IList<Message> Messages { get; set; }
 
+        public IList<string> MatchingBibleReferences { get; set; }
+
         private static bool Search(Message message, string searchString)
         {
             var lowerSearchString = searchString.ToLower();
@@ -74,6 +76,7 @@ namespace MessageManager.Pages.Messages
                 .Include(m => m.BibleReferences)
                            select m;
             IQueryable<Message> bibleReferenceSearchResults = null;
+            MatchingBibleReferences = new List<string>();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -101,6 +104,10 @@ namespace MessageManager.Pages.Messages
                             m => m.Id,
                             r => r.MessageId,
                             (m, r) => m);
+                    foreach (var reference in matchingReferences)
+                    {
+                        MatchingBibleReferences.Add(reference.ToFriendlyString());
+                    }
                 }
 
                 // Filter text search results
