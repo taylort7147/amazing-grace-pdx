@@ -1,5 +1,6 @@
 @page
 @model MessageManager.Pages.Messages.IndexModel
+@using MessageManager.Pages.Shared;
 
 @{
     ViewData["Title"] = "Index";
@@ -54,8 +55,8 @@
         <tbody>
             @foreach (var message in Model.Messages)
             {
-                @await Html.PartialAsync("_MessageTableRow", message)
-                ;
+                @await Html.PartialAsync("_MessageTableRow", new _MessageTableRowModel{Message = message,
+            MatchingBibleReferences = Model.MatchingBibleReferences})
             }
         </tbody>
     </table>
