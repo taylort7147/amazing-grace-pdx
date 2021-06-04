@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using BibleReferenceParser.Parsing;
 using MessageManager.Data;
 using MessageManager.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -73,7 +74,35 @@ namespace MessageManager.Pages.Messages
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                messages = messages.Where(SearchExpression(searchString));
+                var bibleReferences = Parser.TryParse(searchString);
+
+                if (bibleReferences != null && bibleReferences.Count == 1)
+                {
+                    // x1 <= y2 && y1 <= x2
+                    var x = BibleReferenceRange.From(bibleReferences[0].GetExplicitRange());
+                    Expression<Func<BibleReferenceRange, bool>> z = r => r.StartBook < 5;
+                    var matchingReferences = from y in _context.BibleReferences
+                                             where (
+                                                 (x.StartBook < y.EndBook) ||
+                                                 (x.StartBook == y.EndBook && x.StartChapter < y.EndChapter) ||
+                                                 (x.StartBook == y.EndBook && x.StartChapter == y.EndChapter && x.StartVerse <= y.EndVerse)
+                                             ) &&
+                                             (
+                                                 (y.StartBook < x.EndBook) ||
+                                                 (y.StartBook == x.EndBook && y.StartChapter < x.EndChapter) ||
+                                                 (y.StartBook == x.EndBook && y.StartChapter == x.EndChapter && y.StartVerse <= x.EndVerse)
+                                             )
+                                             select y;
+                    messages = messages
+                        .Join(matchingReferences,
+                            m => m.Id,
+                            r => r.MessageId,
+                            (m, r) => m);
+                }
+                else
+                {
+                    messages = messages.Where(SearchExpression(searchString));
+                }
             }
 
             switch (sortOrder)
@@ -106,7 +135,7 @@ namespace MessageManager.Pages.Messages
                     messages = messages.OrderByDescending(m => m.Date);
                     break;
             }
-            Messages = await messages.ToListAsync();
+            Messages = (messages.AsEnumerable()).Distinct().ToList();
         }
     }
 }
