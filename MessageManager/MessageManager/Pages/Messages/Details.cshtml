@@ -33,7 +33,20 @@
             @Html.DisplayNameFor(model => model.Message.BibleReferences)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Message.BibleReferencesString)
+            @{
+                var bibleReferences = @Model.Message.BibleReferences;
+                if (bibleReferences != null)
+                {
+                    <ul>
+                        @foreach (var bibleReferenceRange in @bibleReferences)
+                        {
+                            <li>
+                                @bibleReferenceRange.ToFriendlyString()
+                            </li>
+                        }
+                    </ul>
+                }
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Message.Series)
