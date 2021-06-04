@@ -107,26 +107,11 @@ namespace BibleReferenceParser.Data
                         return range.First.Book.ToFriendlyString() + " " + range.First.Chapter.ToString() + ":" + range.First.Verse.ToString() + "-" + range.Last.Chapter.ToString() + ":" + range.Last.Verse.ToString();
                     }
                 }
-
-                // Default
-                var str = First.ToFriendlyString();
-                if (Last != null)
-                {
-                    str += "-" + Last.ToFriendlyString();
-                }
-                return str;
             }
 
             // Reference range across books
             else
             {
-
-
-
-
-
-
-
                 var str = First.ToFriendlyString();
                 if (Last != null)
                 {
