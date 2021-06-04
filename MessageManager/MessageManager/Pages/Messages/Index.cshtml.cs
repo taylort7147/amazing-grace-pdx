@@ -56,7 +56,9 @@ namespace MessageManager.Pages.Messages
             searchString = searchString.ToLower();
             return m =>
                 m.Title.ToLower().Contains(searchString) ||
-                m.Description.ToLower().Contains(searchString);
+                m.Description.ToLower().Contains(searchString) ||
+                m.Series.Name.ToLower().Contains(searchString) ||
+                m.Series.Description.ToLower().Contains(searchString);
         }
 
         public async Task OnGetAsync(string sortOrder, string searchString)
