@@ -1,13 +1,43 @@
 @model MessageManager.Pages.Shared._MessageTableRowModel;
-@using System;
-@using System.Collections.Generic;
+@using MessageManager.Utility;
+@using System.Web;
+
+@{
+    var tooltipShowDelay = 750;
+    var tooltipHideDelay = 0;
+    var searchString = ViewData["CurrentSearch"] as string;
+
+    static string TransformBold(string s)
+    {
+        return "<b>" + s + "</b>";
+    }
+    static string TransformHighlight(string s)
+    {
+        return "<mark>" + s + "</mark>";
+    }
+}
 
 <tr>
     <td>
         @Html.DisplayFor(model => model.Message.Date)
     </td>
     <td>
-        @Html.DisplayFor(model => model.Message.Title)
+        @{
+            var messageName = HttpUtility.HtmlEncode(Model.Message.Title);
+            var messageDescription = HttpUtility.HtmlEncode(Model.Message.Description);
+            if (searchString != null)
+            {
+                messageName = messageName.ReplaceTransform(searchString, TransformBold,
+                StringComparison.OrdinalIgnoreCase);
+                messageDescription = messageDescription.ReplaceTransform(searchString, TransformBold,
+                StringComparison.OrdinalIgnoreCase);
+            }
+
+            <span data-toggle="tooltip" data-placement="top" data-html="true"
+                data-delay='{"show": @tooltipShowDelay, "hide" : @tooltipHideDelay}'
+                title="@Html.Raw(messageDescription)">@Html.Raw(messageName)</span>
+        }
+
     </td>
     <td style="white-space: nowrap">
         @{
@@ -22,7 +52,7 @@
                         {
                             foreach (var matchingReference in Model.MatchingBibleReferences)
                             {
-                                text = text.Replace(matchingReference, "<mark>" + matchingReference + "</mark>");
+                                text = text.ReplaceTransform(matchingReference, TransformBold);
                             }
                         }
 
@@ -37,8 +67,19 @@
     <td>
         @if (Model.Message.SeriesId != null)
         {
-            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.Message.SeriesId"
-            role="button">@Model.Message.Series.Name</a>
+            var seriesName = HttpUtility.HtmlEncode(Model.Message.Series.Name);
+            var seriesDescription = HttpUtility.HtmlEncode(Model.Message.Series.Description);
+            if (searchString != null)
+            {
+                seriesName = seriesName.ReplaceTransform(searchString, TransformBold);
+                seriesDescription = seriesDescription.ReplaceTransform(searchString, TransformBold,
+                StringComparison.OrdinalIgnoreCase);
+            }
+
+            <a class="btn btn-light" asp-page="/Series/Details" asp-route-id="@Model.Message.SeriesId" role="button"
+            data-toggle="tooltip" data-placement="top" data-html="true"
+            data-delay='{"show": @tooltipShowDelay, "hide" : @tooltipHideDelay}'
+            title="@Html.Raw(seriesDescription)">@Html.Raw(seriesName)</a>
         }
     </td>
     <td>

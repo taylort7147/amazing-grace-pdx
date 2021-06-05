@@ -8,7 +8,7 @@ namespace MessageManager.Utility
 {
     public class BibleReferenceValidation : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        public static ValidationResult Validate(object value)
         {
             var s = value as string;
             if (s is null)
@@ -41,6 +41,11 @@ namespace MessageManager.Utility
                 return new ValidationResult("Unable to parse bible reference string. Details: " + e.Message);
             }
             return ValidationResult.Success;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            return BibleReferenceValidation.Validate(value);
         }
     }
 
