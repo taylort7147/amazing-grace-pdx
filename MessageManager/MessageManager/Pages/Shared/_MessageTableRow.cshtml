@@ -1,11 +1,14 @@
 @model MessageManager.Pages.Shared._MessageTableRowModel;
 @using MessageManager.Utility;
 @using System.Web;
+@using MessageManager.Pages.Messages;
 
 @{
     var tooltipShowDelay = 750;
     var tooltipHideDelay = 0;
-    var searchString = ViewData["CurrentSearch"] as string;
+    var searchStringRaw = ViewData["CurrentSearch"] as string;
+    var searchCriteria = Search.GetCriteria(searchStringRaw);
+    var searchString = searchCriteria.SearchString;
 
     static string TransformBold(string s)
     {
@@ -25,7 +28,7 @@
         @{
             var messageName = HttpUtility.HtmlEncode(Model.Message.Title);
             var messageDescription = HttpUtility.HtmlEncode(Model.Message.Description);
-            if (searchString != null)
+            if (!string.IsNullOrWhiteSpace(searchString))
             {
                 messageName = messageName.ReplaceTransform(searchString, TransformBold,
                 StringComparison.OrdinalIgnoreCase);
@@ -69,7 +72,7 @@
         {
             var seriesName = HttpUtility.HtmlEncode(Model.Message.Series.Name);
             var seriesDescription = HttpUtility.HtmlEncode(Model.Message.Series.Description);
-            if (searchString != null)
+            if (!string.IsNullOrWhiteSpace(searchString))
             {
                 seriesName = seriesName.ReplaceTransform(searchString, TransformBold);
                 seriesDescription = seriesDescription.ReplaceTransform(searchString, TransformBold,
