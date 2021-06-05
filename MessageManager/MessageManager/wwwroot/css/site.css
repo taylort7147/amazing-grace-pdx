@@ -89,3 +89,7 @@ body {
 li .btn {
     margin: 5px auto;
 }
+
+.tooltip-inner {
+    max-width: 600px;
+}

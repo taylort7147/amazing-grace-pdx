@@ -13,8 +13,15 @@
     <!-- TODO: Move to partial -->
     <form asp-action="" method="get">
         <div class="active-cyan-4 mb-4">
-            <input class="form-control" type="text" name="SearchString" placeholder="Search" aria-label="Search"
+            <input autofocus="autofocus" class="form-control" type="text" name="SearchString" data-toggle="tooltip"
+                data-html="true" data-placement="bottom" placeholder="Search" aria-label="Search" data-container="body"
+                data-delay='{"show":2000, "hide":0}'
+                title="Try using filters:<br><b>m:</b> message title/description<br><b>s:</b> series name/description<br><b>b:</b> Bible reference (range allowed)"
                 value="@ViewData["CurrentSearch"]">
+            @if (ViewData["SearchErrorMessage"] != null)
+            {
+                <span class="text-danger field-validation-error">@ViewData["SearchErrorMessage"]</span>
+            }
         </div>
     </form>
 </div>

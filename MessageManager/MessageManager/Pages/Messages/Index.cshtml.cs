@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BibleReferenceParser.Parsing;
 using MessageManager.Data;
 using MessageManager.Models;
+using MessageManager.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -39,30 +41,6 @@ namespace MessageManager.Pages.Messages
 
         public IList<string> MatchingBibleReferences { get; set; }
 
-        private static bool Search(Message message, string searchString)
-        {
-            var lowerSearchString = searchString.ToLower();
-            if (message.Title.ToLower().Contains(lowerSearchString))
-            {
-                return true;
-            }
-            if (message.Description.ToLower().Contains(lowerSearchString))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private static Expression<Func<Message, bool>> SearchExpression(string searchString)
-        {
-            searchString = searchString.ToLower();
-            return m =>
-                m.Title.ToLower().Contains(searchString) ||
-                m.Description.ToLower().Contains(searchString) ||
-                m.Series.Name.ToLower().Contains(searchString) ||
-                m.Series.Description.ToLower().Contains(searchString);
-        }
-
         public async Task OnGetAsync(string sortOrder, string searchString)
         {
             ViewData["DateSortParam"] = (sortOrder == SortOrder.DateDescending) ? SortOrder.Date : SortOrder.DateDescending;
@@ -70,66 +48,50 @@ namespace MessageManager.Pages.Messages
             ViewData["DescriptionSortParam"] = (sortOrder == SortOrder.Description) ? SortOrder.DescriptionDescending : SortOrder.Description;
             ViewData["SeriesSortParam"] = (sortOrder == SortOrder.Series) ? SortOrder.SeriesDescending : SortOrder.Series;
             ViewData["CurrentSearch"] = searchString;
-
-            var messages = from m in _context.Message
-                .Include(m => m.Series)
-                .Include(m => m.BibleReferences)
-                           select m;
-            IQueryable<Message> bibleReferenceSearchResults = null;
+            ViewData["SearchErrorMessage"] = null;
+            Messages = new List<Message>();
             MatchingBibleReferences = new List<string>();
+            IQueryable<Message> messages = null;
 
-            if (!String.IsNullOrEmpty(searchString))
+            var searchCriteria = Search.GetCriteria(searchString);
+            switch (searchCriteria.Type)
             {
-                var bibleReferences = Parser.TryParse(searchString);
-
-                if (bibleReferences != null && bibleReferences.Count == 1)
-                {
-                    // x1 <= y2 && y1 <= x2
-                    var x = BibleReferenceRange.From(bibleReferences[0].GetExplicitRange());
-                    Expression<Func<BibleReferenceRange, bool>> z = r => r.StartBook < 5;
-                    var matchingReferences = from y in _context.BibleReferences
-                                             where (
-                                                 (x.StartBook < y.EndBook) ||
-                                                 (x.StartBook == y.EndBook && x.StartChapter < y.EndChapter) ||
-                                                 (x.StartBook == y.EndBook && x.StartChapter == y.EndChapter && x.StartVerse <= y.EndVerse)
-                                             ) &&
-                                             (
-                                                 (y.StartBook < x.EndBook) ||
-                                                 (y.StartBook == x.EndBook && y.StartChapter < x.EndChapter) ||
-                                                 (y.StartBook == x.EndBook && y.StartChapter == x.EndChapter && y.StartVerse <= x.EndVerse)
-                                             )
-                                             select y;
-                    bibleReferenceSearchResults = messages
-                        .Join(matchingReferences,
-                            m => m.Id,
-                            r => r.MessageId,
-                            (m, r) => m);
-                    foreach (var reference in matchingReferences)
+                case Search.Type.FindAnywhere:
                     {
-                        MatchingBibleReferences.Add(reference.ToFriendlyString());
+                        messages = FindAnywhere(searchCriteria.SearchString);
                     }
-                }
-
-                // Filter text search results
-                messages = messages.Where(SearchExpression(searchString));
-
-                // Append Bible reference results
-                if (bibleReferenceSearchResults != null)
-                {
-                    messages = messages.Union(bibleReferenceSearchResults);
-                }
+                    break;
+                case Search.Type.FindByBibleReference:
+                    {
+                        messages = FindByBibleReference(searchCriteria.SearchString);
+                    }
+                    break;
+                case Search.Type.FindByMessage:
+                    {
+                        messages = FindByMessage(searchCriteria.SearchString);
+                    }
+                    break;
+                case Search.Type.FindBySeries:
+                    {
+                        messages = FindBySeries(searchCriteria.SearchString);
+                    }
+                    break;
+                case Search.Type.FindAll:
+                default:
+                    {
+                        messages = GetAllMessages();
+                    }
+                    break;
             }
 
             switch (sortOrder)
             {
-
                 case SortOrder.Title:
                     messages = messages.OrderBy(m => m.Title);
                     break;
                 case SortOrder.TitleDescending:
                     messages = messages.OrderByDescending(m => m.Title);
                     break;
-
                 case SortOrder.Description:
                     messages = messages.OrderBy(m => m.Description);
                     break;
@@ -151,6 +113,86 @@ namespace MessageManager.Pages.Messages
                     break;
             }
             Messages = (messages.AsEnumerable()).Distinct().ToList();
+        }
+
+        IQueryable<Message> GetAllMessages()
+        {
+            var messages = from m in _context.Message
+                .Include(m => m.Series)
+                .Include(m => m.BibleReferences)
+                           select m;
+            return messages;
+        }
+
+        IQueryable<Message> GetNoMessages()
+        {
+            var messages = from m in _context.Message
+                .Where(m => false)
+                           select m;
+            return messages;
+        }
+
+        IQueryable<Message> FindAnywhere(string searchString)
+        {
+            var messages = FindByMessage(searchString)
+                .Union(FindBySeries(searchString));
+            if (BibleReferenceValidation.Validate(searchString) == ValidationResult.Success)
+            {
+                messages = messages.Union(FindByBibleReference(searchString));
+            }
+            return messages;
+        }
+
+        IQueryable<Message> FindByBibleReference(string searchString)
+        {
+            var validationResult = BibleReferenceValidation.Validate(searchString);
+            var messages = GetNoMessages();
+
+            if (validationResult != ValidationResult.Success)
+            {
+                ViewData["SearchErrorMessage"] = validationResult.ErrorMessage;
+                return messages;
+            }
+
+            var bibleReferences = Parser.TryParse(searchString);
+            if (bibleReferences != null && bibleReferences.Count == 1)
+            {
+                // x1 <= y2 && y1 <= x2
+                var x = BibleReferenceRange.From(bibleReferences[0].GetExplicitRange());
+                var matchingReferences = from y in _context.BibleReferences
+                                         where (
+                                             (x.StartBook < y.EndBook) ||
+                                             (x.StartBook == y.EndBook && x.StartChapter < y.EndChapter) ||
+                                             (x.StartBook == y.EndBook && x.StartChapter == y.EndChapter && x.StartVerse <= y.EndVerse)
+                                         ) &&
+                                         (
+                                             (y.StartBook < x.EndBook) ||
+                                             (y.StartBook == x.EndBook && y.StartChapter < x.EndChapter) ||
+                                             (y.StartBook == x.EndBook && y.StartChapter == x.EndChapter && y.StartVerse <= x.EndVerse)
+                                         )
+                                         select y;
+
+                messages = GetAllMessages()
+                    .Join(matchingReferences,
+                        m => m.Id,
+                        r => r.MessageId,
+                        (m, r) => m);
+                foreach (var reference in matchingReferences)
+                {
+                    MatchingBibleReferences.Add(reference.ToFriendlyString());
+                }
+            }
+            return messages;
+        }
+
+        IQueryable<Message> FindByMessage(string searchString)
+        {
+            return GetAllMessages().Where(Search.GetMessageSearchExpression(searchString));
+        }
+
+        IQueryable<Message> FindBySeries(string searchString)
+        {
+            return GetAllMessages().Where(Search.GetSeriesSearchExpression(searchString));
         }
     }
 }
