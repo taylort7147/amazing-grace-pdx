@@ -302,6 +302,7 @@
 
 .ag-message-block h3 {
     font-size: 24px;
+    color: var(--fg-color-primary);
 }
 
 .ag-message-block-header {
