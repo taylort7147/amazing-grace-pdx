@@ -75,7 +75,7 @@ namespace MessageManager.Controllers
                 await _context.Entry(message).Reference(m => m.Video).LoadAsync();
                 await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
                 await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
-                await _context.Entry(message).Reference(m => m.BibleReferences).LoadAsync();
+                await _context.Entry(message).Collection(m => m.BibleReferences).LoadAsync();
             }
             var messages = selectedSeries.Messages.ToList();
 
