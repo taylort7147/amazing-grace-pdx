@@ -75,6 +75,40 @@ namespace MessageManager.Models
             }
         }
 
+        [NotMapped]
+        [Display(Name = "Bible References")]
+        [BibleReferenceValidation]
+        public List<string> BibleReferencesStringList
+        {
+            get
+            {
+                var list = new List<string>();
+                if (BibleReferences == null)
+                {
+                    return list;
+                }
+
+                var bibleReferenceStrings = BibleReferences.Select(x => x.ToFriendlyString());
+                return bibleReferenceStrings.ToList();
+            }
+            set
+            {
+                var convertedList = new List<BibleReferenceRange>();
+                if (value != null)
+                {
+                    var bibleReferencesString = string.Join(", ", value);
+                    var parsedList = Parser.Parse(bibleReferencesString);
+                    foreach (var referenceRange in parsedList)
+                    {
+                        var referenceRangeModel = BibleReferenceRange.From(referenceRange);
+                        referenceRangeModel.MessageId = Id;
+                        convertedList.Add(referenceRangeModel);
+                    }
+                }
+                BibleReferences = convertedList;
+            }
+        }
+
         public override string ToString()
         {
             return $"Message(Id={Id}, " +
