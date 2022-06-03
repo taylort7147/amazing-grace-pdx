@@ -18,6 +18,11 @@
     --tile-bg-color: var(--bg-color-primary);
     --tile-caption-color: var(--fg-color-primary);
     --tile-bg-opacity: var(--bg-opacity);
+
+    --message-block-body-bg-color: #EEEEEE;
+    --message-block-body-fg-color: #000000;
+    --separator-color: #00000020;
+    --message-block-radius: 20px;
 }
 
 @media screen and (min-width: 1000px) {
@@ -89,7 +94,7 @@
     font-size: 18px;
     font-weight: 500;
     display: inline-block;
-    margin: 0;
+    margin: 0 auto;
     font-family: inherit;
     overflow: visible;
     border-width: 1px;
@@ -100,6 +105,7 @@
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     align-items: flex-start;
     flex: 0 1 auto;
+    text-align: center;
 }
 
 .ag-btn.disabled,
@@ -272,9 +278,86 @@
     width: 100%;
     padding-left: 25%;
     padding-right: 25%;
-    background-color: var(--fg-color-secondary);
+    background-color: var(--separator-color);
 }
 
 .ag-transparent {
     background-color: transparent !important;
+}
+
+.ag-message-block {
+    width: 100%;
+    vertical-align: middle;
+    margin: 0 auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.ag-message-block h3,
+.ag-message-block p {
+    letter-spacing: -1px;
+}
+
+.ag-message-block h3 {
+    font-size: 24px;
+}
+
+.ag-message-block-header {
+    background-color: var(--bg-color-primary);
+    color: var(--fg-color-primary);
+    display: flex;
+    padding: 0.5rem 1.25rem;
+    border-top-left-radius: var(--message-block-radius);
+    border-top-right-radius: var(--message-block-radius);
+}
+
+.ag-message-block-title {
+    margin: 0.5rem;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.ag-message-block-date {
+    text-align: right;  
+}
+
+.ag-message-block-body {
+    background-color: var(--message-block-body-bg-color);
+    color: var(--message-block-body-fg-color);
+    padding: 0.5rem 1.25rem;
+}
+
+.ag-message-block-body .ag-separator {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ag-message-block-description {
+    margin-bottom: 1rem;
+}
+
+.ag-message-block-footer
+{
+    display: flex;
+}
+
+.ag-message-block-btn-group .ag-btn:not(:disabled):not(.disabled) {
+}
+
+.ag-message-block-btn-group {
+    display: flex;
+}
+
+.ag-message-block-btn-group .ag-btn {
+    flex-grow: 1;
+    border-radius: 0;
+}
+.ag-message-block-btn-group .ag-btn:first-child {
+    border-bottom-left-radius: var(--message-block-radius);
+}
+
+.ag-message-block-btn-group .ag-btn:last-child {
+    border-bottom-right-radius: var(--message-block-radius);
 }
