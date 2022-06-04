@@ -16,13 +16,13 @@ function appendMessageBlockHeader(tag, data) {
     tag.appendChild(headerTag);
 
     // Title
-    titleTag = document.createElement("h3");
+    titleTag = document.createElement("div");
     titleTag.className = "ag-message-block-title";
     titleTag.innerHTML = data.title;
     headerTag.appendChild(titleTag);
 
     // Date
-    dateTag = document.createElement("span");
+    dateTag = document.createElement("div");
     dateTag.className = "ag-message-block-date";
     dateTag.innerHTML = formatDate(data.date);
     headerTag.appendChild(dateTag);
