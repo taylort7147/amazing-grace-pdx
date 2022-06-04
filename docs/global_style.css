@@ -300,7 +300,8 @@
     letter-spacing: -1px;
 }
 
-.ag-message-block h3 {
+.ag-message-block h3,
+.ag-message-block h3:first-child {
     font-size: 24px;
     color: var(--fg-color-primary);
 }
@@ -309,14 +310,14 @@
     background-color: var(--bg-color-primary);
     color: var(--fg-color-primary);
     display: flex;
-    padding: 0.5rem 1.25rem;
+    padding: 1rem 2rem;
+    padding-top: 2rem;
     border-top-left-radius: var(--message-block-radius);
     border-top-right-radius: var(--message-block-radius);
 }
 
 .ag-message-block-title {
-    margin: 0.5rem;
-    text-align: left;
+    text-align: center;
     flex-grow: 1;
 }
 
@@ -327,7 +328,7 @@
 .ag-message-block-body {
     background-color: var(--message-block-body-bg-color);
     color: var(--message-block-body-fg-color);
-    padding: 0.5rem 1.25rem;
+    padding: 2rem;
 }
 
 .ag-message-block-body .ag-separator {
