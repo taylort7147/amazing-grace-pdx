@@ -79,7 +79,7 @@ function appendMessageBlockFooter(tag, data) {
     footerTag.className = "ag-message-block-footer";
     tag.appendChild(footerTag);
     
-    buttonGroupTag = appendButtonGroup(tag);
+    buttonGroupTag = appendButtonGroup(footerTag);
     appendButton(buttonGroupTag, "Notes", getNotesLink(data.notes));
     appendButton(buttonGroupTag, "Audio", getAudioLink(data.audio));
     appendButton(buttonGroupTag, "Video", getVideoLink(data.video));

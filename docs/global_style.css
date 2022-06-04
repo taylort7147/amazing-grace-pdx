@@ -7,9 +7,9 @@
     --shadow-color: #F7B00680;
     --hover-bg-color: #FEE0AC;
     --active-bg-color: var(--bg-color-primary);
-    --disabled-bg-color: lightgrey;
+    --disabled-bg-color: #44444410;
     --disabled-fg-color: grey;
-    --disabled-border-color: darkgrey;
+    --disabled-border-color: var(--disabled-bg-color);
     --tooltip-max-width: 500px;
     --tooltip-bg-color: black;
     --tooltip-fg-color: white;
@@ -22,7 +22,7 @@
     --message-block-body-bg-color: #EEEEEE;
     --message-block-body-fg-color: #000000;
     --separator-color: #00000020;
-    --message-block-radius: 20px;
+    --message-block-radius: 40px;
 }
 
 @media screen and (min-width: 1000px) {
@@ -109,7 +109,9 @@
 }
 
 .ag-btn.disabled,
-.ag-btn:disabled {
+.ag-btn:disabled,
+a.ag-btn.disabled,
+a.ag-btn:disabled {
     background-color: var(--disabled-bg-color);
     color: var(--disabled-fg-color);
 }
@@ -286,13 +288,14 @@
 }
 
 .ag-message-block {
+    background-color: var(--bg-color-primary);
     width: 100%;
     vertical-align: middle;
     margin: 0 auto;
     margin-top: 75px;
     margin-bottom: 75px;
-    /* padding-top: 25px;
-    padding-bottom: 25px; */
+    padding-top: 75px;
+    padding-bottom: 50px;
     box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
     border-radius: var(--message-block-radius);
 }
@@ -301,24 +304,16 @@
     letter-spacing: -1px;
 }
 
-.ag-message-block h3,
-.ag-message-block h3:first-child {
-    color: var(--fg-color-primary);
-}
-
 .ag-message-block-header {
-    background-color: var(--bg-color-primary);
-    color: var(--fg-color-primary);
+    background-color: var(--message-block-body-bg-color);
     display: inline-block;
     width: 100%;
-    padding: 1rem 2rem;
-    padding-top: 2rem;
-    border-top-left-radius: var(--message-block-radius);
-    border-top-right-radius: var(--message-block-radius);
+    padding: 1rem 1rem;
 }
 
 .ag-message-block-header * {
     text-transform: uppercase;
+    color: black;
 }
 
 .ag-message-block-title {
@@ -334,8 +329,10 @@
 
 .ag-message-block-body {
     background-color: var(--message-block-body-bg-color);
+    margin: 50px;
     color: var(--message-block-body-fg-color);
     padding: 2rem;
+    border-radius: 25px;
 }
 
 .ag-message-block-body .ag-separator {
@@ -349,7 +346,8 @@
 
 .ag-message-block-footer
 {
-    display: flex;
+    display: inline-block;
+    width: 100%;
 }
 
 .ag-message-block-btn-group .ag-btn:not(:disabled):not(.disabled) {
@@ -357,16 +355,36 @@
 
 .ag-message-block-btn-group {
     display: flex;
+    align-items: center;
+    justify-content: center;;
+    margin: 0 auto;
 }
 
 .ag-message-block-btn-group .ag-btn {
-    flex-grow: 1;
-    border-radius: 0;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.ag-message-block-btn-group .ag-btn:not(:disabled) {
+    background-color: var(--message-block-body-bg-color);
+    color: var(--message-block-body-fg-color);
+}
+
+.ag-message-block-btn-group .ag-btn:not(:last-child) {
+    /* border-top-right-radius: 0;
+    border-bottom-right-radius: 0; */
+    /* padding-right: 15px; */
+}
+
+.ag-message-block-btn-group .ag-btn:not(:first-child) {
+    /* border-top-left-radius: 0;
+    border-bottom-left-radius: 0; */
+    /* padding-left: 15px; */
 }
 .ag-message-block-btn-group .ag-btn:first-child {
-    border-bottom-left-radius: var(--message-block-radius);
 }
 
 .ag-message-block-btn-group .ag-btn:last-child {
-    border-bottom-right-radius: var(--message-block-radius);
 }
