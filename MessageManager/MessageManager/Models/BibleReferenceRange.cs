@@ -10,6 +10,7 @@ namespace MessageManager.Models
     public class BibleReferenceRange
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int StartBook { get; set; }
