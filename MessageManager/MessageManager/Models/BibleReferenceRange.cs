@@ -9,6 +9,7 @@ namespace MessageManager.Models
 {
     public class BibleReferenceRange
     {
+        [Key]
         public int Id { get; set; }
 
         public int StartBook { get; set; }
