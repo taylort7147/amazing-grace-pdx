@@ -53,7 +53,8 @@ namespace MessageManager.Pages.Messages
             _context.Message.Add(Message);
             await _context.SaveChangesAsync(); // Save message before linking references
 
-            _context.BibleReferences.AddRange(Message.BibleReferences);
+            Message.BibleReferences.ForEach(b => b.MessageId = Message.Id);
+            _context.BibleReferences.UpdateRange(Message.BibleReferences);
             await _context.SaveChangesAsync();
 
             _logger.LogCritical($"User '{User.Identity.Name}' created '{Message.ToString()}'.");
