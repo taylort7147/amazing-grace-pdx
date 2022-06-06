@@ -37,15 +37,20 @@ function appendMessageBlockBody(tag, data) {
     tag.appendChild(bodyTag);
     
     // Description
-    descriptionTag = document.createElement("span");
-    descriptionTag.className = "ag-message-block-description";
-    descriptionTag.innerHTML = data.description;
-    bodyTag.appendChild(descriptionTag);
+    if(data.description && data.description.length > 0) {
+        descriptionTag = document.createElement("span");
+        descriptionTag.className = "ag-message-block-description";
+        descriptionTag.innerHTML = data.description;
+        bodyTag.appendChild(descriptionTag);
+    }
     
-    if(data.bibleReferencesStringList.length > 0) {
+    // Separator
+    if(data.description && data.description.length > 0 && data.bibleReferencesStringList.length > 0) {
         appendSeparator(bodyTag);
-        
-        // Bible references
+    }
+
+    // Bible references
+    if(data.bibleReferencesStringList.length > 0) {
         bibTag = document.createElement("div");
         bibTag.className = "ag-message-block-bible-references";
         bodyTag.appendChild(bibTag);
@@ -145,19 +150,23 @@ function appendMessageBlock(parentTag, data) {
     tag.appendChild(clickTag);
 
     // Image
-    imageTag = document.createElement("div");
-    imageTag.className = "ag-message-block-background";
-    imageTag.style.backgroundImage = getVideoThumbnailLink(data.video);
-    imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
-    imageTag.style.backgroundSize = "150%";
-    imageTag.style.backgroundPosition = "50%";
-    tag.appendChild(imageTag)
+    if(data.videoId) {
+        imageTag = document.createElement("div");
+        imageTag.className = "ag-message-block-background";
+        imageTag.style.backgroundImage = getVideoThumbnailLink(data.video);
+        imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
+        imageTag.style.backgroundSize = "150%";
+        imageTag.style.backgroundPosition = "50%";
+        tag.appendChild(imageTag)
+    }
 
     // Header
     headerTag = appendMessageBlockHeader(tag, data);
 
     // Body
-    bodyTag = appendMessageBlockBody(tag, data);
+    if(data.description || data.bibleReferencesStringList.length > 0) {
+        bodyTag = appendMessageBlockBody(tag, data);
+    }
 
     // Footer
     footerTag = appendMessageBlockFooter(tag, data);

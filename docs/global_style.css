@@ -321,10 +321,12 @@ a.ag-btn:disabled {
     top: 0;
     left: 0;
     z-index: -1;
-    width: calc(100%);
-    height:calc(100%);
+    width: 100%;
+    height: 100%;
     border-radius: var(--message-block-radius);
-    background-size: 150%;
+    background-size: fill;
+    background-repeat: no-repeat;
+    /* background-color: black; */
 }
 
 .ag-message-block-header {
