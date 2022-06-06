@@ -9,8 +9,6 @@ namespace MessageManager.Models
 {
     public class BibleReferenceRange
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int StartBook { get; set; }
@@ -33,8 +31,6 @@ namespace MessageManager.Models
             var endReference = referenceRange.Last == null ? referenceRange.First : referenceRange.Last;
 
             var model = new BibleReferenceRange();
-            model.Id = 0;
-
             model.StartBook = (int)startReference.Book;
             model.StartChapter = startReference.Chapter.GetValueOrDefault(1);
             model.StartVerse = startReference.Verse.GetValueOrDefault(1);
