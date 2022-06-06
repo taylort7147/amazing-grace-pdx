@@ -32,44 +32,67 @@
 
 
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
-    <div class="page-container" style="width:700px; margin: 0 auto; max-width:100%; padding:0;">
-        <!-- <div class="ag-message-block">
-            <div class="ag-message-block-header">
-                <h3 class="ag-message-block-title">This is the title</h3>
-                <span class="ag-message-block-date">December 25, 2021</span>  
-            </div>
-            <div class="ag-message-block-body">
-                <span class="ag-message-block-description">Description...
-                </span>
-                <div class="ag-separator"></div>
-                <div class="ag-message-block-bible-references">
-                    <span>Bible References:</span>
-                    <ul>
-                        <li>Ref 1</li>
-                        <li>Ref 2</li>
-                        <li>...</li>
-                    </ul>
+    <div class="page-content" style="padding: 70px 30px">
+
+        <div class="page-container" style="width:700px; margin: 0 auto; max-width:100%; padding:0;">
+            <!-- <div class="ag-message-block">
+                <div class="ag-message-block-header">
+                    <h3 class="ag-message-block-title">This is the title</h3>
+                    <span class="ag-message-block-date">December 25, 2021</span>  
                 </div>
-            </div>
-            <div class=message-block-footer">
-                <div class="btn-group ag-message-block-btn-group">
-                    <a class="btn ag-btn">Notes</a>
-                    <a class="btn ag-btn">Audio</a>
-                    <a class="btn ag-btn">Video</a>
+                <div class="ag-message-block-body">
+                    <span class="ag-message-block-description">Description...
+                    </span>
+                    <div class="ag-separator"></div>
+                    <div class="ag-message-block-bible-references">
+                        <span>Bible References:</span>
+                        <ul>
+                            <li>Ref 1</li>
+                            <li>Ref 2</li>
+                            <li>...</li>
+                        </ul>
+                    </div>
                 </div>
+                <div class=message-block-footer">
+                    <div class="btn-group ag-message-block-btn-group">
+                        <a class="btn ag-btn">Notes</a>
+                        <a class="btn ag-btn">Audio</a>
+                        <a class="btn ag-btn">Video</a>
+                    </div>
+                </div>
+            </div>   -->
+            <div id="ag-message-panel"> 
+                <button style="
+                    display:block; 
+                    position:fixed; 
+                    font-size: 30px; 
+                    width: 30px;
+                    height: 30px;
+                    top: 0;
+                    left: calc(100% - 30px - 20px);
+                    right: 0;
+                    bottom: 0;
+                    color: white;
+                    background-color: transparent;
+                    border: none;
+                    "
+                    onclick="document.getElementById('ag-message-panel').style.display='none'">×</button>   
+                <div>
+                    
+                </div>           
             </div>
-        </div>   -->
-        
-        <div id="2 Peter Before I Leave..." class="message-series-block"></div>
-        <div id="Miscellaneous" class="message-series-block"></div>
+            
+            <div id="2 Peter Before I Leave..." class="message-series-block"></div>
+            <div id="Miscellaneous" class="message-series-block"></div>
+        </div>
     </div>
-
+        
     <script type="text/javascript" src="../message_series_2.js"></script></script>
-
-
+    
+    
     <script>
         $(document).ready(loadYouTubeIframeAPI);
-    </script>
+        </script>
 </body>
 
 </html>

@@ -108,6 +108,12 @@ function appendButtonGroup(tag) {
     return buttonGroupTag;
 }
 
+function getVideoThumbnailLink(details) {
+    if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
+    return `https://img.youtube.com/vi/${details.youTubeVideoId}/0.jpg`;
+
+}
+
 function getVideoLink(details) {
     if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
         return `https://www.youtube.com/watch?v=${details.youTubeVideoId}&t=${details.messageStartTimeSeconds}`;
@@ -132,11 +138,22 @@ function appendMessageBlock(parentTag, data) {
     tag.classList.add("ag-message-block");
     parentTag.appendChild(tag);
 
+    // Click handler
+    var clickTag = document.createElement("div");
+    clickTag.onclick(x => document.getElementById("ag-message-panel").style.display = "block");
+    clickTag.className("ag-message-block-overlay");
+    tag.appendChild(clickTag);
+
     // Header
     headerTag = appendMessageBlockHeader(tag, data);
 
     // Body
     bodyTag = appendMessageBlockBody(tag, data);
+
+    // TEMP
+    img = document.createElement("img");
+    img.src = getVideoThumbnailLink(data.video);
+    bodyTag.appendChild(img)
 
     // Footer
     footerTag = appendMessageBlockFooter(tag, data);
