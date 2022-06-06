@@ -288,24 +288,48 @@ a.ag-btn:disabled {
 }
 
 .ag-message-block {
-    background-color: var(--bg-color-primary);
+    position: relative;
     width: 100%;
     vertical-align: middle;
     margin: 0 auto;
     margin-top: 75px;
     margin-bottom: 75px;
-    padding-top: 50px;
-    padding-bottom: 25px;
+    padding-top: 75px;
+    padding-bottom: 75px;
     box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
     border-radius: var(--message-block-radius);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .ag-message-block * {
     letter-spacing: -1px;
 }
 
+.ag-message-block-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width:100%;
+    height:100%;
+    border-radius: var(--message-block-radius);
+
+}
+
+.ag-message-block-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: calc(100%);
+    height:calc(100%);
+    border-radius: var(--message-block-radius);
+    background-size: 150%;
+}
+
 .ag-message-block-header {
-    background-color: var(--message-block-body-bg-color);
+    background-color: var(--bg-color-primary);
+    opacity: 85%;
     display: inline-block;
     width: 100%;
     padding: 1rem 1rem;
@@ -313,7 +337,7 @@ a.ag-btn:disabled {
 
 .ag-message-block-header * {
     text-transform: uppercase;
-    color: black;
+    color: var(--fg-color-primary);
 }
 
 .ag-message-block-title {
@@ -329,12 +353,12 @@ a.ag-btn:disabled {
 
 .ag-message-block-body {
     background-color: var(--message-block-body-bg-color);
-    margin: 20px;
+    opacity: 85%;
+    margin: 75px;
     margin-bottom: 0;
     color: var(--message-block-body-fg-color);
     padding: 2rem;
     border-radius: 0;
-    box-shadow: 0 0 10px 10px var(--bg-color-primary) inset;
 }
 
 .ag-message-block-body .ag-separator {
@@ -408,7 +432,7 @@ a.ag-btn:disabled {
 
 #ag-message-panel {
     position: fixed;
-    display: block;
+    display: none;
     width: 400px;
     height: 100%;
     top: 0;
@@ -417,17 +441,5 @@ a.ag-btn:disabled {
     bottom: 0;
     background-color: rgba(0,0,0,0.5);
     z-index: 2;
-    box-shadow: 0 0 25px 50px rgba(0,0,0,0.5);
-}
-
-.ag-message-block-overlay {
-    z-index: 2;
-    width:100%;
-    height:100%;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: absolute;
-
+    /* box-shadow: 0 0 25px 50px rgba(0,0,0,0.5); */
 }

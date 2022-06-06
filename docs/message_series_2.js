@@ -140,20 +140,24 @@ function appendMessageBlock(parentTag, data) {
 
     // Click handler
     var clickTag = document.createElement("div");
-    clickTag.onclick(x => document.getElementById("ag-message-panel").style.display = "block");
-    clickTag.className("ag-message-block-overlay");
+    clickTag.onclick = x => document.getElementById("ag-message-panel").style.display = "block";
+    clickTag.className = "ag-message-block-overlay";
     tag.appendChild(clickTag);
+
+    // Image
+    imageTag = document.createElement("div");
+    imageTag.className = "ag-message-block-background";
+    imageTag.style.backgroundImage = getVideoThumbnailLink(data.video);
+    imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
+    imageTag.style.backgroundSize = "150%";
+    imageTag.style.backgroundPosition = "50%";
+    tag.appendChild(imageTag)
 
     // Header
     headerTag = appendMessageBlockHeader(tag, data);
 
     // Body
     bodyTag = appendMessageBlockBody(tag, data);
-
-    // TEMP
-    img = document.createElement("img");
-    img.src = getVideoThumbnailLink(data.video);
-    bodyTag.appendChild(img)
 
     // Footer
     footerTag = appendMessageBlockFooter(tag, data);
