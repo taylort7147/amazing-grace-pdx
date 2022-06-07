@@ -153,11 +153,12 @@ function appendMessageBlock(parentTag, data) {
     if(data.videoId) {
         imageTag = document.createElement("div");
         imageTag.className = "ag-message-block-background";
-        imageTag.style.backgroundImage = getVideoThumbnailLink(data.video);
         imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
-        imageTag.style.backgroundSize = "150%";
-        imageTag.style.backgroundPosition = "50%";
         tag.appendChild(imageTag)
+
+        imageOverlayTag = document.createElement("div");
+        imageOverlayTag.className = "ag-message-block-background-overlay";
+        tag.appendChild(imageOverlayTag);
     }
 
     // Header

@@ -298,12 +298,13 @@ a.ag-btn:disabled {
     padding-bottom: 75px;
     box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
     border-radius: var(--message-block-radius);
-    background-color: rgba(255, 255, 255, 0.5);
-    z-index: 10;
+    position: relative;
+    z-index: 10; /* All elements should be in front of the body */
 }
 
 .ag-message-block * {
     letter-spacing: -1px;
+    z-index: 0;
 }
 
 .ag-message-block-overlay {
@@ -314,14 +315,24 @@ a.ag-btn:disabled {
     width:100%;
     height:100%;
     border-radius: var(--message-block-radius);
+    
+}
 
+.ag-message-block-background-overlay {
+    background-color: rgba(255, 255, 255, 0.5);   
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
 }
 
 .ag-message-block-background {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -1; /* Appear behind parent element */
+    z-index: -2;
     width: 100%;
     height: 100%;
     border-radius: var(--message-block-radius);
