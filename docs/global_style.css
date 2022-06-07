@@ -326,6 +326,7 @@ a.ag-btn:disabled {
     z-index: -1;
     width: 100%;
     height: 100%;
+    border-radius: var(--message-block-radius);
 }
 
 .ag-message-block-background {
@@ -338,6 +339,9 @@ a.ag-btn:disabled {
     border-radius: var(--message-block-radius);
     background-size: fill;
     background-repeat: no-repeat;
+    background-size: 150%;
+    background-position: 50%;
+    border-radius: var(--message-block-radius);
 }
 
 .ag-message-block-header {
