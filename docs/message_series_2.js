@@ -2,7 +2,7 @@
 //      utilities.js
 
 function appendSeparator(tag) {
-    sepTag = document.createElement("div");
+    var sepTag = document.createElement("div");
     sepTag.className = "ag-separator";
     tag.appendChild(sepTag);
 
@@ -11,18 +11,18 @@ function appendSeparator(tag) {
 
 function appendMessageBlockHeader(tag, data) {
     // Container
-    headerTag = document.createElement("div");
+    var headerTag = document.createElement("div");
     headerTag.className = "ag-message-block-header";
     tag.appendChild(headerTag);
 
     // Title
-    titleTag = document.createElement("div");
+    var titleTag = document.createElement("div");
     titleTag.className = "ag-message-block-title";
     titleTag.innerHTML = data.title;
     headerTag.appendChild(titleTag);
 
     // Date
-    dateTag = document.createElement("div");
+    var dateTag = document.createElement("div");
     dateTag.className = "ag-message-block-date";
     dateTag.innerHTML = formatDate(data.date);
     headerTag.appendChild(dateTag);
@@ -32,13 +32,13 @@ function appendMessageBlockHeader(tag, data) {
 
 function appendMessageBlockBody(tag, data) {
     // Container
-    bodyTag = document.createElement("div");
+    var bodyTag = document.createElement("div");
     bodyTag.className = "ag-message-block-body";
     tag.appendChild(bodyTag);
     
     // Description
     if(data.description && data.description.length > 0) {
-        descriptionTag = document.createElement("span");
+        var descriptionTag = document.createElement("span");
         descriptionTag.className = "ag-message-block-description";
         descriptionTag.innerHTML = data.description;
         bodyTag.appendChild(descriptionTag);
@@ -51,17 +51,17 @@ function appendMessageBlockBody(tag, data) {
 
     // Bible references
     if(data.bibleReferencesStringList.length > 0) {
-        bibTag = document.createElement("div");
+        var bibTag = document.createElement("div");
         bibTag.className = "ag-message-block-bible-references";
         bodyTag.appendChild(bibTag);
         
         // Bible references title
-        bibTitleTag = document.createElement("span");
+        var bibTitleTag = document.createElement("span");
         bibTitleTag.innerHTML = "Bible References";
         bibTag.appendChild(bibTitleTag);
         
         // Bible references list
-        bibListTag = document.createElement("ul");
+        var bibListTag = document.createElement("ul");
         bibTag.appendChild(bibListTag);
         
         // Bible references list elements
@@ -79,15 +79,51 @@ function appendMessageBlockBody(tag, data) {
     return bodyTag;
 }
 
+function appendBubbleGroup(tag)
+{
+    var bubbleGroupTag = document.createElement("div");
+    bubbleGroupTag.className = "ag-bubble-group";
+    tag.appendChild(bubbleGroupTag);
+    return bubbleGroupTag;
+}
+
+function appendBubble(tag, linkUrl, btnClass) {
+    var hasLink = linkUrl && linkUrl.length > 0;
+    var bubbleContainerTag = document.createElement("div");
+    bubbleContainerTag.className = "ag-bubble";
+    tag.appendChild(bubbleContainerTag);
+
+    if(hasLink) {
+        // Button
+        var bubbleTag = document.createElement("a");
+        bubbleTag.className = "btn ag-bubble-btn";
+        bubbleTag.classList.add(btnClass);
+        bubbleTag.role = "button";
+        bubbleTag.href = linkUrl;
+        bubbleContainerTag.appendChild(bubbleTag);
+
+        // Background
+        var bubbleBackgroundTag = document.createElement("div");
+        bubbleBackgroundTag.className = "ag-bubble-background";
+        bubbleContainerTag.appendChild(bubbleBackgroundTag);
+    }
+    else {
+        bubbleContainerTag.style.display = "none";
+    }
+    return bubbleContainerTag;
+}
+
 function appendMessageBlockFooter(tag, data) {
-    footerTag = document.createElement("div");
+    var footerTag = document.createElement("div");
     footerTag.className = "ag-message-block-footer";
     tag.appendChild(footerTag);
-    
-    buttonGroupTag = appendButtonGroup(footerTag);
-    appendButton(buttonGroupTag, "Notes", getNotesLink(data.notes));
-    appendButton(buttonGroupTag, "Audio", getAudioLink(data.audio));
-    appendButton(buttonGroupTag, "Video", getVideoLink(data.video));
+
+    var bubbleGroupTag = appendBubbleGroup(footerTag);
+    bubbleGroupTag.classList.add("ag-container-align-center");
+
+    appendBubble(bubbleGroupTag, getNotesLink(data.notes), "ag-notes-background");
+    appendBubble(bubbleGroupTag, getAudioLink(data.audio), "ag-audio-background");
+    appendBubble(bubbleGroupTag, getVideoLink(data.video), "ag-video-background");
     
     return footerTag;
 }
@@ -143,37 +179,35 @@ function appendMessageBlock(parentTag, data) {
     tag.classList.add("ag-message-block");
     parentTag.appendChild(tag);
 
-    // Click handler
-    var clickTag = document.createElement("div");
-    clickTag.onclick = x => document.getElementById("ag-message-panel").style.display = "block";
-    clickTag.className = "ag-message-block-overlay";
-    tag.appendChild(clickTag);
+    // // Click handler
+    // // TODO: this should go away, the panel isn't used anymore
+    // var clickTag = document.createElement("div");
+    // clickTag.onclick = x => document.getElementById("ag-message-panel").style.display = "block";
+    // clickTag.className = "ag-message-block-overlay";
+    // tag.appendChild(clickTag);
 
     // Image
     if(data.videoId) {
-        imageTag = document.createElement("div");
+        var imageTag = document.createElement("div");
         imageTag.className = "ag-message-block-background";
         imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
         tag.appendChild(imageTag)
 
-        imageOverlayTag = document.createElement("div");
+        var imageOverlayTag = document.createElement("div");
         imageOverlayTag.className = "ag-message-block-background-overlay";
         tag.appendChild(imageOverlayTag);
     }
 
     // Header
-    headerTag = appendMessageBlockHeader(tag, data);
+    appendMessageBlockHeader(tag, data);
 
     // Body
     if(data.description || data.bibleReferencesStringList.length > 0) {
-        bodyTag = appendMessageBlockBody(tag, data);
+        appendMessageBlockBody(tag, data);
     }
 
     // Footer
-    footerTag = appendMessageBlockFooter(tag, data);
-
-    // Button group
-    
+    appendMessageBlockFooter(tag, data);
     
     return tag;
 }
@@ -199,7 +233,7 @@ function populateMessageSeriesBlock(parentTag, series) {
 }
 
 $(document).ready(function() {
-    messageSeriesBlocks = $("div.message-series-block");
+    var messageSeriesBlocks = $("div.message-series-block");
     console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
     messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
         populateMessageSeriesBlock(tag, data)));
