@@ -179,23 +179,21 @@ function appendMessageBlock(parentTag, data) {
     tag.classList.add("ag-message-block");
     parentTag.appendChild(tag);
 
-    // // Click handler
-    // // TODO: this should go away, the panel isn't used anymore
-    // var clickTag = document.createElement("div");
-    // clickTag.onclick = x => document.getElementById("ag-message-panel").style.display = "block";
-    // clickTag.className = "ag-message-block-overlay";
-    // tag.appendChild(clickTag);
-
     // Image
     if(data.videoId) {
+        var imageContainerTag = document.createElement("div");
+        imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
+        tag.appendChild(imageContainerTag);
+
         var imageTag = document.createElement("div");
         imageTag.className = "ag-message-block-background";
         imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
-        tag.appendChild(imageTag)
+        imageContainerTag.appendChild(imageTag)
+
 
         var imageOverlayTag = document.createElement("div");
         imageOverlayTag.className = "ag-message-block-background-overlay";
-        tag.appendChild(imageOverlayTag);
+        imageContainerTag.appendChild(imageOverlayTag);
     }
 
     // Header

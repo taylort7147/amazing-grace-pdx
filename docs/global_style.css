@@ -19,6 +19,8 @@
     --tile-caption-color: var(--fg-color-primary);
     --tile-bg-opacity: var(--bg-opacity);
 
+    --message-block-gradient-color-start: var(--bg-color-primary);
+    --message-block-gradient-color-end: white;
     --message-block-body-bg-color: #EEEEEE;
     --message-block-body-fg-color: #000000;
     --separator-color: #00000020;
@@ -289,6 +291,11 @@ a.ag-btn:disabled {
     background-color: transparent !important;
 }
 
+.ag-border-clip {
+    overflow: hidden;
+    clip-path: border-box;
+}
+
 .ag-message-block {
     position: relative;
     width: 100%;
@@ -320,30 +327,36 @@ a.ag-btn:disabled {
     
 }
 
-.ag-message-block-background-overlay {
-    background-color: var(--message-block-bg-overlay-color);   
+.ag-message-block-background-container
+{
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
+    right:0;
     border-radius: var(--message-block-radius);
 }
 
-.ag-message-block-background {
+.ag-message-block-background-container > * {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -2;
     width: 100%;
     height: 100%;
-    border-radius: var(--message-block-radius);
+}
+
+.ag-message-block-background-overlay {
+    background-color: var(--message-block-bg-overlay-color); 
+}
+
+.ag-message-block-background {
+    z-index: -1;
     background-size: fill;
     background-repeat: no-repeat;
-    background-size: 150%;
+    background-size: cover;
     background-position: 50%;
-    border-radius: var(--message-block-radius);
+    transform: scale(150%);
+    background-image: linear-gradient(var(--message-block-gradient-color-start), var(--message-block-gradient-color-end)); /* overriden by element if image exists */
 }
 
 .ag-message-block-header {
