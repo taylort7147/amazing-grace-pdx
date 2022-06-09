@@ -177,37 +177,44 @@ function appendMessageBlock(parentTag, data) {
     // Tag
     var tag = document.createElement("div");
     tag.classList.add("ag-message-block");
+    tag.classList.add("hidden");
     parentTag.appendChild(tag);
 
-    // Image
-    if(data.videoId) {
-        var imageContainerTag = document.createElement("div");
-        imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
-        tag.appendChild(imageContainerTag);
-
-        var imageTag = document.createElement("div");
-        imageTag.className = "ag-message-block-background";
-        imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
-        imageContainerTag.appendChild(imageTag)
-
-
-        var imageOverlayTag = document.createElement("div");
-        imageOverlayTag.className = "ag-message-block-background-overlay";
-        imageContainerTag.appendChild(imageOverlayTag);
-    }
-
-    // Header
-    appendMessageBlockHeader(tag, data);
-
-    // Body
-    if(data.description || data.bibleReferencesStringList.length > 0) {
-        appendMessageBlockBody(tag, data);
-    }
-
-    // Footer
-    appendMessageBlockFooter(tag, data);
-    
     return tag;
+}
+
+function populateMessageBlock(tag, data) {
+        // Image
+        if(data.videoId) {
+            var imageContainerTag = document.createElement("div");
+            imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
+            tag.appendChild(imageContainerTag);
+    
+            var imageTag = document.createElement("div");
+            imageTag.className = "ag-message-block-background";
+            imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
+            imageContainerTag.appendChild(imageTag)
+    
+    
+            var imageOverlayTag = document.createElement("div");
+            imageOverlayTag.className = "ag-message-block-background-overlay";
+            imageContainerTag.appendChild(imageOverlayTag);
+
+            tag.classList.remove("hidden");
+        }
+    
+        // Header
+        appendMessageBlockHeader(tag, data);
+    
+        // Body
+        if(data.description || data.bibleReferencesStringList.length > 0) {
+            appendMessageBlockBody(tag, data);
+        }
+    
+        // Footer
+        appendMessageBlockFooter(tag, data);
+
+        return tag;
 }
 
 function getMessageSeries(seriesName, cb) {
@@ -258,7 +265,8 @@ function loadSeries(i, tag) {
 }
 
 function loadMessage(tag, message) {
-    getMessage(message, data => appendMessageBlock(tag, data));
+    var messageTag = appendMessageBlock(tag, message);
+    getMessage(message, data => populateMessageBlock(messageTag, data));
 }
 
 $(document).ready(function() {
