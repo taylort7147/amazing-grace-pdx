@@ -213,7 +213,15 @@ function appendMessageBlock(parentTag, data) {
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
     var seriesUri = encodeURIComponent(seriesName);
-    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages?series=${seriesUri}`
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages?series=${seriesUri}&loadContent=false`
+    console.log(`URI: ${uri}`);
+    $.getJSON(uri, cb);
+}
+
+function getMessage(message, cb) {
+    console.log(`Getting message: ${message.title}`);
+    var seriesUri = encodeURIComponent(message.id);
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/${seriesUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
@@ -227,12 +235,35 @@ function populateMessageSeriesBlock(parentTag, series) {
     console.log(`Series: (${series.length} entries)`);
     console.log(series);
     console.log(typeof(series));
-    series.forEach((message) => appendMessageBlock(parentTag, message));
+    series.forEach(message => loadMessage(parentTag, message));
+}
+
+function appendLoadingBlock(tag) {
+    var loadingTag = document.createElement("h3");
+    loadingTag.className = "ag-loading";
+    loadingTag.innerHTML = "Loading";
+    tag.appendChild(loadingTag);
+    return loadingTag;
+}
+
+function removeLoadingBlock(tag) {
+    if(tag == null) {
+        return;
+    }
+    tag.remove();
+}
+
+function loadSeries(i, tag) {
+    getMessageSeries(tag.id, series => populateMessageSeriesBlock(tag, series));
+}
+
+function loadMessage(tag, message) {
+    getMessage(message, data => appendMessageBlock(tag, data));
 }
 
 $(document).ready(function() {
     var messageSeriesBlocks = $("div.message-series-block");
     console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
-    messageSeriesBlocks.each((i, tag) => getMessageSeries(tag.id, data =>
-        populateMessageSeriesBlock(tag, data)));
+
+    messageSeriesBlocks.each(loadSeries);
 });
