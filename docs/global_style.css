@@ -355,6 +355,7 @@ a.ag-btn:disabled {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50%;
+    -webkit-transform: scale(150%);
     transform: scale(150%);
     background-image: linear-gradient(var(--message-block-gradient-color-start), var(--message-block-gradient-color-end)); /* overriden by element if image exists */
 }
@@ -564,4 +565,12 @@ a.ag-btn:disabled {
     background-color: rgba(0,0,0,0.5);
     z-index: 20;
     /* box-shadow: 0 0 25px 50px rgba(0,0,0,0.5); */
+}
+
+.ag-loading {
+    text-align: center;
+}
+
+.ag-loading:after {
+    content: "......";
 }
