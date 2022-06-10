@@ -1,56 +1,99 @@
 // Requires 
 //      utilities.js
 
-function appendSeparator(tag) {
+
+/**
+ * Append a loading block to an element
+ * @param {*} parentTag The element to append the loading block to
+ * @returns The new "loading" element
+ */
+ function appendLoadingBlock(parentTag) {
+    var loadingTag = document.createElement("h3");
+    loadingTag.className = "ag-loading";
+    loadingTag.innerHTML = "Loading";
+    parentTag.appendChild(loadingTag);
+    return loadingTag;
+}
+
+/**
+ * Remove a loading block from the document
+ * @param {*} tag The loading block to remove
+ * @returns null
+ */
+function removeLoadingBlock(tag) {
+    if(tag == null) {
+        return;
+    }
+    tag.remove();
+}
+
+/**
+ * Appends a separator to an element
+ * @param {*} parentTag The element to append the separator to
+ * @returns The new separator element
+ */
+function appendSeparator(parentTag) {
     var sepTag = document.createElement("div");
     sepTag.className = "ag-separator";
-    tag.appendChild(sepTag);
+    parentTag.appendChild(sepTag);
 
     return sepTag;
 }
 
-function appendMessageBlockHeader(tag, data) {
+/**
+ * Appends a message block header to an element
+ * @param {*} parentTag The element to append the header to 
+ * @param {*} message Message returned by /api/messages/{id}
+ * @returns The new header element
+ */
+function appendMessageBlockHeader(parentTag, message) {
     // Container
     var headerTag = document.createElement("div");
     headerTag.className = "ag-message-block-header";
-    tag.appendChild(headerTag);
+    parentTag.appendChild(headerTag);
 
     // Title
     var titleTag = document.createElement("div");
     titleTag.className = "ag-message-block-title";
-    titleTag.innerHTML = data.title;
+    titleTag.innerHTML = message.title;
     headerTag.appendChild(titleTag);
 
     // Date
     var dateTag = document.createElement("div");
     dateTag.className = "ag-message-block-date";
-    dateTag.innerHTML = formatDate(data.date);
+    dateTag.innerHTML = formatDate(message.date);
     headerTag.appendChild(dateTag);
 
     return headerTag;
 }
 
-function appendMessageBlockBody(tag, data) {
+/**
+ * Appends a message block body to an element
+ * @param {*} parentTag The element to append the body to
+ * @param {*} message Message returned by /api/messages/{id}
+ * @returns The new block element
+ */
+function appendMessageBlockBody(parentTag, message) {
     // Container
     var bodyTag = document.createElement("div");
     bodyTag.className = "ag-message-block-body";
-    tag.appendChild(bodyTag);
+    parentTag.appendChild(bodyTag);
     
     // Description
-    if(data.description && data.description.length > 0) {
+    if(message.description && message.description.length > 0) {
         var descriptionTag = document.createElement("span");
         descriptionTag.className = "ag-message-block-description";
-        descriptionTag.innerHTML = data.description;
+        descriptionTag.innerHTML = message.description;
         bodyTag.appendChild(descriptionTag);
     }
     
     // Separator
-    if(data.description && data.description.length > 0 && data.bibleReferencesStringList.length > 0) {
+    if(message.description && message.description.length > 0 && message.bibleReferencesStringList.length > 0) {
         appendSeparator(bodyTag);
     }
 
     // Bible references
-    if(data.bibleReferencesStringList.length > 0) {
+    if(message.bibleReferencesStringList.length > 0) {
         var bibTag = document.createElement("div");
         bibTag.className = "ag-message-block-bible-references";
         bodyTag.appendChild(bibTag);
@@ -74,24 +117,57 @@ function appendMessageBlockBody(tag, data) {
             return fInner;
         };
         
-        data.bibleReferencesStringList.forEach(f(bibListTag));
+        message.bibleReferencesStringList.forEach(f(bibListTag));
     }
     return bodyTag;
 }
 
-function appendBubbleGroup(tag)
+/**
+ * Appends a message block footer to an element 
+ * @param {*} parentTag The element to append the footer to
+ * @param {*} message Message returned by /api/messages/{id}
+ * @returns The new footer element
+ */
+function appendMessageBlockFooter(parentTag, message) {
+    var footerTag = document.createElement("div");
+    footerTag.className = "ag-message-block-footer";
+    parentTag.appendChild(footerTag);
+
+    var bubbleGroupTag = appendBubbleGroup(footerTag);
+    bubbleGroupTag.classList.add("ag-container-align-center");
+
+    appendBubble(bubbleGroupTag, getNotesLink(message.notes), "ag-notes-background");
+    appendBubble(bubbleGroupTag, getAudioLink(message.audio), "ag-audio-background");
+    appendBubble(bubbleGroupTag, getVideoLink(message.video), "ag-video-background");
+    
+    return footerTag;
+}
+
+/**
+ * Appends a bubble group to an element
+ * @param {*} parentTag The element to append the bubble group to
+ * @returns The new bubble group element
+ */
+function appendBubbleGroup(parentTag)
 {
     var bubbleGroupTag = document.createElement("div");
     bubbleGroupTag.className = "ag-bubble-group";
-    tag.appendChild(bubbleGroupTag);
+    parentTag.appendChild(bubbleGroupTag);
     return bubbleGroupTag;
 }
 
-function appendBubble(tag, linkUrl, btnClass) {
+/**
+ * Appends a bubble to an element
+ * @param {*} parentTag The element to append the bubble to
+ * @param {*} linkUrl The href link for the bubble
+ * @param {*} btnClass A class name to apply to the bubble button
+ * @returns The new bubble element
+ */
+function appendBubble(parentTag, linkUrl, btnClass) {
     var hasLink = linkUrl && linkUrl.length > 0;
     var bubbleContainerTag = document.createElement("div");
     bubbleContainerTag.className = "ag-bubble";
-    tag.appendChild(bubbleContainerTag);
+    parentTag.appendChild(bubbleContainerTag);
 
     if(hasLink) {
         // Button
@@ -113,66 +189,56 @@ function appendBubble(tag, linkUrl, btnClass) {
     return bubbleContainerTag;
 }
 
-function appendMessageBlockFooter(tag, data) {
-    var footerTag = document.createElement("div");
-    footerTag.className = "ag-message-block-footer";
-    tag.appendChild(footerTag);
-
-    var bubbleGroupTag = appendBubbleGroup(footerTag);
-    bubbleGroupTag.classList.add("ag-container-align-center");
-
-    appendBubble(bubbleGroupTag, getNotesLink(data.notes), "ag-notes-background");
-    appendBubble(bubbleGroupTag, getAudioLink(data.audio), "ag-audio-background");
-    appendBubble(bubbleGroupTag, getVideoLink(data.video), "ag-video-background");
-    
-    return footerTag;
-}
-
-function appendButton(tag, text, link) {
-    var buttonTag = document.createElement("a");
-    buttonTag.innerHTML = text;
-    buttonTag.className = "ag-btn ag-btn-round";
-    buttonTag.role = "button";
-    if (link && link.length > 0) {
-        buttonTag.href = link;
-    } else {
-        buttonTag.className += " disabled";
-    }
-    tag.appendChild(buttonTag);
-    return buttonTag;
-}
-
-function appendButtonGroup(tag) {
-    var buttonGroupTag = document.createElement("div");
-    buttonGroupTag.className = "btn-group ag-message-block-btn-group";
-    tag.appendChild(buttonGroupTag);
-    return buttonGroupTag;
-}
-
+/**
+ * Gets a URL to the thumbnail for a video
+ * @param {*} details A video object (from a message object) 
+ * @returns A video thumbnail URL
+ */
 function getVideoThumbnailLink(details) {
     if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
     return `https://img.youtube.com/vi/${details.youTubeVideoId}/0.jpg`;
 
 }
 
+/**
+ * Gets a URL to the message video
+ * @param {*} details A video object (from a message object) 
+ * @returns A video URL
+ */
 function getVideoLink(details) {
     if (details && details.youTubeVideoId && details.youTubeVideoId.length > 0)
         return `https://www.youtube.com/watch?v=${details.youTubeVideoId}&t=${details.messageStartTimeSeconds}`;
 }
 
+/**
+ * Gets a URL to an audio stream
+ * @param {*} details An audio object (from a message object)
+ * @returns An audio URL 
+ */
 function getAudioLink(details) {
     if (details && details.streamUrl && details.streamUrl.length > 0)
         return details.streamUrl;
 }
 
+/**
+ * Gets a URL to the message notes
+ * @param {*} details A notes object (from a message object)
+ * @returns A notes URL
+ */
 function getNotesLink(details) {
     if (details && details.url && details.url.length > 0)
         return details.url;
 }
 
-function appendMessageBlock(parentTag, data) {
+/**
+ * Appends a hidden message block placeholder to be populated by populateMessageBlock()
+ * @param {*} parentTag The parent tag to append the message block to
+ * @param {*} message Message returned by /api/messages/{id}
+ * @returns The newly created message block element
+ */
+function appendMessageBlock(parentTag, message) {
     console.log(`appendMessageBlock() called for ${parentTag.id}`);
-    if (data == null) { return; }
+    if (message == null) { return; }
 
     // Tag
     var tag = document.createElement("div");
@@ -183,16 +249,22 @@ function appendMessageBlock(parentTag, data) {
     return tag;
 }
 
-function populateMessageBlock(tag, data) {
+/**
+ * Populates the provided message block with the message details.
+ * @param {*} tag The message block element
+ * @param {*} message 
+ * @returns The original message block element
+ */
+function populateMessageBlock(tag, message) {
         // Image
-        if(data.videoId) {
+        if(message.videoId) {
             var imageContainerTag = document.createElement("div");
             imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
             tag.appendChild(imageContainerTag);
     
             var imageTag = document.createElement("div");
             imageTag.className = "ag-message-block-background";
-            imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(data.video)})`
+            imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(message.video)})`
             imageContainerTag.appendChild(imageTag)
     
     
@@ -204,19 +276,46 @@ function populateMessageBlock(tag, data) {
         }
     
         // Header
-        appendMessageBlockHeader(tag, data);
+        appendMessageBlockHeader(tag, message);
     
         // Body
-        if(data.description || data.bibleReferencesStringList.length > 0) {
-            appendMessageBlockBody(tag, data);
+        if(message.description || message.bibleReferencesStringList.length > 0) {
+            appendMessageBlockBody(tag, message);
         }
     
         // Footer
-        appendMessageBlockFooter(tag, data);
+        appendMessageBlockFooter(tag, message);
 
         return tag;
 }
 
+// 
+/**
+ * Populates a message series block by appending message blocks and loading 
+ * their details
+ * @param {*} seriesTag The series element to populate
+ * @param {*} series  Series returned by /api/series/{id}
+ * @returns The original series element
+ */
+function populateMessageSeriesBlock(seriesTag, series) {
+    console.log(seriesTag);
+    if (series == null) {
+        console.log("No messages found for series");
+        return;
+    }
+    console.log(`Series: (${series.length} entries)`);
+    console.log(series);
+    console.log(typeof(series));
+    series.forEach(message => loadMessage(seriesTag, message.id));
+
+    return seriesTag
+}
+
+/**
+ * Gets a series' details without loading message content and calls a callback
+ * @param {*} seriesName The name of the series in the database
+ * @param {*} cb JQuery callback
+ */
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
     var seriesUri = encodeURIComponent(seriesName);
@@ -225,53 +324,41 @@ function getMessageSeries(seriesName, cb) {
     $.getJSON(uri, cb);
 }
 
-function getMessage(message, cb) {
-    console.log(`Getting message: ${message.title}`);
-    var seriesUri = encodeURIComponent(message.id);
+/**
+ * Gets a single message's details and calls a callback
+ * @param {*} messageId
+ * @param {*} cb 
+ */
+function getMessage(messageId, cb) {
+    console.log(`Getting message: ${messageId}`);
+    var seriesUri = encodeURIComponent(messageId);
     var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/${seriesUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
 
-function populateMessageSeriesBlock(parentTag, series) {
-    console.log(parentTag);
-    if (series == null) {
-        console.log("No messages found for series");
-        return;
-    }
-    console.log(`Series: (${series.length} entries)`);
-    console.log(series);
-    console.log(typeof(series));
-    series.forEach(message => loadMessage(parentTag, message));
+/**
+ * Loads a series by name into an element
+ * @param {*} tag The element to load the series into
+ * @param {*} seriesName The name of the series in the database
+ */
+function loadSeries(tag, seriesName) {
+    getMessageSeries(seriesName, series => populateMessageSeriesBlock(tag, series));
 }
 
-function appendLoadingBlock(tag) {
-    var loadingTag = document.createElement("h3");
-    loadingTag.className = "ag-loading";
-    loadingTag.innerHTML = "Loading";
-    tag.appendChild(loadingTag);
-    return loadingTag;
+/**
+ * Loads a message by ID into an element
+ * @param {*} tag The element to load the message into
+ * @param {*} messageId The ID of the message in the database
+ */
+function loadMessage(tag, messageId) {
+    var messageTag = appendMessageBlock(tag, messageId);
+    getMessage(messageId, data => populateMessageBlock(messageTag, data));
 }
 
-function removeLoadingBlock(tag) {
-    if(tag == null) {
-        return;
-    }
-    tag.remove();
-}
-
-function loadSeries(i, tag) {
-    getMessageSeries(tag.id, series => populateMessageSeriesBlock(tag, series));
-}
-
-function loadMessage(tag, message) {
-    var messageTag = appendMessageBlock(tag, message);
-    getMessage(message, data => populateMessageBlock(messageTag, data));
-}
-
+// On document ready, find all message series blocks and populate them
 $(document).ready(function() {
     var messageSeriesBlocks = $("div.message-series-block");
     console.log(`Number of message series blocks: ${messageSeriesBlocks.length}`);
-
-    messageSeriesBlocks.each(loadSeries);
+    messageSeriesBlocks.each((i, tag) => loadSeries(tag, tag.id)); // tag.id == seriesName
 });
