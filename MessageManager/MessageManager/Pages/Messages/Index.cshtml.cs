@@ -112,7 +112,7 @@ namespace MessageManager.Pages.Messages
                     messages = messages.OrderByDescending(m => m.Date);
                     break;
             }
-            Messages = (messages.AsEnumerable()).Distinct().ToList();
+            Messages = (await messages.ToListAsync()).Distinct().ToList();
         }
 
         IQueryable<Message> GetAllMessages()

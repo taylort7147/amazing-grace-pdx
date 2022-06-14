@@ -75,6 +75,25 @@ namespace MessageManager.Models
             }
         }
 
+        [NotMapped]
+        [Editable(false)]
+        [Display(Name = "Bible References")]
+        public List<string> BibleReferencesStringList
+        {
+            get
+            {
+                var list = new List<string>();
+                if (BibleReferences == null)
+                {
+                    return list;
+                }
+
+                var bibleReferenceStrings = BibleReferences.Select(x => x.ToFriendlyString());
+                return bibleReferenceStrings.ToList();
+            }
+
+        }
+
         public override string ToString()
         {
             return $"Message(Id={Id}, " +

@@ -23,21 +23,26 @@ namespace MessageManager.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(string series)
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(string series, bool? loadContent)
         {
             if (!string.IsNullOrEmpty(series))
             {
-                return await GetMessagesBySeries(series);
+                return await GetMessagesBySeries(series, loadContent);
             }
 
-            return await _context.Message
+            if(loadContent == null || loadContent == true)
+            {
+                _context.Message
                    .Include(m => m.Series)
                    .Include(m => m.Audio)
                    .Include(m => m.Video)
                    .Include(m => m.Notes)
-                   .Include(m => m.BibleReferences)
-                   .OrderByDescending(m => m.Date)
-                   .ToListAsync();
+                   .Include(m => m.BibleReferences);
+            }
+                   
+            return await _context.Message
+                .OrderByDescending(m => m.Date)
+                .ToListAsync();
         }
 
         [AllowAnonymous]
@@ -60,7 +65,7 @@ namespace MessageManager.Controllers
             return message;
         }
 
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySeries(string series)
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySeries(string series, bool? loadContent)
         {
             var selectedSeries = await _context.Series.FirstOrDefaultAsync(s => s.Name.ToLower() == series.ToLower());
             if (selectedSeries == null)
@@ -70,13 +75,18 @@ namespace MessageManager.Controllers
 
             await _context.Entry(selectedSeries).Collection(s => s.Messages).LoadAsync();
             selectedSeries.Messages = selectedSeries.Messages.OrderBy(m => m.Date);
-            foreach (var message in selectedSeries.Messages)
+
+            if(loadContent == null || loadContent == true)
             {
-                await _context.Entry(message).Reference(m => m.Video).LoadAsync();
-                await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
-                await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
-                await _context.Entry(message).Reference(m => m.BibleReferences).LoadAsync();
+                foreach (var message in selectedSeries.Messages)
+                {
+                    await _context.Entry(message).Reference(m => m.Video).LoadAsync();
+                    await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
+                    await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
+                    await _context.Entry(message).Collection(m => m.BibleReferences).LoadAsync();
+                }
             }
+
             var messages = selectedSeries.Messages.ToList();
 
             if (messages == null)
