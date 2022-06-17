@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MessageManager.Data;
 using MessageManager.Models;
+using MessageManager.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -172,6 +173,24 @@ namespace MessageManager.Controllers
                           .Take(n.GetValueOrDefault(1))
                           .ToListAsync();
 
+            if (messages == null)
+            {
+                return NotFound();
+            }
+
+            return messages;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Message>>> SearchMessages(string searchText)
+        {
+            var result = MessageSearch.FindAnywhere(_context, searchText);
+            if(!result.Success)
+            {
+                return NotFound();
+            }
+            var messages = await result.Messages.ToListAsync();
             if (messages == null)
             {
                 return NotFound();

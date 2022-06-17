@@ -7,7 +7,7 @@
     var tooltipShowDelay = 750;
     var tooltipHideDelay = 0;
     var searchStringRaw = ViewData["CurrentSearch"] as string;
-    var searchCriteria = Search.GetCriteria(searchStringRaw);
+    var searchCriteria = MessageSearch.GetCriteria(searchStringRaw);
     var searchString = searchCriteria.SearchString;
 
     static string TransformBold(string s)
