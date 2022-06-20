@@ -169,6 +169,7 @@ namespace MessageManager.Utility
             if (validationResult != ValidationResult.Success)
             {
                 result.Messages = GetNoMessages(context);
+                result.Success = false;
                 ((List<string>)result.Errors).Add(validationResult.ErrorMessage);
                 return result;
             }
