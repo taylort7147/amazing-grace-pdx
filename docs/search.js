@@ -5,7 +5,7 @@
 
 function populateSearchContainer(parentTag, id){
     var searchBoxTag = document.createElement("div");
-    searchBoxTag.className = "input-group mb-3";
+    searchBoxTag.className = "input-group mb-3 ag-search";
     parentTag.appendChild(searchBoxTag);
 
     var formTag = document.createElement("div");
