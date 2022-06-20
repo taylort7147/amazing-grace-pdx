@@ -181,22 +181,34 @@ namespace MessageManager.Controllers
             return messages;
         }
 
+        public class SearchResult
+        {
+            public bool Success { get; set; }
+            public IEnumerable<string> Errors { get; set; }
+            public IEnumerable<Message> Messages { get; set; }
+            public IEnumerable<string> MatchingBibleReferences { get; set; }
+        }
+
         [AllowAnonymous]
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Message>>> SearchMessages(string searchText)
+        public async Task<ActionResult<SearchResult>> SearchMessages(string searchText)
         {
+            var searchResult = new SearchResult();
             var result = MessageSearch.FindAnywhere(_context, searchText);
+            searchResult.Success = result.Success;
+            searchResult.Errors = result.Errors;
             if(!result.Success)
             {
-                return NotFound();
-            }
-            var messages = await result.Messages.ToListAsync();
-            if (messages == null)
-            {
-                return NotFound();
+                return searchResult;
             }
 
-            return messages;
+            searchResult.Messages = await result.Messages.ToListAsync();
+            searchResult.MatchingBibleReferences = result.MatchingBibleReferences;
+            if (searchResult.Messages == null)
+            {
+                searchResult.Messages = new List<Message>();
+            }
+            return searchResult;           
         }
 
     }
