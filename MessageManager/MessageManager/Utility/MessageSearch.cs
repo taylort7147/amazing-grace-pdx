@@ -169,7 +169,7 @@ namespace MessageManager.Utility
             if (validationResult != ValidationResult.Success)
             {
                 result.Messages = GetNoMessages(context);
-                result.Errors.Append(validationResult.ErrorMessage);
+                ((List<string>)result.Errors).Add(validationResult.ErrorMessage);
                 return result;
             }
 
@@ -198,7 +198,7 @@ namespace MessageManager.Utility
                         (m, r) => m);
                 foreach (var reference in matchingReferences)
                 {
-                    result.MatchingBibleReferences.Append(reference.ToFriendlyString());
+                    ((List<string>)result.MatchingBibleReferences).Add(reference.ToFriendlyString());
                 }
             }
             return result;
