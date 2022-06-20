@@ -402,7 +402,11 @@ function loadMessage(tag, messageId, cb) {
 }
 
 function loadSearchResults(tag, searchText) {
-    getSearchResults(searchText, result => processSearchResults(tag, searchText, result));
+    var loadingTag = appendLoadingBlock(tag);
+    getSearchResults(searchText, result => {
+        removeLoadingBlock(loadingTag);
+        processSearchResults(tag, searchText, result);
+    });
 }
 
 function processSearchResults(tag, searchText, result) {
@@ -412,8 +416,15 @@ function processSearchResults(tag, searchText, result) {
     console.log("Search text list: ");
     console.log(searchTextList); 
     if(result.success) {
-        var matchingText = searchTextList.concat(result.matchingBibleReferences)
-        populateSearchResults(tag, result.messages, matchingText);
+        if(result.messages.length == 0) {
+            var noResultsTag = document.createElement("span");
+            noResultsTag.innerHTML = "No results found";
+            tag.appendChild(noResultsTag);
+        }
+        else{
+            var matchingText = searchTextList.concat(result.matchingBibleReferences)
+            populateSearchResults(tag, result.messages, matchingText);
+        }
     }
     else {
         var ul = document.createElement("ul");
