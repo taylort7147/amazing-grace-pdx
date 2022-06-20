@@ -512,6 +512,8 @@ a.ag-btn:disabled {
 .ag-search .btn {
     background-color: var(--bg-color-primary);
     border-color: var(--bg-color-primary);
+    color: var(--fg-color-primary);
+    width: auto;
 }
 
 .ag-search *:first-child {

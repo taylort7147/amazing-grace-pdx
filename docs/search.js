@@ -20,7 +20,7 @@ function populateSearchContainer(parentTag, id){
     formTag.appendChild(inputTag);
 
     var buttonTag = document.createElement("button");
-    buttonTag.type = "button";
+    buttonTag.type = "search";
     buttonTag.className = "btn btn-primary";
     buttonTag.innerHTML = "Search"
     formTag.appendChild(buttonTag);        
