@@ -4,6 +4,13 @@ function formatDate(dateString) {
     return formattedDate;
 }
 
+function removeChildElements(parent) {
+    while(parent.lastChild) {
+        parent.removeChild(parent.lastChild);
+    }
+    return parent;
+}
+
 function appendHiddenDiv(parentTag, activatorTag) {
     var divTag = document.createElement("div");
     divTag.classList.add("hidden");

@@ -112,6 +112,7 @@ function appendMessageBlockBody(parentTag, message) {
             function fInner(bibleReference) {
                 var listItemTag = document.createElement("li");
                 listItemTag.innerHTML = bibleReference;
+                listItemTag.className = "ag-message-block-bible-reference";
                 listTag.appendChild(listItemTag);
             };
             return fInner;
@@ -289,6 +290,30 @@ function populateMessageBlock(tag, message) {
         return tag;
 }
 
+function highlightText(messageTag, text) {
+    console.log(`Highlight text: ${text}`);
+    var targetTags = [];
+    targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-title")));
+    targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-description")));
+    targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-bible-reference")));
+    targetTags.forEach(t => {
+        var re = new RegExp(text, "i");
+        t.innerHTML = t.innerHTML.replace(re, "<span style=\"font-weight:bold\">$&</span>");
+        console.log(t.innerHTML);
+    });
+
+}
+
+function populateSearchResults(parentTag, messages, highlightTexts) {
+    messages.forEach(m => {
+        loadMessage(parentTag, m.id, messageTag => {
+            // Reverse sort the list to make sure supersets are highlighted first
+            sortedHighlightedTexts = highlightTexts.sort().reverse(); 
+            highlightTexts.forEach(text => highlightText(messageTag, text));
+        });
+    });
+}
+
 // 
 /**
  * Populates a message series block by appending message blocks and loading 
@@ -312,9 +337,9 @@ function populateMessageSeriesBlock(seriesTag, series) {
 }
 
 /**
- * Gets a series' details without loading message content and calls a callback
+ * Gets a series' details without loading message content and invokes a callback
  * @param {*} seriesName The name of the series in the database
- * @param {*} cb JQuery callback
+ * @param {*} cb JQuery callback to invoke with the returned series
  */
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
@@ -325,14 +350,27 @@ function getMessageSeries(seriesName, cb) {
 }
 
 /**
- * Gets a single message's details and calls a callback
- * @param {*} messageId
- * @param {*} cb 
+ * Gets a single message's details and invokes a callback
+ * @param {*} messageId The ID of the message in the database
+ * @param {*} cb JQuery callback to invoke with the returned message
  */
 function getMessage(messageId, cb) {
     console.log(`Getting message: ${messageId}`);
     var seriesUri = encodeURIComponent(messageId);
     var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/${seriesUri}`
+    console.log(`URI: ${uri}`);
+    $.getJSON(uri, cb);
+}
+
+/**
+ * Loads a collection of messages based on search text and invokes a callback
+ * @param {*} searchText The text to search for
+ * @param {*} cb JQuery callback to invoke with the returned messages
+ */
+function getSearchResults(searchText, cb) {
+    console.log(`Search: ${searchText}`);
+    var searchUri = encodeURIComponent(searchText);
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/search?searchText=${searchUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
@@ -350,8 +388,43 @@ function loadSeries(tag, seriesName) {
  * Loads a message by ID into an element
  * @param {*} tag The element to load the message into
  * @param {*} messageId The ID of the message in the database
+ * @param {*} cb Callback to invoke with the loaded message
  */
-function loadMessage(tag, messageId) {
+function loadMessage(tag, messageId, cb) {
     var messageTag = appendMessageBlock(tag, messageId);
-    getMessage(messageId, data => populateMessageBlock(messageTag, data));
+    getMessage(messageId, data => {
+        populateMessageBlock(messageTag, data);
+        if(cb)
+        {
+            cb(messageTag);
+        }
+    });
+}
+
+function loadSearchResults(tag, searchText) {
+    getSearchResults(searchText, result => processSearchResults(tag, searchText, result));
+}
+
+function processSearchResults(tag, searchText, result) {
+    console.log("Search result:");
+    console.log(result);
+    var searchTextList = searchText.split();
+    console.log("Search text list: ");
+    console.log(searchTextList); 
+    if(result.success) {
+        var matchingText = searchTextList.concat(result.matchingBibleReferences)
+        populateSearchResults(tag, result.messages, matchingText);
+    }
+    else {
+        var ul = document.createElement("ul");
+        ul.className = "ag-error";
+        tag.appendChild(ul);
+
+        result.errors.forEach(e => {
+            var li = document.createElement("li");
+            li.className = "ag-error-item";
+            li.innerHTML = e;
+            ul.appendChild(li);
+        });
+    }
 }
