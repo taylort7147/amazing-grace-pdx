@@ -125,6 +125,25 @@ namespace MessageManager.Utility
             return messages;
         }
 
+        public static Result Search(in MessageContext context, Criteria criteria)
+        {
+            var result = new Result();
+            switch (criteria.Type)
+            {
+                case Type.FindAnywhere:
+                        return FindAnywhere(context, criteria.SearchString);
+                case Type.FindByBibleReference:
+                        return FindByBibleReference(context, criteria.SearchString);
+                case Type.FindByMessage:
+                        return FindByMessage(context, criteria.SearchString);
+                case Type.FindBySeries:
+                        return FindBySeries(context, criteria.SearchString);
+                case Type.FindAll:
+                default:
+                        return FindAll(context);
+            }
+        }
+
         public static Result FindAll(in MessageContext context)
         {
             var result = new Result();

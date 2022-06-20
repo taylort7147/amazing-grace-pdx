@@ -194,7 +194,9 @@ namespace MessageManager.Controllers
         public async Task<ActionResult<SearchResult>> SearchMessages(string searchText)
         {
             var searchResult = new SearchResult();
-            var result = MessageSearch.FindAnywhere(_context, searchText);
+            var criteria = MessageSearch.GetCriteria(searchText);
+            var result = MessageSearch.Search(_context, criteria);
+            
             searchResult.Success = result.Success;
             searchResult.Errors = result.Errors;
             if(!result.Success)

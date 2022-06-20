@@ -51,38 +51,10 @@ namespace MessageManager.Pages.Messages
             ViewData["SearchErrorMessage"] = null;
             Messages = new List<Message>();
             MatchingBibleReferences = new List<string>();
-            var result = new MessageSearch.Result();
 
             var searchCriteria = MessageManager.Utility.MessageSearch.GetCriteria(searchString);
-            switch (searchCriteria.Type)
-            {
-                case MessageSearch.Type.FindAnywhere:
-                    {
-                        result = MessageSearch.FindAnywhere(_context, searchCriteria.SearchString);
-                    }
-                    break;
-                case MessageSearch.Type.FindByBibleReference:
-                    {
-                        result = MessageSearch.FindByBibleReference(_context, searchCriteria.SearchString);
-                    }
-                    break;
-                case MessageSearch.Type.FindByMessage:
-                    {
-                        result = MessageSearch.FindByMessage(_context, searchCriteria.SearchString);
-                    }
-                    break;
-                case MessageSearch.Type.FindBySeries:
-                    {
-                        result = MessageSearch.FindBySeries(_context, searchCriteria.SearchString);
-                    }
-                    break;
-                case MessageSearch.Type.FindAll:
-                default:
-                    {
-                        result = MessageSearch.FindAll(_context);
-                    }
-                    break;
-            }
+            var result = MessageSearch.Search(_context, searchCriteria);
+
             if(!result.Success)
             {
                 ViewData["SearchErrorMessage"] = string.Join("<br>", result.Errors);
