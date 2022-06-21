@@ -166,7 +166,7 @@ The end result can be seen here: http://amazinggracepdx.com/messages-1
 
 ### Message Series Pages
 
-Each message series has its own page. Each message in the series is is represented as a title with links to the video, audio, and notes.
+Each message series has its own page. Each message in the series is represented as a card with a title, date, description, Bible references, and links to the video, audio, and notes.
 
 ![Message series](images/ex_card_message_series.png)
 
@@ -178,9 +178,9 @@ The message series page is made up of one HTML block. The block contains a `<div
 <script type="text/javascript" src="https://taylort7147.github.io/amazing-grace-pdx/message_series.js">
 ```
 
-For any missing link in the details for any particular message, the button for that link will be greyed out and disabled.
+For any missing link in a message, the button for that link will be omitted. In the following example, the "notes" button has been omitted.
 
-![Disabled links](images/ex_card_empty_message.png)
+![Disabled links](images/ex_card_missing_link.png)
 
 The end result can be seen here:
 http://amazinggracepdx.com/seeing-reality-as-it-is
@@ -189,4 +189,5 @@ http://amazinggracepdx.com/seeing-reality-as-it-is
 
 ### How are the scripts hosted?
 
-The scripts are hosted via the *GitHub Pages* for this project, located at https://taylort7147.github.io/amazing-grace-pdx. *GitHub Pages* must be enabled in the project settings for this to work.
+The scripts are hosted via the *GitHub Pages* for this project
+, located at https://taylort7147.github.io/amazing-grace-pdx. *GitHub Pages* must be enabled in the project settings for this to work.

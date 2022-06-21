@@ -8,6 +8,7 @@ The current database is a MSSQL database hosted on Azure.
 
 Database tables:
 * Message
+* Bible Reference
 * Video
 * Audio
 * Notes
@@ -20,8 +21,18 @@ Database tables:
 * *Date* - The date of the message
 * *VideoId* - The ID of the video, for locating in the Video table
 * *AudioId* - The ID of the audio, for locating in the Audio table
-* *title* - The title of the message
-* *description* - A short description of the message. This usually includes the Bible passage. On the website, the contents of this field are displayed  when hovering over the title in message series pages.
+* *NotesId* - The ID of the notes, for locating in the Notes table
+
+### Bible Reference Table
+Bible references are represented as a range of integer indices for book, chapter, and verse (e.g., "Genesis 3:5-7" would be stored as [1, 3, 5] - [1, 3, 7]). This is for simplicity of querying in the database, allowing quick look-ups and range-based queries. This project contains a custom parser which can convert between this index representation and friendly names.
+* *Id* - The ID of this entry in the table
+* *StartBook* - The range start book
+* *StartChapter* - The range start chapter
+* *StartVerse* - The range start verse
+* *EndBook* - The range end book
+* *EndChapter* - The range end chapter
+* *EndVerse* - The range end verse
+* *MessageId* - The ID of the message, for locating in the Message table
 
 ### Video Table
 * *Id* - The ID of this entry in the table
