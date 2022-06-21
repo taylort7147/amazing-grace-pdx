@@ -35,7 +35,7 @@
 
 This tutorial assumes you have set up the sermon series in the database ahead of time, so you should have an existing entry for each message in the sermon series. If you haven't then refer back to [this tutorial](tutorial-adding-a-new-series.md).
 
-Before adding any of the links, the video, audio, and notes buttons will be disabled since all the links are empty.
+Before adding any of the links, the video, audio, and notes buttons will be disabled since all the links are empty. There will also be no background image, as that is retrieved from the YouTube thumbnails. Instead, the background will be a gradient of primary background color to white by default.
 
 ![Empty message](images/ex_card_empty_message.png)
 
