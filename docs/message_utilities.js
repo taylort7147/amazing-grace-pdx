@@ -257,37 +257,35 @@ function appendMessageBlock(parentTag, message) {
  * @returns The original message block element
  */
 function populateMessageBlock(tag, message) {
-        // Image
-        if(message.videoId) {
-            var imageContainerTag = document.createElement("div");
-            imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
-            tag.appendChild(imageContainerTag);
+    tag.classList.remove("hidden");
+    // Image
+    var imageContainerTag = document.createElement("div");
+    imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
+    tag.appendChild(imageContainerTag);
     
-            var imageTag = document.createElement("div");
-            imageTag.className = "ag-message-block-background";
-            imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(message.video)})`
-            imageContainerTag.appendChild(imageTag)
-    
-    
-            var imageOverlayTag = document.createElement("div");
-            imageOverlayTag.className = "ag-message-block-background-overlay";
-            imageContainerTag.appendChild(imageOverlayTag);
+    var imageTag = document.createElement("div");
+    imageTag.className = "ag-message-block-background";
+    if(message.videoId) {
+        imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(message.video)})`
+    }
+    imageContainerTag.appendChild(imageTag)
 
-            tag.classList.remove("hidden");
-        }
-    
-        // Header
-        appendMessageBlockHeader(tag, message);
-    
-        // Body
-        if(message.description || message.bibleReferencesStringList.length > 0) {
-            appendMessageBlockBody(tag, message);
-        }
-    
-        // Footer
-        appendMessageBlockFooter(tag, message);
+    var imageOverlayTag = document.createElement("div");
+    imageOverlayTag.className = "ag-message-block-background-overlay";
+    imageContainerTag.appendChild(imageOverlayTag);
 
-        return tag;
+    // Header
+    appendMessageBlockHeader(tag, message);
+
+    // Body
+    if(message.description || message.bibleReferencesStringList.length > 0) {
+        appendMessageBlockBody(tag, message);
+    }
+
+    // Footer
+    appendMessageBlockFooter(tag, message);
+
+    return tag;
 }
 
 function highlightText(messageTag, text) {
