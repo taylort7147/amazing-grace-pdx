@@ -28,6 +28,7 @@ To make the elements from this project match the theme, enter the following into
 ```css
 :root{
     --bg-color-primary: #61ADEB;
+    --fg-color-primary: white;
 }
 ```
 
