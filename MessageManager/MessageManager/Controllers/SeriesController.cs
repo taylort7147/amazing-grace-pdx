@@ -71,5 +71,19 @@ namespace MessageManager.Controllers
 
             return message.Series;
         }
+
+        [AllowAnonymous]
+        [HttpGet("{name}")]
+        public async Task<ActionResult<Series>> GetSeries(string name, bool? loadContent)
+        {
+            var series = _context.Series.Where(s => s.Name == name);
+            var shouldLoadContent = (loadContent == null) || (loadContent == true);
+            if(shouldLoadContent)
+            {
+                series.Include(s => s.Messages);
+            }
+
+            return await series.FirstOrDefaultAsync();
+        }
     }
 }
