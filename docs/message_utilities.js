@@ -317,19 +317,35 @@ function populateSearchResults(parentTag, messages, highlightTexts) {
  * Populates a message series block by appending message blocks and loading 
  * their details
  * @param {*} seriesTag The series element to populate
- * @param {*} series  Series returned by /api/series/{id}
+ * @param {*} series  Series returned by /api/series/{name}
  * @returns The original series element
  */
 function populateMessageSeriesBlock(seriesTag, series) {
     console.log(seriesTag);
     if (series == null) {
+        console.log("No series found");
+        return;
+    }
+    if (series.messages == null || series.messages.length == 0) {
         console.log("No messages found for series");
         return;
     }
-    console.log(`Series: (${series.length} entries)`);
-    console.log(series);
-    console.log(typeof(series));
-    series.forEach(message => loadMessage(seriesTag, message.id));
+
+    var titleTag = document.createElement("h1");
+    titleTag.className = "ag-series-title";
+    titleTag.innerHTML = series.name;
+    seriesTag.appendChild(titleTag);
+
+    var descriptionTag = document.createElement("span");
+    descriptionTag.classList = "ag-series-description";
+    descriptionTag.innerHTML = series.description;
+    seriesTag.appendChild(descriptionTag);
+
+    console.log(`Series: (${series.messages.length} entries)`);
+    console.log(series.messages);
+    series.messages.forEach(message => {
+        loadMessage(seriesTag, message.id);
+    });
 
     return seriesTag
 }
@@ -341,8 +357,9 @@ function populateMessageSeriesBlock(seriesTag, series) {
  */
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
-    var seriesUri = encodeURIComponent(seriesName);
-    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages?series=${seriesUri}&loadContent=false`
+    var seriesUri = encodeURI(seriesName);
+    // TODO: Actually load the series, not just the messages.
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/series/byname?name=${seriesUri}&loadMessages=true`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
