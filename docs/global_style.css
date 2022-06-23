@@ -38,12 +38,17 @@
     display: none;
 }
 
+.ag-search-results:empty + a {
+    display: none;    
+}
+
 .ag-text {
     color: var(--fg-color-primary)!important;
 }
 
 .ag-center {
-    text-align: center!important;
+    display: block;
+    text-align: center !important;
 }
 
 .ag-btn-group {

@@ -4,6 +4,10 @@
 
 
 function populateSearchContainer(parentTag, id){
+    var anchorTag = document.createElement("a");
+    anchorTag.id = "top";
+    parentTag.appendChild(anchorTag);
+
     var searchBoxTag = document.createElement("div");
     searchBoxTag.className = "input-group mb-3 ag-search";
     parentTag.appendChild(searchBoxTag);
@@ -28,6 +32,12 @@ function populateSearchContainer(parentTag, id){
     var resultsTag = document.createElement("div");
     resultsTag.className = "ag-search-results";
     parentTag.appendChild(resultsTag);
+    
+    var toTopTag = document.createElement("a");
+    toTopTag.href = "#top";
+    toTopTag.innerHTML = "Back to top";
+    toTopTag.className = "ag-center ag-fill";
+    parentTag.appendChild(toTopTag);
     
     var searchFunction = () => search(resultsTag, inputTag.value);
     buttonTag.onclick = searchFunction;
