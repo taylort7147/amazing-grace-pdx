@@ -420,7 +420,17 @@ function loadSearchResults(tag, searchText) {
     var loadingTag = appendLoadingBlock(tag);
     getSearchResults(searchText, result => {
         removeLoadingBlock(loadingTag);
+
+        if(result.messages.length > 0) {
+            var clearSearchTag = document.createElement("button");
+            clearSearchTag.className = "btn btn-secondary ag-clear ag-center";
+            clearSearchTag.innerHTML = "Clear Results";
+            clearSearchTag.onclick = e => removeChildElements(tag);
+            tag.appendChild(clearSearchTag);
+        }
+
         processSearchResults(tag, searchText, result);
+
     });
 }
 
