@@ -295,7 +295,7 @@ function highlightText(messageTag, text) {
     targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-description")));
     targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-bible-reference")));
     targetTags.forEach(t => {
-        var re = new RegExp(text, "i");
+        var re = new RegExp(text, "ig");
         t.innerHTML = t.innerHTML.replace(re, "<span style=\"font-weight:bold\">$&</span>");
         console.log(t.innerHTML);
     });
