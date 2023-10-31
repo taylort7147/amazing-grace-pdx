@@ -31,33 +31,19 @@ namespace MessageManager.Controllers
                 return await GetMessagesBySeries(series, loadContent);
             }
 
-            var selectedMessages = _context.Message.OrderByDescending(m => m.Date);
-
-            if (selectedMessages == null)
-            {
-                return NotFound();
-            }
-
             if(loadContent == null || loadContent == true)
             {
-                foreach (var message in selectedMessages)
-                {
-                    await _context.Entry(message).Reference(m => m.Series).LoadAsync();
-                    await _context.Entry(message).Reference(m => m.Video).LoadAsync();
-                    await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
-                    await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
-                    await _context.Entry(message).Collection(m => m.BibleReferences).LoadAsync();
-                }
+                _context.Message
+                   .Include(m => m.Series)
+                   .Include(m => m.Audio)
+                   .Include(m => m.Video)
+                   .Include(m => m.Notes)
+                   .Include(m => m.BibleReferences);
             }
-
-            var messages = selectedMessages.ToList();
-
-            if (messages == null)
-            {
-                return NotFound();
-            }
-
-            return messages;
+                   
+            return await _context.Message
+                .OrderByDescending(m => m.Date)
+                .ToListAsync();
         }
 
         [AllowAnonymous]
@@ -80,7 +66,6 @@ namespace MessageManager.Controllers
             return message;
         }
 
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySeries(string series, bool? loadContent)
         {
             var selectedSeries = await _context.Series.FirstOrDefaultAsync(s => s.Name.ToLower() == series.ToLower());
@@ -91,13 +76,18 @@ namespace MessageManager.Controllers
 
             await _context.Entry(selectedSeries).Collection(s => s.Messages).LoadAsync();
             selectedSeries.Messages = selectedSeries.Messages.OrderBy(m => m.Date);
-            foreach (var message in selectedSeries.Messages)
+
+            if(loadContent == null || loadContent == true)
             {
-                await _context.Entry(message).Reference(m => m.Video).LoadAsync();
-                await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
-                await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
-                await _context.Entry(message).Collection(m => m.BibleReferences).LoadAsync();
+                foreach (var message in selectedSeries.Messages)
+                {
+                    await _context.Entry(message).Reference(m => m.Video).LoadAsync();
+                    await _context.Entry(message).Reference(m => m.Audio).LoadAsync();
+                    await _context.Entry(message).Reference(m => m.Notes).LoadAsync();
+                    await _context.Entry(message).Collection(m => m.BibleReferences).LoadAsync();
+                }
             }
+
             var messages = selectedSeries.Messages.ToList();
 
             if (messages == null)
