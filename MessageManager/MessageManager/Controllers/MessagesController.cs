@@ -31,9 +31,11 @@ namespace MessageManager.Controllers
                 return await GetMessagesBySeries(series, loadContent);
             }
 
+            IQueryable<Message> messages = _context.Message;
+
             if(loadContent == null || loadContent == true)
             {
-                _context.Message
+                messages = messages
                    .Include(m => m.Series)
                    .Include(m => m.Audio)
                    .Include(m => m.Video)
@@ -41,7 +43,7 @@ namespace MessageManager.Controllers
                    .Include(m => m.BibleReferences);
             }
                    
-            return await _context.Message
+            return await messages
                 .OrderByDescending(m => m.Date)
                 .ToListAsync();
         }
