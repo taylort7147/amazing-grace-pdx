@@ -19,6 +19,6 @@ function appendNotesBlock(tag, link) {
     tag.appendChild(notesTag);
 }
 
-$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_notes", function(data) {
+$.getJSON("https://message-manager.uptheirons.net/api/messages/latest_notes", function(data) {
     onNotesReady(data[0]);
 });

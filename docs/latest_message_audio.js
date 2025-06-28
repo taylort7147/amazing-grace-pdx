@@ -23,6 +23,6 @@ function appendAudioBlock(tag, link) {
     tag.appendChild(audioTag);
 }
 
-$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_audio", function(data) {
+$.getJSON("https://message-manager.uptheirons.net/api/messages/latest_audio", function(data) {
     onAudioReady(data[0]);
 });

@@ -359,7 +359,7 @@ function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
     var seriesUri = encodeURI(seriesName);
     // TODO: Actually load the series, not just the messages.
-    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/series/byname?name=${seriesUri}&loadMessages=true`
+    var uri = `https://message-manager.uptheirons.net/api/series/byname?name=${seriesUri}&loadMessages=true`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
@@ -372,7 +372,7 @@ function getMessageSeries(seriesName, cb) {
 function getMessage(messageId, cb) {
     console.log(`Getting message: ${messageId}`);
     var seriesUri = encodeURIComponent(messageId);
-    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/${seriesUri}`
+    var uri = `https://message-manager.uptheirons.net/api/messages/${seriesUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
