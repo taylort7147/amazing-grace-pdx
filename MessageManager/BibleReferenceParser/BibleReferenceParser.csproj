@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,8 +16,9 @@
   </ItemGroup>
   
   <Target Name="Generate Grammars"  BeforeTargets="BeforeBuild">
-    <Message Text="Generating grammars" />
-    <Exec Command="call $(MSBuildProjectDirectory)\scripts\build_grammar.bat" />
+    <Message Text="Generating grammars" />    
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="call $(MSBuildProjectDirectory)\scripts\build_grammar.bat" />
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="bash '$(MSBuildProjectDirectory)/scripts/build_grammar.sh'" />
     <ItemGroup>
       <Compile Include="$(MSBuildProjectDirectory)\src\Grammar\Generated\*.cs" Exclude="@(Compile)" />
     </ItemGroup>
