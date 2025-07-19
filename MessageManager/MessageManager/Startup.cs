@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Areas.Identity.Data;
 using MessageManager.Data;
+using MessageManager.Data.Nucleus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -85,6 +86,7 @@ namespace MessageManager
             });
 
             services.AddDbContext<MessageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MessageDb")));
+            services.AddDbContext<NucleusContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NucleusDb")));
             services.AddMvc(config =>
                     {
                         var policy = new AuthorizationPolicyBuilder()

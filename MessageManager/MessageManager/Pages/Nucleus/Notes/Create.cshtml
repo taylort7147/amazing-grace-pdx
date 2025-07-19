@@ -1,0 +1,36 @@
+@page
+@model MessageManager.Pages.Nucleus.Notes.CreateModel
+
+        @{
+        ViewData["Title"] = "Create";
+        }
+        
+        <h1>Create</h1>
+        
+    <h4>Notes</h4>
+    <hr />
+    <div class="row">
+    <div class="col-md-4">
+    <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Notes.NotesId" class="control-label"></label>
+                <input asp-for="Notes.NotesId" class="form-control" />
+                <span asp-validation-for="Notes.NotesId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notes.NucleusNotesId" class="control-label"></label>
+                <input asp-for="Notes.NucleusNotesId" class="form-control" />
+                <span asp-validation-for="Notes.NucleusNotesId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
