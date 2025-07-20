@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MessageManager.Models.Nucleus
 {
+    [Index(nameof(NotesId), IsUnique = true)]
     public class Notes
     {
         public int Id { get; set; }

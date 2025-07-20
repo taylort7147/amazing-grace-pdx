@@ -17,6 +17,12 @@
                 @Html.DisplayNameFor(model => model.Sermon[0].MessageId)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Sermon[0].NucleusChurchId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sermon[0].NucleusSermonEngineId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Sermon[0].NucleusSermonId)
             </th>
             <th></th>
@@ -27,6 +33,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.MessageId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NucleusChurchId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NucleusSermonEngineId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NucleusSermonId)

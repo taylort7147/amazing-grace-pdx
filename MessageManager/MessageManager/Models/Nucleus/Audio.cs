@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MessageManager.Models.Nucleus
 {
+    [Index(nameof(AudioId), IsUnique = true)]
     public class Audio
     {
         public int Id { get; set; }

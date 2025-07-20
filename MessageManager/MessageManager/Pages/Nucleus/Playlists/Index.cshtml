@@ -17,6 +17,12 @@
                 @Html.DisplayNameFor(model => model.Playlist[0].SeriesId)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Playlist[0].NucleusChurchId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Playlist[0].NucleusSermonEngineId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Playlist[0].NucleusPlaylistId)
             </th>
             <th></th>
@@ -27,6 +33,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SeriesId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NucleusChurchId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NucleusSermonEngineId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NucleusPlaylistId)
