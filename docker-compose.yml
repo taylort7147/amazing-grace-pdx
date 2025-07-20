@@ -19,7 +19,8 @@ services:
         required: false
     environment:
         - ConnectionStrings__MessageDb=${MESSAGE_MANAGER_MESSAGE_DB_CONNECTION_STRING}
-        - ConnectionStrings__IdentityDb=${MESSAGE_MANAGER_MESSAGE_DB_CONNECTION_STRING}
+        - ConnectionStrings__IdentityDb=${MESSAGE_MANAGER_IDENTITY_DB_CONNECTION_STRING}
+        - ConnectionStrings__NucleusDb=${MESSAGE_MANAGER_NUCLEUS_DB_CONNECTION_STRING}
     depends_on:
       - database
 
@@ -41,6 +42,7 @@ services:
       - ${MESSAGE_MANAGER_DB_PORT}:1433
     volumes:
       - sqldata:/var/opt/mssql
+      - ${MESSAGE_MANAGER_DB_BACKUP_DIR}:/var/opt/mssql/backup
 
 networks:
   message-manager-network:
