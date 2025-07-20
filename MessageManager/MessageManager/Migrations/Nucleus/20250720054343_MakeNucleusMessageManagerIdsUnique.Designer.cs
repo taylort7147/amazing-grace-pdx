@@ -3,6 +3,7 @@ using MessageManager.Data.Nucleus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessageManager.Migrations.Nucleus
 {
     [DbContext(typeof(NucleusContext))]
-    partial class NucleusContextModelSnapshot : ModelSnapshot
+    [Migration("20250720054343_MakeNucleusMessageManagerIdsUnique")]
+    partial class MakeNucleusMessageManagerIdsUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
