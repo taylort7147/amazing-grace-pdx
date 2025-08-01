@@ -59,7 +59,7 @@ function onResultsReady(results) {
 }
 
 var videoBarrier = new Barrier(["api", "message"], onResultsReady);
-$.getJSON("https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/latest_video", function(data) {
+$.getJSON("https://message-manager.uptheirons.net/api/messages/latest_video", function(data) {
     videoBarrier.addResult("message", data[0]);
 });
 

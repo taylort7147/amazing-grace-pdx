@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MessageManager.Areas.Identity.Authorization;
 using MessageManager.Areas.Identity.Data;
 using MessageManager.Data;
+using MessageManager.Data.Nucleus;
 using MessageManager.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,7 @@ namespace MessageManager
                 {
                     services.GetRequiredService<MessageContext>().Database.Migrate();
                     services.GetRequiredService<IdentityContext>().Database.Migrate();
+                    services.GetRequiredService<NucleusContext>().Database.Migrate();
                     CreateUserRoles(services).Wait();
                 }
                 catch (Exception ex)

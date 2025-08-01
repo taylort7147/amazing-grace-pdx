@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MessageManager.Data;
 using MessageManager.Models;
+using MessageManager.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,9 +31,11 @@ namespace MessageManager.Controllers
                 return await GetMessagesBySeries(series, loadContent);
             }
 
+            IQueryable<Message> messages = _context.Message;
+
             if(loadContent == null || loadContent == true)
             {
-                _context.Message
+                messages = messages
                    .Include(m => m.Series)
                    .Include(m => m.Audio)
                    .Include(m => m.Video)
@@ -40,7 +43,7 @@ namespace MessageManager.Controllers
                    .Include(m => m.BibleReferences);
             }
                    
-            return await _context.Message
+            return await messages
                 .OrderByDescending(m => m.Date)
                 .ToListAsync();
         }
@@ -178,6 +181,38 @@ namespace MessageManager.Controllers
             }
 
             return messages;
+        }
+
+        public class SearchResult
+        {
+            public bool Success { get; set; }
+            public IEnumerable<string> Errors { get; set; }
+            public IEnumerable<Message> Messages { get; set; }
+            public IEnumerable<string> MatchingBibleReferences { get; set; }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<ActionResult<SearchResult>> SearchMessages(string searchText)
+        {
+            var searchResult = new SearchResult();
+            var criteria = MessageSearch.GetCriteria(searchText);
+            var result = MessageSearch.Search(_context, criteria);
+            
+            searchResult.Success = result.Success;
+            searchResult.Errors = result.Errors;
+            if(!result.Success)
+            {
+                return searchResult;
+            }
+
+            searchResult.Messages = await result.Messages.ToListAsync();
+            searchResult.MatchingBibleReferences = result.MatchingBibleReferences;
+            if (searchResult.Messages == null)
+            {
+                searchResult.Messages = new List<Message>();
+            }
+            return searchResult;           
         }
 
     }

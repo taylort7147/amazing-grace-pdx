@@ -112,6 +112,7 @@ function appendMessageBlockBody(parentTag, message) {
             function fInner(bibleReference) {
                 var listItemTag = document.createElement("li");
                 listItemTag.innerHTML = bibleReference;
+                listItemTag.className = "ag-message-block-bible-reference";
                 listTag.appendChild(listItemTag);
             };
             return fInner;
@@ -256,37 +257,59 @@ function appendMessageBlock(parentTag, message) {
  * @returns The original message block element
  */
 function populateMessageBlock(tag, message) {
-        // Image
-        if(message.videoId) {
-            var imageContainerTag = document.createElement("div");
-            imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
-            tag.appendChild(imageContainerTag);
+    tag.classList.remove("hidden");
+    // Image
+    var imageContainerTag = document.createElement("div");
+    imageContainerTag.className = "ag-message-block-background-container ag-border-clip";
+    tag.appendChild(imageContainerTag);
     
-            var imageTag = document.createElement("div");
-            imageTag.className = "ag-message-block-background";
-            imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(message.video)})`
-            imageContainerTag.appendChild(imageTag)
-    
-    
-            var imageOverlayTag = document.createElement("div");
-            imageOverlayTag.className = "ag-message-block-background-overlay";
-            imageContainerTag.appendChild(imageOverlayTag);
+    var imageTag = document.createElement("div");
+    imageTag.className = "ag-message-block-background";
+    if(message.videoId) {
+        imageTag.style.backgroundImage = `url(${getVideoThumbnailLink(message.video)})`
+    }
+    imageContainerTag.appendChild(imageTag)
 
-            tag.classList.remove("hidden");
-        }
-    
-        // Header
-        appendMessageBlockHeader(tag, message);
-    
-        // Body
-        if(message.description || message.bibleReferencesStringList.length > 0) {
-            appendMessageBlockBody(tag, message);
-        }
-    
-        // Footer
-        appendMessageBlockFooter(tag, message);
+    var imageOverlayTag = document.createElement("div");
+    imageOverlayTag.className = "ag-message-block-background-overlay";
+    imageContainerTag.appendChild(imageOverlayTag);
 
-        return tag;
+    // Header
+    appendMessageBlockHeader(tag, message);
+
+    // Body
+    if(message.description || message.bibleReferencesStringList.length > 0) {
+        appendMessageBlockBody(tag, message);
+    }
+
+    // Footer
+    appendMessageBlockFooter(tag, message);
+
+    return tag;
+}
+
+function highlightText(messageTag, text) {
+    console.log(`Highlight text: ${text}`);
+    var targetTags = [];
+    targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-title")));
+    targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-description")));
+    targetTags = targetTags.concat(Array.from(messageTag.getElementsByClassName("ag-message-block-bible-reference")));
+    targetTags.forEach(t => {
+        var re = new RegExp(text, "ig");
+        t.innerHTML = t.innerHTML.replace(re, "<span style=\"font-weight:bold\">$&</span>");
+        console.log(t.innerHTML);
+    });
+
+}
+
+function populateSearchResults(parentTag, messages, highlightTexts) {
+    messages.forEach(m => {
+        loadMessage(parentTag, m.id, messageTag => {
+            // Reverse sort the list to make sure supersets are highlighted first
+            sortedHighlightedTexts = highlightTexts.sort().reverse(); 
+            highlightTexts.forEach(text => highlightText(messageTag, text));
+        });
+    });
 }
 
 // 
@@ -294,45 +317,75 @@ function populateMessageBlock(tag, message) {
  * Populates a message series block by appending message blocks and loading 
  * their details
  * @param {*} seriesTag The series element to populate
- * @param {*} series  Series returned by /api/series/{id}
+ * @param {*} series  Series returned by /api/series/{name}
  * @returns The original series element
  */
 function populateMessageSeriesBlock(seriesTag, series) {
     console.log(seriesTag);
     if (series == null) {
+        console.log("No series found");
+        return;
+    }
+    if (series.messages == null || series.messages.length == 0) {
         console.log("No messages found for series");
         return;
     }
-    console.log(`Series: (${series.length} entries)`);
-    console.log(series);
-    console.log(typeof(series));
-    series.forEach(message => loadMessage(seriesTag, message.id));
+
+    var titleTag = document.createElement("h1");
+    titleTag.className = "ag-series-title";
+    titleTag.innerHTML = series.name;
+    seriesTag.appendChild(titleTag);
+
+    var descriptionTag = document.createElement("span");
+    descriptionTag.classList = "ag-series-description";
+    descriptionTag.innerHTML = series.description;
+    seriesTag.appendChild(descriptionTag);
+
+    console.log(`Series: (${series.messages.length} entries)`);
+    console.log(series.messages);
+    series.messages.forEach(message => {
+        loadMessage(seriesTag, message.id);
+    });
 
     return seriesTag
 }
 
 /**
- * Gets a series' details without loading message content and calls a callback
+ * Gets a series' details without loading message content and invokes a callback
  * @param {*} seriesName The name of the series in the database
- * @param {*} cb JQuery callback
+ * @param {*} cb JQuery callback to invoke with the returned series
  */
 function getMessageSeries(seriesName, cb) {
     console.log(`Series name: ${seriesName}`);
-    var seriesUri = encodeURIComponent(seriesName);
-    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages?series=${seriesUri}&loadContent=false`
+    var seriesUri = encodeURI(seriesName);
+    // TODO: Actually load the series, not just the messages.
+    var uri = `https://message-manager.uptheirons.net/api/series/byname?name=${seriesUri}&loadMessages=true`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
 
 /**
- * Gets a single message's details and calls a callback
- * @param {*} messageId
- * @param {*} cb 
+ * Gets a single message's details and invokes a callback
+ * @param {*} messageId The ID of the message in the database
+ * @param {*} cb JQuery callback to invoke with the returned message
  */
 function getMessage(messageId, cb) {
     console.log(`Getting message: ${messageId}`);
     var seriesUri = encodeURIComponent(messageId);
-    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/${seriesUri}`
+    var uri = `https://message-manager.uptheirons.net/api/messages/${seriesUri}`
+    console.log(`URI: ${uri}`);
+    $.getJSON(uri, cb);
+}
+
+/**
+ * Loads a collection of messages based on search text and invokes a callback
+ * @param {*} searchText The text to search for
+ * @param {*} cb JQuery callback to invoke with the returned messages
+ */
+function getSearchResults(searchText, cb) {
+    console.log(`Search: ${searchText}`);
+    var searchUri = encodeURIComponent(searchText);
+    var uri = `https://amazing-grace-pdx-web-app.azurewebsites.net/api/messages/search?searchText=${searchUri}`
     console.log(`URI: ${uri}`);
     $.getJSON(uri, cb);
 }
@@ -350,8 +403,64 @@ function loadSeries(tag, seriesName) {
  * Loads a message by ID into an element
  * @param {*} tag The element to load the message into
  * @param {*} messageId The ID of the message in the database
+ * @param {*} cb Callback to invoke with the loaded message
  */
-function loadMessage(tag, messageId) {
+function loadMessage(tag, messageId, cb) {
     var messageTag = appendMessageBlock(tag, messageId);
-    getMessage(messageId, data => populateMessageBlock(messageTag, data));
+    getMessage(messageId, data => {
+        populateMessageBlock(messageTag, data);
+        if(cb)
+        {
+            cb(messageTag);
+        }
+    });
+}
+
+function loadSearchResults(tag, searchText) {
+    var loadingTag = appendLoadingBlock(tag);
+    getSearchResults(searchText, result => {
+        removeLoadingBlock(loadingTag);
+
+        if(result.messages.length > 0) {
+            var clearSearchTag = document.createElement("button");
+            clearSearchTag.className = "btn btn-secondary ag-clear ag-center";
+            clearSearchTag.innerHTML = "Clear Results";
+            clearSearchTag.onclick = e => removeChildElements(tag);
+            tag.appendChild(clearSearchTag);
+        }
+
+        processSearchResults(tag, searchText, result);
+
+    });
+}
+
+function processSearchResults(tag, searchText, result) {
+    console.log("Search result:");
+    console.log(result);
+    var searchTextList = searchText.split();
+    console.log("Search text list: ");
+    console.log(searchTextList); 
+    if(result.success) {
+        if(result.messages.length == 0) {
+            var noResultsTag = document.createElement("span");
+            noResultsTag.innerHTML = "No results found";
+            tag.appendChild(noResultsTag);
+        }
+        else{
+            var matchingText = searchTextList.concat(result.matchingBibleReferences)
+            populateSearchResults(tag, result.messages, matchingText);
+        }
+    }
+    else {
+        var ul = document.createElement("ul");
+        ul.className = "ag-error";
+        tag.appendChild(ul);
+
+        result.errors.forEach(e => {
+            var li = document.createElement("li");
+            li.className = "ag-error-item";
+            li.innerHTML = e;
+            ul.appendChild(li);
+        });
+    }
 }

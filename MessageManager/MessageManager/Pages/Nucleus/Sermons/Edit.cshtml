@@ -1,0 +1,51 @@
+@page
+@model MessageManager.Pages.Nucleus.Sermons.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Sermon</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Sermon.Id" />
+            <div class="form-group">
+                
+                <label asp-for="Sermon.MessageId" class="control-label"></label>
+                <input asp-for="Sermon.MessageId" class="form-control" />
+                <span asp-validation-for="Sermon.MessageId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="Sermon.NucleusChurchId" class="control-label"></label>
+                <input asp-for="Sermon.NucleusChurchId" class="form-control" />
+                <span asp-validation-for="Sermon.NucleusChurchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="Sermon.NucleusSermonEngineId" class="control-label"></label>
+                <input asp-for="Sermon.NucleusSermonEngineId" class="form-control" />
+                <span asp-validation-for="Sermon.NucleusSermonEngineId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="Sermon.NucleusSermonId" class="control-label"></label>
+                <input asp-for="Sermon.NucleusSermonId" class="form-control" />
+                <span asp-validation-for="Sermon.NucleusSermonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
