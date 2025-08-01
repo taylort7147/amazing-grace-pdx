@@ -1,0 +1,43 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3001/api
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    restart: "unless-stopped"
+    environment:
+      - DB_DIALECT=mssql
+      - DB_HOST=message-manager-mssql
+      - DB_PORT=1433
+      - DB_NAME=mydb
+      - DB_USER=sa
+      - DB_PASSWORD=Password123
+    depends_on:
+      - mssql
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: message-manager-mssql
+    environment:
+      SA_PASSWORD: "Password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "sqlcmd -S localhost -U sa -P Password123 -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mssql_data:
