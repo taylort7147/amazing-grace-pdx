@@ -8,8 +8,11 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 
 const PrivateRoute = ({ children, roles }) => {
-    const { user } = useAuth();
-    if (!user) return <Navigate to="/login" />;
+    const { user, token, loading } = useAuth();
+    if (loading) return null;
+    
+    if (!user || !token) return <Navigate to="/login" />;
+    
     if (roles && !roles.includes(user.role)) return <Navigate to="/dashboard" />;
     return (
         <>

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/users").then((res) => setUsers(res.data));
+    api.get("/api/users").then((res) => setUsers(res.data));
   }, []);
 
   const promote = async (id) => {
-    await axios.post(`/api/users/${id}/promote`);
+    await api.post(`/api/users/${id}/promote`);
     setUsers(users.map((u) => (u.id === id ? { ...u, role: "admin" } : u)));
   };
 

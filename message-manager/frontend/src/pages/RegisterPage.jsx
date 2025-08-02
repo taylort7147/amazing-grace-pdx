@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ export default function RegisterPage() {
     if (!validatePassword(password)) return setError("Password must be at least 8 characters.");
 
     try {
-      await axios.post("/api/auth/register", { email, password });
+      await api.post("/auth/register", { email, password });
       navigate("/login");
     } catch (err) {
       setError("Registration failed: " + (err.response?.data?.error || "Unknown error"));
