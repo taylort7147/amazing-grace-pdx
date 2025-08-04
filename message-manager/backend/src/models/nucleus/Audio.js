@@ -1,17 +1,17 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Audio', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    AudioId: {
+    audioId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    NucleusAudioId: {
+    nucleusAudioId: {
       type: DataTypes.TEXT,
       allowNull: true
     }
@@ -25,14 +25,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "IX_Audio_AudioId",
         unique: true,
         fields: [
-          { name: "AudioId" },
+          { name: "audioId" },
         ]
       },
       {
         name: "PK_Audio",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]

@@ -1,26 +1,26 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Audio', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    StreamUrl: {
+    streamUrl: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    DownloadUrl: {
+    downloadUrl: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    MessageId: {
+    messageId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Message',
-        key: 'Id'
+        key: 'id'
       }
     }
   }, {
@@ -33,14 +33,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "IX_Audio_MessageId",
         unique: true,
         fields: [
-          { name: "MessageId" },
+          { name: "messageId" },
         ]
       },
       {
         name: "PK_Audio",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]

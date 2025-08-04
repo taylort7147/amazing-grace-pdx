@@ -1,25 +1,25 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Sermons', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    MessageId: {
+    messageId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    NucleusSermonId: {
+    nucleusSermonId: {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    NucleusChurchId: {
+    nucleusChurchId: {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    NucleusSermonEngineId: {
+    nucleusSermonEngineId: {
       type: DataTypes.TEXT,
       allowNull: true
     }
@@ -33,14 +33,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "IX_Sermons_MessageId",
         unique: true,
         fields: [
-          { name: "MessageId" },
+          { name: "messageId" },
         ]
       },
       {
         name: "PK_Sermons",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]

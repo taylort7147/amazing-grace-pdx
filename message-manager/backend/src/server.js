@@ -5,8 +5,9 @@ const bcrypt = require("bcrypt");
 const { Sequelize, DataTypes, QueryTypes } = require("sequelize");
 require("dotenv").config();
 const { initializeMessageDatabase, initializeNucleusDatabase, initializeIdentityDatabase } = require("./database");
+const { initModels: initMessageModels } = require("./models/message/init-models");
+const { initModels: initNucleusModels } = require("./models/nucleus/init-models");
 const { initModels : initIdentityModels } = require("./models/identity/init-models");
-
 
 async function main() {
     const app = express();
@@ -19,6 +20,7 @@ async function main() {
     const sequelizeMessage = await initializeMessageDatabase();
     const sequelizeNucleus = await initializeNucleusDatabase();
     const sequelizeIdentity = await initializeIdentityDatabase();
+    const { Message, Audio, Notes, Video, Series } = initMessageModels(sequelizeMessage, DataTypes);
     const { User } = initIdentityModels(sequelizeIdentity);
 
 
@@ -85,6 +87,16 @@ async function main() {
         user.role = "admin";
         await user.save();
         res.json(user);
+    });
+
+    app.get("/api/messages", authMiddleware, adminOnly, async (req, res) => {
+        const messages = await Message.findAll({include: [
+            {model: Audio, as: "audio"},
+            {model: Notes, as: "notes"},
+            {model: Video, as: "video"},
+            {model: Series, as: "series"}
+        ]});
+        res.json(messages);
     });
 
 

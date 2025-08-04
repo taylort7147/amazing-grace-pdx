@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
+import MessagesPage from "./pages/MessagesPage";
 import UsersPage from "./pages/UsersPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
@@ -42,6 +43,14 @@ export default function App() {
                         element={
                             <PrivateRoute roles={["admin"]}>
                                 <UsersPage />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/messages"
+                        element={
+                            <PrivateRoute roles={["admin"]}>
+                                <MessagesPage />
                             </PrivateRoute>
                         }
                     />

@@ -1,26 +1,26 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Video', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    YouTubeVideoId: {
+    youTubeVideoId: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    MessageStartTimeSeconds: {
+    messageStartTimeSeconds: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    MessageId: {
+    messageId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Message',
-        key: 'Id'
+        key: 'id'
       }
     }
   }, {
@@ -33,14 +33,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "IX_Video_MessageId",
         unique: true,
         fields: [
-          { name: "MessageId" },
+          { name: "messageId" },
         ]
       },
       {
         name: "PK_Video",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]

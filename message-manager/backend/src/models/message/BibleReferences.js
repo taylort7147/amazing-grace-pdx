@@ -1,42 +1,42 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('BibleReferences', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    StartBook: {
+    startBook: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    StartChapter: {
+    startChapter: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    StartVerse: {
+    startVerse: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    EndBook: {
+    endBook: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    EndChapter: {
+    endChapter: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    EndVerse: {
+    endVerse: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    MessageId: {
+    messageId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Message',
-        key: 'Id'
+        key: 'id'
       }
     }
   }, {
@@ -48,14 +48,14 @@ module.exports = function(sequelize, DataTypes) {
       {
         name: "IX_BibleReferences_MessageId",
         fields: [
-          { name: "MessageId" },
+          { name: "messageId" },
         ]
       },
       {
         name: "PK_BibleReferences",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]

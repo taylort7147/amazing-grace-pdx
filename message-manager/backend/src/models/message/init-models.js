@@ -17,18 +17,18 @@ function initModels(sequelize) {
   var Series = _Series(sequelize, DataTypes);
   var Video = _Video(sequelize, DataTypes);
 
-  Audio.belongsTo(Message, { as: "Message", foreignKey: "MessageId" });
-  Message.hasMany(Audio, { as: "Audios", foreignKey: "MessageId" });
-  BibleReferences.belongsTo(Message, { as: "Message", foreignKey: "MessageId" });
-  Message.hasMany(BibleReferences, { as: "BibleReferences", foreignKey: "MessageId" });
-  Notes.belongsTo(Message, { as: "Message", foreignKey: "MessageId" });
-  Message.hasMany(Notes, { as: "Notes", foreignKey: "MessageId" });
-  Video.belongsTo(Message, { as: "Message", foreignKey: "MessageId" });
-  Message.hasMany(Video, { as: "Videos", foreignKey: "MessageId" });
-  Message.belongsTo(Series, { as: "Series", foreignKey: "SeriesId" });
-  Series.hasMany(Message, { as: "Messages", foreignKey: "SeriesId" });
-  Playlist.belongsTo(Series, { as: "Series", foreignKey: "SeriesId" });
-  Series.hasMany(Playlist, { as: "Playlists", foreignKey: "SeriesId" });
+  Audio.belongsTo(Message, { as: "message", foreignKey: "messageId" });
+  Message.hasOne(Audio, { as: "audio", foreignKey: "messageId" });
+  BibleReferences.belongsTo(Message, { as: "message", foreignKey: "messageId" });
+  Message.hasMany(BibleReferences, { as: "bibleReferences", foreignKey: "messageId" });
+  Notes.belongsTo(Message, { as: "message", foreignKey: "messageId" });
+  Message.hasOne(Notes, { as: "notes", foreignKey: "messageId" });
+  Video.belongsTo(Message, { as: "message", foreignKey: "messageId" });
+  Message.hasOne(Video, { as: "video", foreignKey: "messageId" });
+  Message.belongsTo(Series, { as: "series", foreignKey: "seriesId" });
+  Series.hasMany(Message, { as: "messages", foreignKey: "seriesId" });
+  Playlist.belongsTo(Series, { as: "series", foreignKey: "seriesId" });
+  Series.hasOne(Playlist, { as: "playlist", foreignKey: "seriesId" });
 
   return {
     Audio,

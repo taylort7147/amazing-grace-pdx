@@ -1,21 +1,21 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Series', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Name: {
+    name: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    PlaylistId: {
+    playlistId: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    Description: {
+    description: {
       type: DataTypes.TEXT,
       allowNull: true
     }
@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "PK_Series",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]

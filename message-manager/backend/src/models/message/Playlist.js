@@ -1,22 +1,22 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Playlist', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    YouTubePlaylistId: {
+    youTubePlaylistId: {
       type: DataTypes.STRING(64),
       allowNull: true
     },
-    SeriesId: {
+    seriesId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Series',
-        key: 'Id'
+        key: 'id'
       }
     }
   }, {
@@ -29,14 +29,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "IX_Playlist_SeriesId",
         unique: true,
         fields: [
-          { name: "SeriesId" },
+          { name: "seriesId" },
         ]
       },
       {
         name: "PK_Playlist",
         unique: true,
         fields: [
-          { name: "Id" },
+          { name: "id" },
         ]
       },
     ]
