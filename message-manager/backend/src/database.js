@@ -173,10 +173,35 @@ async function initializeIdentityDatabase() {
     return sequelize;
 }
 
+const messageDb = {};
+const nucleusDb = {};
+const identityDb = {};
+
+const handleDbError = (err, dbName) => {
+    console.error(`Database initialization failed for ${dbName}:`, err);
+    process.exit(1);
+}
+
+messageDb.Sequelize = Sequelize;
+initializeMessageDatabase().then(sequelize => {
+    messageDb.sequelize = sequelize;
+    messageDb.tables = initMessageModels(messageDb.sequelize, Sequelize.DataTypes);
+}).catch(err => handleDbError(err, "Message"));
+
+nucleusDb.Sequelize = Sequelize;
+initializeNucleusDatabase().then(sequelize => {
+    nucleusDb.sequelize = sequelize;
+    nucleusDb.tables = initNucleusModels(nucleusDb.sequelize, Sequelize.DataTypes);
+}).catch(err => handleDbError(err, "Nucleus"));
+
+identityDb.Sequelize = Sequelize;
+initializeIdentityDatabase().then(sequelize => {
+    identityDb.sequelize = sequelize;
+    identityDb.tables = initIdentityModels(identityDb.sequelize, Sequelize.DataTypes);
+}).catch(err => handleDbError(err, "Identity"));
+
 module.exports = {
-    connectToDatabase,
-    initializeDatabase,
-    initializeMessageDatabase,
-    initializeNucleusDatabase,
-    initializeIdentityDatabase
+    messageDb,
+    nucleusDb,
+    identityDb,
 };
