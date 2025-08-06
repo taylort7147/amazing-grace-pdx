@@ -14,12 +14,24 @@ services:
       - "3001:3001"
     restart: "unless-stopped"
     environment:
-      - DB_DIALECT=mssql
-      - DB_HOST=message-manager-mssql
-      - DB_PORT=1433
-      - DB_NAME=mydb
-      - DB_USER=sa
-      - DB_PASSWORD=Password123
+      - IDENTITY_DB_DIALECT=mssql
+      - IDENTITY_DB_HOST=message-manager-mssql
+      - IDENTITY_DB_PORT=1433
+      - IDENTITY_DB_NAME=identity-db
+      - IDENTITY_DB_USER=sa
+      - IDENTITY_DB_PASSWORD=Password123
+      - MESSAGE_DB_DIALECT=mssql
+      - MESSAGE_DB_HOST=message-manager-mssql
+      - MESSAGE_DB_PORT=1433
+      - MESSAGE_DB_NAME=message-db
+      - MESSAGE_DB_USER=sa
+      - MESSAGE_DB_PASSWORD=Password123
+      - NUCLEUS_DB_DIALECT=mssql
+      - NUCLEUS_DB_HOST=message-manager-mssql
+      - NUCLEUS_DB_PORT=1433
+      - NUCLEUS_DB_NAME=nucleus-db
+      - NUCLEUS_DB_USER=sa
+      - NUCLEUS_DB_PASSWORD=Password123
     depends_on:
       - mssql
 
