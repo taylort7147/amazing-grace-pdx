@@ -183,22 +183,28 @@ const handleDbError = (err, dbName) => {
 }
 
 messageDb.Sequelize = Sequelize;
-initializeMessageDatabase().then(sequelize => {
-    messageDb.sequelize = sequelize;
+const initMessageDb = async () => {
+    messageDb.sequelize = await initializeMessageDatabase();
     messageDb.tables = initMessageModels(messageDb.sequelize, Sequelize.DataTypes);
-}).catch(err => handleDbError(err, "Message"));
+  return messageDb;
+};
+messageDb.ready = initMessageDb();
 
 nucleusDb.Sequelize = Sequelize;
-initializeNucleusDatabase().then(sequelize => {
-    nucleusDb.sequelize = sequelize;
+const initNucleusDb = async () => {
+    nucleusDb.sequelize = await initializeNucleusDatabase();
     nucleusDb.tables = initNucleusModels(nucleusDb.sequelize, Sequelize.DataTypes);
-}).catch(err => handleDbError(err, "Nucleus"));
+    return nucleusDb;
+};
+nucleusDb.ready = initNucleusDb();
 
 identityDb.Sequelize = Sequelize;
-initializeIdentityDatabase().then(sequelize => {
-    identityDb.sequelize = sequelize;
+const initIdentityDb = async () => {
+    identityDb.sequelize = await initializeIdentityDatabase();
     identityDb.tables = initIdentityModels(identityDb.sequelize, Sequelize.DataTypes);
-}).catch(err => handleDbError(err, "Identity"));
+    return identityDb;
+};
+identityDb.ready = initIdentityDb();
 
 module.exports = {
     messageDb,
