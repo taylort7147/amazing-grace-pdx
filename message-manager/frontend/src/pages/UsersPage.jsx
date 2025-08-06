@@ -5,11 +5,11 @@ export default function UsersPage() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    api.get("/api/users").then((res) => setUsers(res.data));
+    api.get("/users").then((res) => setUsers(res.data));
   }, []);
 
   const promote = async (id) => {
-    await api.post(`/api/users/${id}/promote`);
+    await api.post(`/users/${id}/promote`);
     setUsers(users.map((u) => (u.id === id ? { ...u, role: "admin" } : u)));
   };
 

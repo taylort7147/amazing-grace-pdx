@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { identityDb } = require("../database");
-
-const SECRET = "supersecret";
+const { createToken } = require("../middleware/auth");
 
 function validateEmail(email) {
     return /.+@.+\..+/.test(email);
@@ -30,6 +29,6 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await identityDb.tables.User.findOne({ where: { email } });
     if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send("Invalid");
-    const token = jwt.sign({ id: user.id, role: user.role }, SECRET);
+    const token = createToken({ id: user.id, role: user.role });
     res.json({ token, user });
 };
