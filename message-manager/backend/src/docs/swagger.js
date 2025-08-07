@@ -1,13 +1,16 @@
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const { apiUrl } = require('../config');
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const appConfig = require("../config");
+
+
+const endpointFiles = ["./src/routes/*.routes.js"];
 
 const swaggerOptions = {
     definition: {
-        openapi: '3.0.0',
+        openapi: "3.0.0",
         info: {
-            title: 'My API',
-            version: '1.0.0',
+            title: "My API",
+            version: "1.0.0",
         },
         components: {
             securitySchemes: {
@@ -23,16 +26,16 @@ const swaggerOptions = {
                 bearerAuth: [],
             },
         ],
-        servers: [{ url: apiUrl }],
+        servers: [{ url: appConfig.apiUrl }],
     },
-    apis: ["./src/routes/*.routes.js"]
+    apis: endpointFiles
 
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 function setupSwagger(app) {
-    app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 module.exports = setupSwagger;
