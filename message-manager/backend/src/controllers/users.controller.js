@@ -6,6 +6,12 @@ exports.getAllUsers = async (req, res) => {
     res.json(users);
 };
 
+exports.getUserById = async (req, res) => {
+    const user = await identityDb.tables.User.findByPk(req.params.id, { attributes: ["id", "email", "role"] });
+    if (!user) return res.sendStatus(404);
+    res.json(user);
+}
+
 exports.promoteUser = async (req, res) => {
     const user = await identityDb.tables.User.findByPk(req.params.id);
     if (!user) return res.sendStatus(404);
