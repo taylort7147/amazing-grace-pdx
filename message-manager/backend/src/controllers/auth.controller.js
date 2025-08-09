@@ -1,21 +1,14 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { identityDb } = require("../database");
 const { createToken } = require("../middleware/auth");
-
-function validateEmail(email) {
-    return /.+@.+\..+/.test(email);
-}
-
-function validatePassword(password) {
-    return typeof password === "string" && password.length >= 8;
-}
+const { registerSchema, loginSchema } = require("@message-manager/shared/schemas/auth.schema");
 
 exports.register = async (req, res) => {
-    const { email, password } = req.body;
-    if (!validateEmail(email)) return res.status(400).json({ error: "Invalid email format" });
-    if (!validatePassword(password)) return res.status(400).json({ error: "Password must be at least 8 characters" });
-
+    const parsed = registerSchema.safeParse(req.body);
+    if (!parsed.success) {
+        return res.status(400).json({ errors: parsed.error.errors });
+    }
+    const { email, password } = parsed.data;
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
         const user = await identityDb.tables.User.create({ email, password: hashedPassword });
@@ -26,7 +19,11 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-    const { email, password } = req.body;
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+        return res.status(400).json({ errors: parsed.error.errors });
+    }
+    const { email, password } = parsed.data;
     const user = await identityDb.tables.User.findOne({ where: { email } });
     if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send("Invalid");
     const token = createToken({ id: user.id, role: user.role });

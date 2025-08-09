@@ -1,0 +1,14 @@
+{
+    "name": "message-manager",
+    "version": "1.0.0",
+    "description": "A message management utility for Amazing Grace PDX",
+    "scripts": {
+        "dev": "concurrently \"pnpm --filter backend start\" \"pnpm --filter frontend dev\"",
+        "build": "pnpm --filter frontend run build"
+    },
+    "author": "Taylor Turnidge (taylort7147@gmail.com)",
+    "license": "MIT",
+    "devDependencies": {
+        "concurrently": "^9.2.0"
+    }
+}

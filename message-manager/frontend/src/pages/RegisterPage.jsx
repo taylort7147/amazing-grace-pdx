@@ -1,34 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
+import { validateRegisterForm } from "../utils/validation";
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
-  const validateEmail = (email) => /.+@.+\..+/.test(email);
-  const validatePassword = (password) => password.length >= 8;
-
+  
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" }); // Clear field error when typing
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateEmail(email)) return setError("Invalid email format.");
-    if (!validatePassword(password)) return setError("Password must be at least 8 characters.");
+    const result = validateRegisterForm(formData);
 
+    if (!result.valid) {
+      setErrors(result.errors);
+      return;
+    }
     try {
-      await api.post("/auth/register", { email, password });
+      await api.post("/auth/register", formData);
       navigate("/login");
     } catch (err) {
-      setError("Registration failed: " + (err.response?.data?.error || "Unknown error"));
+      setErrors({ ...errors, form: "Registration failed: " + (err.response?.data?.error || "Unknown error") });
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
-      {error && <p className="text-red-600 mb-2">{error}</p>}
-      <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="block mb-2" />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="block mb-2" />
+      {errors.form && <p className="text-red-600 mb-2">{errors.form}</p>}
+      {errors.email && <p className="text-red-600 mb-2">{errors.email}</p>}
+      {errors.password && <p className="text-red-600 mb-2">{errors.password}</p>}
+      <input placeholder="Email" name="email" value={formData.email} onChange={handleChange} className="block mb-2" />
+      <input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleChange} className="block mb-2" />
       <button type="submit">Register</button>
       <p className="mt-4">
         Already have an account? <Link to="/login">Login</Link>

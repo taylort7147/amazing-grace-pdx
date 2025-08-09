@@ -1,21 +1,41 @@
-# Stage 1: Build the React app
-FROM node:22-alpine AS build
+# Stage 1: Build the app
+FROM node:22 as build
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# Install pnpm globally
+RUN npm install -g pnpm
 
+# Copy all package.json and lockfile
+COPY package.json pnpm-lock.yaml ./
+COPY backend/package.json backend/
+COPY frontend/package.json frontend/
+COPY shared/package.json shared/
+
+# Copy source code for all workspaces
+COPY backend backend/
+COPY frontend frontend/
+COPY shared shared/
 COPY . .
-RUN npm run build
+
+
+# Install dependencies for all workspaces
+ENV CI=true
+RUN pnpm install
+
+
+# Build frontend workspace from root, filtered by frontend
+WORKDIR /app/frontend
+RUN pnpm run build
+
 
 # Stage 2: Serve with nginx
 FROM nginx:stable-alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/frontend/dist /usr/share/nginx/html
 
 # Optional: Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

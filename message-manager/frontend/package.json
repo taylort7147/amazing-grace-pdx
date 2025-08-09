@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@message-manager/frontend",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@message-manager/shared": "workspace:*",
     "axios": "^1.4.0",
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
