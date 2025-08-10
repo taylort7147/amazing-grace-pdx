@@ -23,3 +23,24 @@ exports.getMessageById = async (req, res) => {
     if (!message) return res.sendStatus(404);
     res.json(message);
 };
+
+exports.createMessage = async (req, res) => {
+    const message = await messageDb.tables.Message.create(req.body);
+    res.status(201).json(message);
+};
+
+exports.deleteMessage = async (req, res) => {
+    const result = await messageDb.tables.Message.destroy({
+        where: { id: req.params.id }
+    });
+    if (!result) return res.sendStatus(404);
+    res.sendStatus(204);
+};
+
+exports.updateMessage = async (req, res) => {
+    const [updated] = await messageDb.tables.Message.update(req.body, {
+        where: { id: req.params.id }
+    });
+    if (!updated) return res.sendStatus(404);
+    res.sendStatus(204);
+};
