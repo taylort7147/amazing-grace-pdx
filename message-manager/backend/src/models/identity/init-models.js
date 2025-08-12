@@ -1,13 +1,10 @@
-var DataTypes = require("sequelize").DataTypes;
-var _User = require("./User");
+import { DataTypes } from "sequelize";
+import  _User  from "./User.js";
 
-function initModels(sequelize) {
+export default function initModels(sequelize) {
   var User = _User(sequelize, DataTypes);
 
   return {
     User
   };
 }
-module.exports = initModels;
-module.exports.initModels = initModels;
-module.exports.default = initModels;

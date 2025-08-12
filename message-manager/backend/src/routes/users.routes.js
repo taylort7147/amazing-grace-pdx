@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const usersController = require("../controllers/users.controller");
-const { authMiddleware, adminOnly } = require("../middleware/auth");
+import express from "express";
+import * as usersController from "../controllers/users.controller.js";
+import { authMiddleware, adminOnly } from "../middleware/auth.js";
 
+const router = express.Router();
 
 /**
  * @swagger
@@ -83,4 +83,4 @@ router.get("/:id", authMiddleware, adminOnly, usersController.getUserById);
  */
 router.post("/:id/promote", authMiddleware, adminOnly, usersController.promoteUser);
 
-module.exports = router;
+export default router

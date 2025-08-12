@@ -1,14 +1,14 @@
-var DataTypes = require("sequelize").DataTypes;
+import { DataTypes } from "sequelize";
 
-var _Audio = require("./Audio");
-var _BibleReferences = require("./BibleReferences");
-var _Message = require("./Message");
-var _Notes = require("./Notes");
-var _Playlist = require("./Playlist");
-var _Series = require("./Series");
-var _Video = require("./Video");
+import _Audio from "./Audio.js";
+import _BibleReferences from "./BibleReferences.js";
+import _Message from "./Message.js";
+import _Notes from "./Notes.js";
+import _Playlist from "./Playlist.js";
+import _Series from "./Series.js";
+import _Video from "./Video.js";
 
-function initModels(sequelize) {
+export default function initModels(sequelize) {
   var Audio = _Audio(sequelize, DataTypes);
   var BibleReferences = _BibleReferences(sequelize, DataTypes);
   var Message = _Message(sequelize, DataTypes);
@@ -40,7 +40,3 @@ function initModels(sequelize) {
     Video
   };
 }
-
-module.exports = initModels;
-module.exports.initModels = initModels;
-module.exports.default = initModels;

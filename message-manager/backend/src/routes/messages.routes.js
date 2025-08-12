@@ -1,7 +1,10 @@
-const express = require("express");
+import express from "express";
+import * as messagesController from "../controllers/messages.controller.js";
+import { authMiddleware } from "../middleware/auth.js";
+import { messageSchema } from "@message-manager/shared/schemas/messages.schema.js";
+import { validate } from "@message-manager/shared/validate.js";
+
 const router = express.Router();
-const messagesController = require("../controllers/messages.controller");
-const { authMiddleware } = require("../middleware/auth");
 
 /**
  * @swagger
@@ -47,4 +50,24 @@ router.get("/", authMiddleware, messagesController.getAllMessages);
  */
 router.get("/:id", authMiddleware, messagesController.getMessageById);
 
-module.exports = router;
+/**
+ * @swagger
+ * /messages:
+ *   post:
+ *     summary: Create a new message
+ *     tags: [Messages]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Message'
+ *     responses:
+ *       201:
+ *         description: Created
+ */
+router.post("/", authMiddleware, validate(messageSchema), messagesController.createMessage);
+
+export default router;

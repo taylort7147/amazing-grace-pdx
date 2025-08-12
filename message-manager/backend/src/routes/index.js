@@ -1,12 +1,12 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const authRoutes = require("./auth.routes");
-const usersRoutes = require("./users.routes");
-const messagesRoutes = require("./messages.routes");
+import authRoutes from "./auth.routes.js";
+import usersRoutes from "./users.routes.js";
+import messagesRoutes from "./messages.routes.js";
 
 router.use("/auth", authRoutes);
 router.use("/users", usersRoutes);
 router.use("/messages", messagesRoutes);
 
-module.exports = router;
+export default router;

@@ -1,11 +1,11 @@
-var DataTypes = require("sequelize").DataTypes;
+import { DataTypes } from "sequelize";
 
-var _Audio = require("./Audio");
-var _Notes = require("./Notes");
-var _Playlists = require("./Playlists");
-var _Sermons = require("./Sermons");
+import _Audio from "./Audio.js";
+import _Notes from "./Notes.js";
+import _Playlists from "./Playlists.js";
+import _Sermons from "./Sermons.js";
 
-function initModels(sequelize) {
+export default function initModels(sequelize) {
   var Audio = _Audio(sequelize, DataTypes);
   var Notes = _Notes(sequelize, DataTypes);
   var Playlists = _Playlists(sequelize, DataTypes);
@@ -18,7 +18,3 @@ function initModels(sequelize) {
     Sermons,
   };
 }
-
-module.exports = initModels;
-module.exports.initModels = initModels;
-module.exports.default = initModels;

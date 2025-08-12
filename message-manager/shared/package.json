@@ -1,9 +1,9 @@
 {
-  "name": "@message-manager/shared",
-  "version": "1.0.0",
-  "main": "schemas/index.js",
-  "type": "module",
-  "dependencies": {
-   "zod": "^3.23.0"
-  }
+    "name": "@message-manager/shared",
+    "version": "1.0.0",
+    "main": "schemas/index.js",
+    "scripts": {
+        "generate-openapi": "node scripts/generate-openapi.js"
+    },
+    "type": "module"
 }

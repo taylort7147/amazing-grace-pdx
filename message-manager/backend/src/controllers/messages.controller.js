@@ -1,4 +1,4 @@
-const { messageDb } = require("../database");
+import { messageDb } from "../database.js";
 
 function getMessageIncludes() {
     return [
@@ -9,14 +9,14 @@ function getMessageIncludes() {
     ];
 }
 
-exports.getAllMessages = async (req, res) => {
+export const getAllMessages = async (req, res) => {
     const messages = await messageDb.tables.Message.findAll({
         include: getMessageIncludes()
     });
     res.json(messages);
 };
 
-exports.getMessageById = async (req, res) => {
+export const getMessageById = async (req, res) => {
     const message = await messageDb.tables.Message.findByPk(req.params.id, {
         include: getMessageIncludes()
     });
@@ -24,12 +24,12 @@ exports.getMessageById = async (req, res) => {
     res.json(message);
 };
 
-exports.createMessage = async (req, res) => {
+export const createMessage = async (req, res) => {
     const message = await messageDb.tables.Message.create(req.body);
     res.status(201).json(message);
 };
 
-exports.deleteMessage = async (req, res) => {
+export const deleteMessage = async (req, res) => {
     const result = await messageDb.tables.Message.destroy({
         where: { id: req.params.id }
     });
@@ -37,7 +37,7 @@ exports.deleteMessage = async (req, res) => {
     res.sendStatus(204);
 };
 
-exports.updateMessage = async (req, res) => {
+export const updateMessage = async (req, res) => {
     const [updated] = await messageDb.tables.Message.update(req.body, {
         where: { id: req.params.id }
     });

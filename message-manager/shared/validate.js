@@ -9,6 +9,4 @@ function validate(schema) {
   };
 }
 
-export {
-    validate
-}
+export { validate };

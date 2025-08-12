@@ -1,5 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
-module.exports = function (sequelize, DataTypes) {
+export default function (sequelize, DataTypes) {
   return sequelize.define("User", {
     email: { type: DataTypes.STRING, unique: true, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },

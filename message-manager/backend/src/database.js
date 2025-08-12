@@ -1,7 +1,7 @@
-const { Sequelize, QueryTypes } = require("sequelize");
-const { initModels: initMessageModels } = require("./models/message/init-models");
-const { initModels: initNucleusModels } = require("./models/nucleus/init-models");
-const { initModels: initIdentityModels } = require("./models/identity/init-models");
+import { Sequelize, QueryTypes } from "sequelize";
+import initMessageModels from "./models/message/init-models.js";
+import initNucleusModels from "./models/nucleus/init-models.js";
+import initIdentityModels from "./models/identity/init-models.js";
 
 const connectToDatabase = async (sequelize, retries = 10, delay = 3000) => {
     const dbName = sequelize.config.database || "master";
@@ -173,9 +173,9 @@ async function initializeIdentityDatabase() {
     return sequelize;
 }
 
-const messageDb = {};
-const nucleusDb = {};
-const identityDb = {};
+export const messageDb = {};
+export const nucleusDb = {};
+export const identityDb = {};
 
 const handleDbError = (err, dbName) => {
     console.error(`Database initialization failed for ${dbName}:`, err);
@@ -186,7 +186,7 @@ messageDb.Sequelize = Sequelize;
 const initMessageDb = async () => {
     messageDb.sequelize = await initializeMessageDatabase();
     messageDb.tables = initMessageModels(messageDb.sequelize, Sequelize.DataTypes);
-  return messageDb;
+    return messageDb;
 };
 messageDb.ready = initMessageDb();
 
@@ -205,9 +205,3 @@ const initIdentityDb = async () => {
     return identityDb;
 };
 identityDb.ready = initIdentityDb();
-
-module.exports = {
-    messageDb,
-    nucleusDb,
-    identityDb,
-};

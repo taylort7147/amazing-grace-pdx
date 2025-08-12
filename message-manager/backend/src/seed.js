@@ -1,6 +1,5 @@
-const { identityDb } = require("./database");
-
-const bcrypt = require("bcrypt");
+import { identityDb } from ("./database.js");
+import { bcrypt } from ("bcrypt");
 
 async function seed() {
   await identityDb.ready;

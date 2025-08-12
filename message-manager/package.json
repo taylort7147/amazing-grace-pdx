@@ -10,5 +10,9 @@
     "license": "MIT",
     "devDependencies": {
         "concurrently": "^9.2.0"
+    },
+    "dependencies": {
+        "@asteasolutions/zod-to-openapi": "^8.1.0",
+        "zod": "^4.0.17"
     }
 }

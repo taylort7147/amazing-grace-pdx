@@ -1,18 +1,18 @@
-const { identityDb } = require("../database");
+import { identityDb } from "../database.js";
 
 
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     const users = await identityDb.tables.User.findAll({ attributes: ["id", "email", "role"] });
     res.json(users);
 };
 
-exports.getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
     const user = await identityDb.tables.User.findByPk(req.params.id, { attributes: ["id", "email", "role"] });
     if (!user) return res.sendStatus(404);
     res.json(user);
 }
 
-exports.promoteUser = async (req, res) => {
+export const promoteUser = async (req, res) => {
     const user = await identityDb.tables.User.findByPk(req.params.id);
     if (!user) return res.sendStatus(404);
     user.role = "admin";

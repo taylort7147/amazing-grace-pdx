@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import * as authController from "../controllers/auth.controller.js";
+import { validate } from "@message-manager/shared/validate.js";
+import { loginSchema, registerSchema } from "@message-manager/shared/schemas/auth.schema.js";
+
 const router = express.Router();
-const authController = require("../controllers/auth.controller");
-const { validate } = require("@message-manager/shared/validate");
-const { loginSchema, registerSchema } = require("@message-manager/shared/schemas/auth.schema");
 
 /**
  * @swagger
@@ -61,4 +62,4 @@ router.post("/register", validate(registerSchema), authController.register);
  */
 router.post("/login", validate(loginSchema), authController.login);
 
-module.exports = router;
+export default router;

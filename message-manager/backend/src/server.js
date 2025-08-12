@@ -1,9 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const routes = require("./routes");
-const setupSwagger = require('./docs/swagger');
-
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import routes from "./routes/index.js";
+import setupSwagger from "./docs/swagger.js";
+import "dotenv/config";
 
 const app = express();
 

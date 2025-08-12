@@ -1,8 +1,8 @@
-const bcrypt = require("bcrypt");
-const { identityDb } = require("../database");
-const { createToken } = require("../middleware/auth");
+import bcrypt from "bcrypt";
+import { identityDb } from "../database.js";
+import { createToken } from "../middleware/auth.js";
 
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
     const { email, password } = req.validatedBody;
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
     const { email, password } = req.validatedBody;
     const user = await identityDb.tables.User.findOne({ where: { email } });
     if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send("Invalid");
