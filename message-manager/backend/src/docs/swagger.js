@@ -9,6 +9,7 @@ const endpointFiles = ["./src/routes/*.routes.js"];
 
 // 1. Import your Zod schemas from shared
 import {
+    audioSchema,
     messageSchema,
     loginSchema,
     registerSchema
@@ -16,6 +17,7 @@ import {
 
 // 2. Create registry and register schemas
 const registry = new OpenAPIRegistry();
+registry.register("audio", audioSchema);
 registry.register("message", messageSchema);
 registry.register("login", loginSchema);
 registry.register("register", registerSchema);
