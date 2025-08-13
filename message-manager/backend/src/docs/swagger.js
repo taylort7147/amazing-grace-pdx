@@ -1,7 +1,6 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import zodPkg from "@asteasolutions/zod-to-openapi";
-console.log("@asteasolutions/zod-to-openapi", zodPkg);
 const { OpenApiGeneratorV3, OpenAPIRegistry } = zodPkg;
 import appConfig from "../config.js";
 
@@ -23,7 +22,7 @@ registry.register("register", registerSchema);
 
 // 3. Generate schema definitions from Zod
 const generator = new OpenApiGeneratorV3(registry.definitions);
-const zodSchemas = generator.generateComponents().schemas;
+const zodComponents = generator.generateComponents();
 
 const swaggerOptions = {
     definition: {
@@ -40,13 +39,9 @@ const swaggerOptions = {
                     bearerFormat: "JWT",
                 },
             },
-            schemas: zodSchemas
+            schemas: zodComponents.components.schemas,
         },
-        security: [
-            {
-                bearerAuth: [],
-            },
-        ],
+        security: [{ bearerAuth: [] }],
         servers: [{ url: appConfig.apiUrl }],
     },
     apis: endpointFiles

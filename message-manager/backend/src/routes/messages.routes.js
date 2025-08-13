@@ -63,7 +63,7 @@ router.get("/:id", authMiddleware, messagesController.getMessageById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Message'
+ *             $ref: '#/components/schemas/message'
  *     responses:
  *       201:
  *         description: Created
