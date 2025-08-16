@@ -16,13 +16,17 @@ const PrivateRoute = ({ children, roles }) => {
     if (!user || !token) return <Navigate to="/login" />;
 
     if (roles && !roles.includes(user.role)) return <Navigate to="/dashboard" />;
+    return <PublicRoute>{children}</PublicRoute>;
+};
+
+const PublicRoute = ({ children }) => {
     return (
         <>
             <Navbar />
             {children}
         </>
-    );
-};
+    )
+}
 
 const system = createSystem(defaultConfig, {
     theme: {
@@ -44,23 +48,29 @@ export default function App() {
             <AuthProvider>
                 <Router>
                     <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/login" element={
+                            <PublicRoute>
+                                <LoginPage />
+                            </PublicRoute>
+                        } />
+                        <Route path="/register" element={
+                            <PublicRoute>
+                                <RegisterPage />
+                            </PublicRoute>
+                        } />
                         <Route
                             path="/dashboard"
                             element={
                                 <PrivateRoute>
                                     <Dashboard />
                                 </PrivateRoute>
-                            }
-                        />
+                            } />
                         <Route
                             path="/users"
                             element={
                                 <PrivateRoute roles={["admin"]}>
                                     <UsersPage />
-                                </PrivateRoute>
-                            }
+                                </PrivateRoute>}
                         />
                         <Route
                             path="/messages"
@@ -68,8 +78,7 @@ export default function App() {
                                 <PrivateRoute roles={["admin"]}>
                                     <Messages.Table />
                                 </PrivateRoute>
-                            }
-                        />
+                            } />
                         <Route
                             path="/messages/details/:id"
                             element={

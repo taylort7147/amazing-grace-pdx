@@ -1,34 +1,53 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { Box, Flex, HStack, Link, Button, Spacer, Show } from "@chakra-ui/react"
+import { NavLink } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
 
   return (
-    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
-      <div>
-        <Link to="/dashboard" className="mr-4 hover:underline">Dashboard</Link>
-        {user?.role === "admin" && (
-          <Link to="/users" className="mr-4 hover:underline">Users</Link>
-        )}
-      </div>
-      <div>
-        {user ? (
-          <div className="relative inline-block text-left">
-            <button className="hover:underline">{user.email}</button>
-            <button onClick={handleLogout} className="ml-4 bg-red-500 px-2 py-1 rounded">Logout</button>
-          </div>
-        ) : (
-          <Link to="/login" className="hover:underline">Login</Link>
-        )}
-      </div>
-    </nav>
-  );
+    <Box bg="gray.800" px={4} py={2} boxShadow="md">
+      <Flex alignItems="center">
+        {/* Left side - Logo / Brand */}
+        <Box fontWeight="bold" fontSize="lg" color="white">
+          MessageManager
+        </Box>
+
+        <Spacer />
+
+        {/* Middle - Nav links (hidden on mobile) */}
+        <HStack
+          as="nav"
+          spacing={6}
+          display={{ base: "none", md: "flex" }}
+        >
+          <Link as={NavLink} to="/" color="white" _hover={{ color: "gray.300" }}>
+            Home
+          </Link>
+          <Link as={NavLink} to="/messages" color="white" _hover={{ color: "gray.300" }}>
+            Messages
+          </Link>
+          <Link as={NavLink} to="/series" color="white" _hover={{ color: "gray.300" }}>
+            Series
+          </Link>
+        </HStack>
+
+        <Spacer />
+
+        {/* Right side - Actions */}
+        <HStack spacing={4}>
+          <Show when={!user}>
+            <Button colorScheme="teal" size="sm">
+              Login
+            </Button>
+          </Show>
+          <Show when={user}>
+            <Button colorScheme="teal" size="sm" onClick={logout}>
+              Logout
+            </Button>
+          </Show>
+        </HStack>
+      </Flex>
+    </Box>
+  )
 }
