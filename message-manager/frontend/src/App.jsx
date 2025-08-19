@@ -48,16 +48,18 @@ export default function App() {
             <AuthProvider>
                 <Router>
                     <Routes>
-                        <Route path="/login" element={
-                            <PublicRoute>
-                                <LoginPage />
-                            </PublicRoute>
-                        } />
-                        <Route path="/register" element={
-                            <PublicRoute>
-                                <RegisterPage />
-                            </PublicRoute>
-                        } />
+                        <Route
+                            path="/login" element={
+                                <PublicRoute>
+                                    <LoginPage />
+                                </PublicRoute>
+                            } />
+                        <Route
+                            path="/register" element={
+                                <PublicRoute>
+                                    <RegisterPage />
+                                </PublicRoute>
+                            } />
                         <Route
                             path="/dashboard"
                             element={
@@ -84,6 +86,14 @@ export default function App() {
                             element={
                                 <PrivateRoute roles={["admin"]}>
                                     <Messages.Details />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/messages/edit/:id"
+                            element={
+                                <PrivateRoute roles={["admin"]}>
+                                    <Messages.Edit />
                                 </PrivateRoute>
                             }
                         />

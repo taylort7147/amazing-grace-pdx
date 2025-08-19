@@ -1,7 +1,9 @@
 import { MessageTable } from "./MessageTable";
-import { MessageDetails } from "./MessageDetails";
+import { Details } from "./Details";
+import { Edit } from "./Edit";
 
 export const Messages = {
     Table: MessageTable,
-    Details: MessageDetails,
+    Details: Details,
+    Edit: Edit
 };

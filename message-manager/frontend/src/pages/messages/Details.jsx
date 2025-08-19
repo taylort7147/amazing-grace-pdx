@@ -1,5 +1,5 @@
 import api from "../../api";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Box, Button, Heading, Stack, HStack, VStack, Input, Field, Fieldset, Text, Textarea, Wrap, Separator, StackSeparator, Clipboard } from "@chakra-ui/react";
@@ -44,14 +44,14 @@ function ClipboardButton({ value }) {
   );
 }
 
-function CopyableTextBox({ value }) {
+const CopyableTextBox = forwardRef(({ value, ...props }, ref) => {
   return (
     <HStack align="stretch" w="100%">
-      <Textarea value={value} readOnly autoresize />
+      <Textarea value={value} autoresize {...props} />
       <ClipboardButton value={value} />
     </HStack>
   );
-}
+});
 
 function FieldsetHeading({ children }) {
   return (<>
@@ -62,16 +62,7 @@ function FieldsetHeading({ children }) {
   </>);
 }
 
-function TextBox({ children }) {
-  return (<Box
-    p="1"
-    borderWidth="1px"
-    borderColor="border.disabled"
-    color="fg.disabled"
-  >{children}</Box>);
-}
-
-export function MessageDetails() {
+export function Details() {
 
   const [message, setMessage] = useState(null);
   const navigate = useNavigate();
@@ -85,7 +76,7 @@ export function MessageDetails() {
 
   return (
     <Box p={6} maxW="800px" mx="auto">
-      <Heading size="2xl" mb={8}>Message</Heading>
+      <Heading size="2xl" mb={8}>Message Details</Heading>
       <VStack gap="16px" separator={<_StackSeparator />}>
 
         {/* Basic Information */}
@@ -115,7 +106,7 @@ export function MessageDetails() {
             <FieldsetHeading>Notes</FieldsetHeading>
             <Field.Root mb={0} orientation="horizontal">
               <Field.Label>URL</Field.Label>
-              <CopyableTextBox value={message.notes.url} />
+              <CopyableTextBox value={message.notes.url} readOnly />
             </Field.Root>
           </Fieldset.Root>
         )}
@@ -126,11 +117,11 @@ export function MessageDetails() {
             <FieldsetHeading>Audio</FieldsetHeading>
             <Field.Root mb={0} orientation="horizontal">
               <Field.Label>Download URL</Field.Label>
-              <CopyableTextBox value={message.audio.downloadUrl} />
+              <CopyableTextBox value={message.audio.downloadUrl} readOnly />
             </Field.Root>
             <Field.Root mb={0} orientation="horizontal">
               <Field.Label>Stream URL</Field.Label>
-              <CopyableTextBox value={message.audio.streamUrl} />
+              <CopyableTextBox value={message.audio.streamUrl} readOnly />
             </Field.Root>
           </Fieldset.Root>
         )}
