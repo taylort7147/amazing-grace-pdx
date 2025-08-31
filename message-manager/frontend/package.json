@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/form-control": "^2.2.0",
     "@chakra-ui/react": "^3.24.2",
+    "@chakra-ui/theme-utils": "^2.0.21",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@hookform/resolvers": "^5.2.1",
     "@message-manager/shared": "workspace:*",
     "axios": "^1.4.0",
     "framer-motion": "^12.23.12",
@@ -20,8 +23,10 @@
     "react": "^18.2.0",
     "react-datepicker": "^8.5.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.62.0",
     "react-router-dom": "^6.10.0",
-    "react-use": "^17.6.0"
+    "react-use": "^17.6.0",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",

@@ -6,7 +6,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <Box bg="gray.800" px={4} py={2} boxShadow="md">
+    <Box bg="brand.800" px={4} py={2} boxShadow="md">
       <Flex alignItems="center">
         {/* Left side - Logo / Brand */}
         <Box fontWeight="bold" fontSize="lg" color="white">

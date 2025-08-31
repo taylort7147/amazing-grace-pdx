@@ -43,7 +43,7 @@ router.get("/", authMiddleware, messagesController.getAllMessages);
  *         required: true
  *         description: The ID of the message
  *         schema:
- *           type: string
+ *           type: integer
  *     responses:
  *       200:
  *         description: Success
@@ -69,5 +69,32 @@ router.get("/:id", authMiddleware, messagesController.getMessageById);
  *         description: Created
  */
 router.post("/", authMiddleware, validate(messageSchema), messagesController.createMessage);
+
+/**
+ * @swagger
+ * /messages/edit/{id}:
+ *   put:
+ *     summary: Update a message entry by ID
+ *     tags: [Messages]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the message
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/message'
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.put("/:id", authMiddleware, validate(messageSchema), messagesController.updateMessage);
 
 export default router;

@@ -12,23 +12,38 @@ import {
 import { useEffect, useState } from "react"
 import { useAsync } from "react-use"
 
+async function fetchSeries() {
+  return await api.get("/series");
+}
 
 export default function SeriesComboBox({ value, onValueChange }) {
   // Combobox textual input state
   const [inputValue, setInputValue] = useState("")
+  const [allSeries, setAllSeries] = useState([]);
+
+  // Initial load of data
+  const state = useAsync(async () => {
+    const response = await fetchSeries();
+    setAllSeries(response.data);
+    const selectedItem = response.data.find(item => item.id === value);
+    if (selectedItem) {
+      setInputValue(selectedItem.name);
+    }
+  }, []);
 
   // Create a list of custom items to use for the combobox.
   // Display the series name, but store the series object as the value.
   const { collection, set: setCollection } = useListCollection({
     initialItems: [],
     itemToString: (item) => item.name,
-    itemToValue: (item) => item,
+    itemToValue: (item) => item.id,
   });
 
   // Whenever the selected value changes, update the input value to match
   useEffect(() => {
-    setInputValue(value?.name || "")
+    setInputValue(collection.items.find(item => item.id === value)?.name || "")
   }, [value]);
+
 
   // Configuration for the combobox
   const combobox = useCombobox({
@@ -47,12 +62,12 @@ export default function SeriesComboBox({ value, onValueChange }) {
     );
   }
 
-  // When input changes, re-fetch and filter
-  const state = useAsync(async () => {
-    const response = await api("/series");
-    const filteredValues = filter(response.data);
+  // When the collection or input changes, filter
+  useEffect(() => {
+    const filteredValues = filter(allSeries);
     setCollection(filteredValues);
-  }, [inputValue])
+  }, [inputValue, allSeries])
+
 
   return (
     <Combobox.RootProvider value={combobox}>

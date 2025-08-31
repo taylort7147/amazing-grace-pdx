@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { Button, Input, HStack } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function DateField({ value, onChange }) {
+const DateField = forwardRef(({ value, onChange, ...props}, ref) => {
 
     return (
         <HStack>
@@ -12,10 +12,13 @@ export default function DateField({ value, onChange }) {
                 onChange={onChange}
                 dateFormat="MM/dd/yyyy"
                 customInput={<Input />}
+                {...props}
+                ref={ref}
             />
             <Button onClick={() => onChange(new Date())} variant="outline">
                 Today
             </Button>
         </HStack>
     );
-}
+});
+export default DateField;

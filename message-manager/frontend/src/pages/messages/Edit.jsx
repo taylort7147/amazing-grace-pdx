@@ -1,12 +1,16 @@
 import api from "../../api";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { Box, Button, Flex, Heading, HStack, VStack, Input, Field, Fieldset, Textarea, Separator, StackSeparator, Clipboard, Show } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, HStack, VStack, Input, Field, Fieldset, Textarea, Separator, Clipboard, Show } from "@chakra-ui/react";
 import DateField from "../../components/DateField";
+import DeleteDialog from "../../components/DeleteDialog";
 import DurationInput from "../../components/DurationInput";
 import SeriesComboBox from "../../components/SeriesComboBox";
-import { messageSchema } from "@message-manager/shared/schemas/index.js"
+import { messageSchema, notesSchema, audioSchema, videoSchema } from "@message-manager/shared/schemas/index.js"
+
 
 
 function formatTitle(title) {
@@ -17,16 +21,11 @@ function formatDescription(description) {
   return description ?? "";
 }
 
-function getDateObject(dateString) {
-  if (!dateString) return new Date();
-  return new Date(dateString);
-}
-
 function _StackSeparator() {
   return <Box height={50} />;
 }
 
-function ClipboardButton({ value }) {
+const ClipboardButton = forwardRef(({ value }, ref) => {
   return (
     <Clipboard.Root value={value}>
       <Clipboard.Trigger asChild>
@@ -36,7 +35,7 @@ function ClipboardButton({ value }) {
       </Clipboard.Trigger>
     </Clipboard.Root>
   );
-}
+});
 
 const TextBox = forwardRef(({ value, ...props }, ref) => {
   return (
@@ -47,6 +46,7 @@ const TextBox = forwardRef(({ value, ...props }, ref) => {
   );
 });
 
+
 const CopyableTextBox = forwardRef(({ value, ...props }, ref) => {
   return (
     <HStack align="stretch" w="100%">
@@ -56,22 +56,86 @@ const CopyableTextBox = forwardRef(({ value, ...props }, ref) => {
   );
 });
 
-const AddButton = () => {
+const CopyableTextBoxController = forwardRef(({ name, form, ...props }, ref) => {
+  const { control } = form;
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { value, onChange } }) => (
+        <CopyableTextBox value={value} onChange={onChange} {...props} ref={ref} />
+      )}
+    />
+  );
+});
+
+const FormField = forwardRef(({ form, label, name, helpText, required, children }, ref) => {
+  const { formState: { errors } } = form;
+  const fieldError = name.split('.').reduce((acc, key) => acc?.[key], errors);
+  return (
+    <Field.Root required={required} invalid={!!fieldError} ref={ref}>
+      <Field.Label>{label}<Field.RequiredIndicator /></Field.Label>
+      {children}
+      <Field.ErrorText>{fieldError?.message}</Field.ErrorText>
+      {helpText && <Field.HelpText>{helpText}</Field.HelpText>}
+    </Field.Root>
+  );
+});
+
+const AddButton = forwardRef(({ form, name, schema, ...props }, ref) => {
+  const { setValue } = form;
+  const newValue = schema.parse({});
   return (
     <Button
-      onClick={(e) => { }}
+      onClick={() => {
+        setValue(name, newValue, {
+          shouldDirty: true,
+          shouldValidate: true,
+          shouldTouch: true
+        })
+      }}
+      ref={ref}
+      {...props}
     >Add
     </Button>);
+});
+
+const DeleteButton = forwardRef(({ form, name, ...props }, ref) => {
+  const { setValue } = form;
+  const onDelete = () => {
+    setValue(name, null, {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
+  };
+  return (
+    <DeleteDialog
+      trigger={
+        <Button
+          variant="outline"
+          colorPalette="alert"
+          ref={ref}
+          {...props}
+        >Delete
+        </Button>
+      }
+      onDelete={onDelete}
+    />);
+});
+
+const SaveButton = ({ form, onSubmit }) => {
+  const { handleSubmit, formState: { isDirty, isValid } } = form;
+
+  return (<Button size="sm" disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)}>Save</Button>);
 }
 
-const SaveButton = ({ originalState, currentState }) => {
-  const isDirty = JSON.stringify(originalState) !== JSON.stringify(currentState);
-  return (<Button size="sm" disabled={!isDirty}>Save</Button>);
-}
-
-const EditBasicSettings = ({ message, setMessage }) => {
+const EditBasicSettings = ({ form }) => {
+  const { control, getValues, register } = form;
+  const message = getValues();
   return (
     <Fieldset.Root size="md">
+
       {/* Heading */}
       <Fieldset.Legend>
         <Heading size="lg" mb={0}>Basic Information</Heading>
@@ -79,46 +143,60 @@ const EditBasicSettings = ({ message, setMessage }) => {
 
       <Separator mt={2} />
 
-      {/* Fields */}
-      <Field.Root mb={0} orientation="horizontal">
-        <Field.Label>Title</Field.Label>
+      {/* Title */}
+      <FormField mb={0} form={form} name="title" label="Title" required>
         <Input
-          value={formatTitle(message?.title)}
-          onChange={(e) => setMessage((prev) => ({ ...prev, title: e.target.value }))}
+          {...register("title")}
+          defaultValue={formatTitle(message?.title)}
         />
-      </Field.Root>
-      <Field.Root mb={0} orientation="horizontal">
-        <Field.Label>Description</Field.Label>
+      </FormField>
+
+      {/* Description */}
+      <FormField mb={0} form={form} name="description" label="Description">
         <TextBox
-          value={formatDescription(message?.description)}
-          onChange={(e) => setMessage((prev) => ({ ...prev, description: e.target.value }))}
+          {...register("description")}
+          defaultValue={formatDescription(message?.description)}
         />
-      </Field.Root>
-      <Field.Root mb={0} orientation="horizontal">
-        <HStack justify="flex-start">
-          <Field.Label>Date</Field.Label>
-          <DateField
-            value={getDateObject(message?.date)}
-            setValue
-            onChange={(date) => setMessage((prev) => ({ ...prev, date }))} />
-        </HStack>
-      </Field.Root>
-      <Field.Root mb={0} orientation="horizontal">
-        <Field.Label>Series</Field.Label>
-        <SeriesComboBox
-          value={message?.series}
-          onValueChange={(e) => {
-            const series = (e.value?.length == 1) ? e.value[0] : null;
-            setMessage((prev) => ({ ...prev, series }));
-          }}
+      </FormField>
+
+      {/* Date */}
+      <FormField mb={0} form={form} name="date" label="Date" help="Select the date" required>
+        <Controller
+          control={control}
+          name="date"
+          render={({ field }) => (
+            <DateField
+              value={field.value}
+              onChange={(date) => field.onChange(date.toISOString())}
+            />
+          )}
+          required
         />
-      </Field.Root>
+      </FormField>
+
+      {/* Series */}
+      <FormField mb={0} form={form} name="seriesId" label="Series" required>
+        <Controller
+          control={control}
+          name="seriesId"
+          render={({ field }) => (
+            <SeriesComboBox
+              value={field.value}
+              onValueChange={(e) => {
+                const seriesId = (e.value?.length == 1) ? e.value[0] : null;
+                field.onChange(seriesId);
+              }}
+            />
+          )}
+        />
+      </FormField>
     </Fieldset.Root>
   );
 };
 
-
-const EditNotes = ({ message, setMessage }) => {
+const EditNotes = ({ form }) => {
+  const { getValues, setValue } = form;
+  const notes = getValues()?.notes;
   return (
     <Fieldset.Root size="md">
       {/* Heading */}
@@ -126,24 +204,25 @@ const EditNotes = ({ message, setMessage }) => {
         <Fieldset.Legend>
           <Heading size="lg" mb={0}>Notes</Heading>
         </Fieldset.Legend>
-        {message?.notes === null && <AddButton />}
+        {notes === null
+          ? <AddButton form={form} name="notes" schema={notesSchema} />
+          : <DeleteButton form={form} name="notes" />}
       </HStack>
 
       <Separator mt={2} />
 
       {/* Fields */}
-      {message?.notes && <>
-        <Field.Root mb={0} orientation="horizontal">
-          <Field.Label>URL</Field.Label>
-          <CopyableTextBox
-            value={message.notes.url ?? ""}
-            onChange={(e) => setMessage((prev) => ({ ...prev, notes: { ...prev.notes, url: e.target.value } }))} />
-        </Field.Root>
+      {notes && <>
+        <FormField mb={0} form={form} name="notes.url" label="URL" required>
+          <CopyableTextBoxController form={form} name="notes.url" />
+        </FormField>
       </>}
     </Fieldset.Root>);
 }
 
-const EditAudio = ({ message, setMessage }) => {
+const EditAudio = ({ form }) => {
+  const { getValues } = form;
+  const audio = getValues()?.audio;
   return (
     <Fieldset.Root size="md">
       {/* Heading */}
@@ -151,30 +230,32 @@ const EditAudio = ({ message, setMessage }) => {
         <Fieldset.Legend>
           <Heading size="lg">Audio</Heading>
         </Fieldset.Legend>
-        {message?.audio === null && <AddButton />}
+        {audio === null
+          ? <AddButton form={form} name="audio" schema={audioSchema} />
+          : <DeleteButton form={form} name="audio" />}
       </HStack>
 
       <Separator mt={2} />
 
       {/* Fields */}
-      {message?.audio && <>
-        <Field.Root mb={0} orientation="horizontal">
-          <Field.Label>Download URL</Field.Label>
-          <CopyableTextBox value={message.audio.downloadUrl ?? ""}
-            onChange={(e) => setMessage((prev) => ({ ...prev, audio: { ...prev.audio, downloadUrl: e.value } }))} />
-        </Field.Root>
-        <Field.Root mb={0} orientation="horizontal">
-          <Field.Label>Stream URL</Field.Label>
-          <CopyableTextBox
-            value={message.audio.streamUrl ?? ""}
-            onChange={(e) => setMessage((prev) => ({ ...prev, audio: { ...prev.audio, streamUrl: e.target.value } }))} />
-        </Field.Root>
+      {audio && <>
+        {/* Download URL */}
+        <FormField mb={0} form={form} name="audio.downloadUrl" label="Download URL" required>
+          <CopyableTextBoxController form={form} name="audio.downloadUrl" />
+        </FormField>
+
+        {/* Stream URL */}
+        <FormField mb={0} form={form} name="audio.streamUrl" label="Stream URL" required>
+          <CopyableTextBoxController form={form} name="audio.streamUrl" />
+        </FormField>
       </>}
     </Fieldset.Root >
   );
 };
 
-const EditVideo = ({ message, setMessage }) => {
+const EditVideo = ({ form }) => {
+  const { control, getValues, register, formState: { errors } } = form;
+  const video = getValues()?.video;
   return (
     <Fieldset.Root size="md">
       {/* Heading */}
@@ -182,65 +263,101 @@ const EditVideo = ({ message, setMessage }) => {
         <Fieldset.Legend>
           <Heading size="lg" mb={1}>Video</Heading>
         </Fieldset.Legend>
-        {message?.video === null && <AddButton />}
+        {video === null
+          ? <AddButton form={form} name="video" schema={videoSchema} />
+          : <DeleteButton form={form} name="video" />}
       </HStack>
 
       <Separator mt={2} />
 
       {/* Fields */}
-      {message?.video && <>
-        <Field.Root mb={0} orientation="horizontal">
-          <Field.Label>YouTube Video ID</Field.Label>
+      {video && <>
+        {/* YouTube Video ID */}
+        <FormField mb={0} form={form} name="video.youTubeVideoId" label="YouTube Video ID" required>
           <Input
-            value={message.video.youTubeVideoId}
-            onChange={(e) => setMessage((prev) => ({ ...prev, video: { ...prev.video, youTubeVideoId: e.target.value } }))} />
-        </Field.Root>
-        <Field.Root mb={0} orientation="horizontal" justifyContent="flex-start">
-          <Field.Label>Start Time</Field.Label>
-          <DurationInput
-            value={message.video.messageStartTimeSeconds}
-            onValueChange={(value) => setMessage((prev) => ({ ...prev, video: { ...prev.video, messageStartTimeSeconds: value } }))} />
-        </Field.Root>
+            {...register("video.youTubeVideoId")}
+          />
+        </FormField>
+
+        {/* Start Time */}
+        <FormField mb={0} form={form} name="video.messageStartTimeSeconds" label="Start Time" required>
+          <Controller
+            control={control}
+            name="video.messageStartTimeSeconds"
+            render={({ field }) => (
+              <DurationInput
+                value={field.value}
+                onValueChange={(val) => field.onChange(val)}
+              />
+            )}
+          />
+        </FormField>
       </>}
-    </Fieldset.Root>
+    </Fieldset.Root >
   );
 };
 
-export function Edit() {
-  const [originalMessage, setOriginalMessage] = useState(null);
-  const [message, setMessage] = useState(null);
-  const { id } = useParams();
 
-  useEffect(() => {
-    api.get(`/messages/${id}`).then((res) => {
-      setMessage(res.data);
-      setOriginalMessage(res.data);
-    });
-  }, [id]);
-
-  console.log("message: ", message);
-
+function MessageForm({ initialData, onSubmit }) {
+  const form = useForm({
+    resolver: zodResolver(messageSchema),
+    defaultValues: initialData ?? {},
+    mode: "onChange", // validate on each change
+  });
+  const { reset } = form;
   return (
-    <Box p={6} maxW="800px" mx="auto">
+    <form>
       <Heading size="2xl" mb={8}>Edit Message</Heading>
       <VStack gap={30} separator={<_StackSeparator />}>
 
         {/* Basic Information */}
-        <EditBasicSettings message={message} setMessage={setMessage} />
+        <EditBasicSettings form={form} />
 
         {/* Notes */}
-        <EditNotes message={message} setMessage={setMessage} />
+        <EditNotes form={form} />
 
         {/* Audio */}
-        <EditAudio message={message} setMessage={setMessage} />
+        <EditAudio form={form} />
 
         {/* Video */}
-        <EditVideo message={message} setMessage={setMessage} />
+        <EditVideo form={form} />
 
         <Flex width="100%" justifyContent={"flex-end"}>
-          <SaveButton originalState={originalMessage} currentState={message} />
+          <SaveButton form={form} onSubmit={(data) => {
+            onSubmit(data);
+            reset(data); // New data becomes the default state
+          }} />
         </Flex>
       </VStack>
+    </form>
+  );
+}
+
+export function Edit() {
+  const [message, setMessage] = useState(null);
+  const { id } = useParams();
+
+
+  const handleSubmit = async (data) => {
+    await api.put(`/messages/${id}`, data).then((res) => {
+    }).catch((err) => {
+      console.error("Error updating message:", err);
+    });
+  };
+
+  useEffect(() => {
+    api.get(`/messages/${id}`).then((res) => {
+      setMessage(res.data);
+    });
+  }, [id]);
+
+  if (!message) {
+    return <div>Loading...</div>; // don’t render MessageForm yet
+  }
+
+  return (
+    <Box p={6} maxW="800px" mx="auto">
+      <MessageForm initialData={message} onSubmit={handleSubmit} />
     </Box>
   );
 }

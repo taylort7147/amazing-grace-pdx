@@ -23,7 +23,6 @@ export default function DurationInput({ value, onValueChange }) {
 
   const handleNumberInputChange = (val) => {
     const seconds = val.valueAsNumber;
-    console.log("seconds", seconds);
     setDisplay(formatSeconds(seconds ?? 0));
     if (onValueChange) onValueChange(seconds); // Propagate internal seconds up
   };
@@ -37,7 +36,6 @@ export default function DurationInput({ value, onValueChange }) {
   };
 
   const handleBlur = () => {
-    console.log("handleBlur")
     // reformat display after editing
     const seconds = parseFormatted(display);
     setDisplay(formatSeconds(seconds));
