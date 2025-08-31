@@ -19,10 +19,7 @@ const DeleteDialog = ({ trigger, onDelete }) => {
                             </Dialog.ActionTrigger>
                             <Button
                                 colorPalette="alert"
-                                onClick={() => {
-                                    onDelete();
-                                    setIsOpen(false);
-                                }}
+                                onClick={onDelete}
                             >Delete</Button>
                         </Dialog.Footer>
                     </Dialog.Content>

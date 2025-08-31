@@ -1,12 +1,14 @@
 import api from "../../api";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import MessageForm from "./components/MessageForm"
+import DeleteDialog from "../../components/DeleteDialog";
 
 export function Edit() {
   const [message, setMessage] = useState(null);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleSubmit = async (data) => {
     await api.put(`/messages/${id}`, data).then((res) => {
@@ -27,7 +29,21 @@ export function Edit() {
 
   return (
     <Box p={6} maxW="800px" mx="auto">
-      <MessageForm initialData={message} onSubmit={handleSubmit} />
+      <Box mb={3}>
+        <MessageForm initialData={message} onSubmit={handleSubmit} />
+      </Box>
+
+      <Box mb={3}>
+        <Flex width="100%" justify={"center"}>
+          <DeleteDialog
+            onDelete={() => api.delete(`/messages/${id}`).then((data) => navigate("/messages"))}
+            trigger={
+              <Button
+                variant="outline"
+                colorPalette="alert"
+              >Delete Message</Button>} />
+        </Flex>
+      </Box>
     </Box>
   );
 }

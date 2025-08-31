@@ -97,4 +97,7 @@ router.post("/", authMiddleware, validate(messageSchema), messagesController.cre
  */
 router.put("/:id", authMiddleware, validate(messageSchema), messagesController.updateMessage);
 
+// TODO: Document
+router.delete("/:id", authMiddleware, messagesController.deleteMessage);
+
 export default router;
