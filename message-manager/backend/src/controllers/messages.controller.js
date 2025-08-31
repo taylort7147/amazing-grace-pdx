@@ -119,13 +119,12 @@ export const createMessage = async (req, res) => {
             await updateSubRecord(message.id, message.audio, messageDb.tables.Audio, t);
             await updateSubRecord(message.id, message.video, messageDb.tables.Video, t);
             // No need to call commit/rollback explicitly — Sequelize handles it
+            return res.status(201).json(message);
         });
     } catch (error) {
         console.error("Error updating message:", error);
         return res.sendStatus(500);
     }
-    res.sendStatus(204);
-    res.status(201).json(message);
 };
 
 /**

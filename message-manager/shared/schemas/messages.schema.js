@@ -8,10 +8,10 @@ extendZodWithOpenApi(z);
 
 export const messageSchema = z.object({
     title: z.string().min(1, "Title is required").default(""),
-    description: z.string().optional(),
+    description: z.string().optional().default(""),
     date: z.string().datetime().default(new Date().toISOString()),
     seriesId: z.number().min(1, "Series is required").default(0),
-    notes: notesSchema.nullable(),
-    audio: audioSchema.nullable(),
-    video: videoSchema.nullable()
+    notes: notesSchema.nullable().default(null),
+    audio: audioSchema.nullable().default(null),
+    video: videoSchema.nullable().default(null)
 });

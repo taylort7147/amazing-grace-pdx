@@ -150,6 +150,14 @@ export default function App() {
                                 </PrivateRoute>
                             }
                         />
+                        <Route
+                            path="/messages/create"
+                            element={
+                                <PrivateRoute roles={["admin"]}>
+                                    <Messages.Create />
+                                </PrivateRoute>
+                            }
+                        />
                     </Routes>
                 </Router>
             </AuthProvider>

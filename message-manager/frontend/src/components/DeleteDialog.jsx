@@ -1,5 +1,4 @@
-import { cloneElement, useState } from "react";
-import { Button, CloseButton, Dialog } from "@chakra-ui/react";
+import { Button, Dialog } from "@chakra-ui/react";
 
 const DeleteDialog = ({ trigger, onDelete }) => {
     return (
