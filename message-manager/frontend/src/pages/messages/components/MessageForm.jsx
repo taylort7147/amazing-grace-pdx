@@ -1,6 +1,7 @@
-import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Flex, Heading, HStack, VStack, Input, Fieldset, Separator } from "@chakra-ui/react";
+import { Box, CloseButton, Flex, List, Heading, HStack, VStack, Input, Fieldset, Separator } from "@chakra-ui/react";
 import CopyableTextBoxController from "../../../components/CopyableTextBoxController";
 import DateField from "../../../components/DateField";
 import DurationInput from "../../../components/DurationInput";
@@ -8,9 +9,11 @@ import FormAddButton from "../../../components/FormAddButton";
 import FormDeleteButton from "../../../components/FormDeleteButton";
 import FormField from "../../../components/FormField";
 import FormSaveButton from "../../../components/FormSaveButton";
+import Scripture from "./Scripture"
 import SeriesComboBox from "../../../components/SeriesComboBox";
 import TextBox from "../../../components/TextBox";
 import { messageSchema, notesSchema, audioSchema, videoSchema } from "@message-manager/shared/schemas/index.js"
+import { parseBibleReference } from "../../../utils/bibleApiUtils.js"
 
 function formatTitle(title) {
   return title ?? "";
@@ -88,6 +91,68 @@ const EditBasicSettings = ({ form }) => {
   );
 };
 
+
+const EditScripture = ({ form }) => {
+  const { control, register } = form;
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "bibleReferences"
+  });
+
+  const [newReferences, setNewReferences] = useState("");
+
+  const submitNewReferences = () => {
+    parseBibleReference(newReferences).then(response => {
+      // The result data is an array of parsed references
+      const parsedReferences = response.data;
+      parsedReferences.forEach(r => append(r));
+      setNewReferences("");
+    }).catch(err => {
+      console.error("Error parsing Bible reference:", err);
+    });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      submitNewReferences(newReferences);
+    }
+  };
+
+  return (
+    <Fieldset.Root size="md">
+      {/* Heading */}
+      <Fieldset.Legend>
+        <Heading size="lg" mb={0}>Scripture</Heading>
+      </Fieldset.Legend>
+
+      <Separator mt={2} />
+
+      {/* Entries */}
+      <List.Root>
+        {fields.map((item, index) => (
+          <List.Item key={item.id}>
+            <HStack mb={1}>
+              <Input hidden key={`${item.id}`} {...register(`bibleReferences.${index}.id`)} value={item.id} />
+              <Scripture bibleReference={item} />
+              <CloseButton onClick={() => remove(index)} />
+            </HStack>
+          </List.Item>
+        ))}
+        <List.Item>
+          <HStack mb={1}>
+            <Input
+              value={newReferences}
+              onChange={(e) => setNewReferences(e.target.value)}
+              placeholder="Add one or more reference and press enter (e.g., John 3:16, Judges 6:11-16, 25-32)"
+              onKeyDown={handleKeyDown}
+            />
+          </HStack>
+        </List.Item>
+      </List.Root>
+    </Fieldset.Root >
+  );
+}
+
 const EditNotes = ({ form }) => {
   const { getValues } = form;
   const notes = getValues()?.notes;
@@ -112,7 +177,7 @@ const EditNotes = ({ form }) => {
         </FormField>
       </>}
     </Fieldset.Root>);
-}
+};
 
 const EditAudio = ({ form }) => {
   const { getValues } = form;
@@ -198,6 +263,12 @@ function MessageForm({ initialData, onSubmit }) {
     mode: "onChange", // validate on each change
   });
   const { reset } = form;
+
+  const handleSubmit = (data) => {
+    onSubmit(data);
+    reset(data); // New data becomes the default state
+  };
+
   return (
     <form>
       <Heading size="2xl" mb={8}>Edit Message</Heading>
@@ -205,6 +276,9 @@ function MessageForm({ initialData, onSubmit }) {
 
         {/* Basic Information */}
         <EditBasicSettings form={form} />
+
+        {/* Scripture */}
+        <EditScripture form={form} />
 
         {/* Notes */}
         <EditNotes form={form} />
@@ -216,10 +290,7 @@ function MessageForm({ initialData, onSubmit }) {
         <EditVideo form={form} />
 
         <Flex width="100%" justifyContent={"flex-end"}>
-          <FormSaveButton form={form} onSubmit={(data) => {
-            onSubmit(data);
-            reset(data); // New data becomes the default state
-          }} />
+          <FormSaveButton form={form} onSubmit={handleSubmit} />
         </Flex>
       </VStack>
     </form>

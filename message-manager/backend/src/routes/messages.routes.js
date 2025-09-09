@@ -72,7 +72,7 @@ router.post("/", authMiddleware, validate(messageSchema), messagesController.cre
 
 /**
  * @swagger
- * /messages/edit/{id}:
+ * /messages/{id}:
  *   put:
  *     summary: Update a message entry by ID
  *     tags: [Messages]

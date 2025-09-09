@@ -1,0 +1,9 @@
+@BibleReferenceParserService_HostAddress = http://localhost:5000
+
+POST {{BibleReferenceParserService_HostAddress}}/api/parse/
+Accept: application/json
+
+POST {{BibleReferenceParserService_HostAddress}}/api/tostring/
+Accept: application/json
+
+###

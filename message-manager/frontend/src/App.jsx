@@ -8,7 +8,6 @@ import UsersPage from "./pages/UsersPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-Ui/theme-utils";
 
 const PrivateRoute = ({ children, roles }) => {
     const { user, token, loading } = useAuth();

@@ -1,8 +1,9 @@
 import api from "../../api";
-import React, { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { Box, Button, Heading, Stack, HStack, VStack, Input, Field, Fieldset, Text, Textarea, Wrap, Separator, StackSeparator, Clipboard } from "@chakra-ui/react";
+import { Box, Button, Heading, List, HStack, VStack, Input, Field, Fieldset, Textarea, Separator, Clipboard } from "@chakra-ui/react";
+import Scripture from "./components/Scripture"
 
 function formatTitle(title) {
   return title ?? "";
@@ -72,8 +73,6 @@ export function Details() {
     api.get(`/messages/${id}`).then((res) => setMessage(res.data));
   }, [id]);
 
-  console.log("message: ", message);
-
   return (
     <Box p={6} maxW="800px" mx="auto">
       <Heading size="2xl" mb={8}>Message Details</Heading>
@@ -99,6 +98,20 @@ export function Details() {
             <Input value={formatSeries(message?.series?.name)} readOnly />
           </Field.Root>
         </Fieldset.Root>
+
+        {/* Scripture */}
+        {message?.bibleReferences && message.bibleReferences.length > 0 && (
+          <Fieldset.Root size="md">
+            <FieldsetHeading>Scripture</FieldsetHeading>
+            <List.Root>
+              {message.bibleReferences.map((item, index) => (
+                <List.Item key={item.id}>
+                  <Scripture bibleReference={item} />
+                </List.Item>
+              ))}
+            </List.Root>
+          </Fieldset.Root >
+        )}
 
         {/* Notes */}
         {(message?.notes) && (

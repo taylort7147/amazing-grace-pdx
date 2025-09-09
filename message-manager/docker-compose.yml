@@ -7,6 +7,7 @@ services:
       - "80:80"
     environment:
       - VITE_API_URL=http://backend:3001
+      - VITE_BIBLE_API_URL=http://bible_reference_parser:80
     depends_on:
       - backend
 
@@ -47,6 +48,7 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+    restart: "unless-stopped"
     volumes:
       - mssql_data:/var/opt/mssql
     healthcheck:
@@ -54,6 +56,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+
+  bible_reference_parser:
+    build:
+      context: ./services/BibleReferenceParser
+      dockerfile: Dockerfile
+    ports:
+      - "3002:80"
+    restart: "unless-stopped"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
 
 volumes:
   mssql_data:

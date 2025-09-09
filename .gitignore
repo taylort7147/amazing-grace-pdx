@@ -6,3 +6,5 @@
 **/.antlr/
 **/Generated/
 MessageManager/scripts/data
+**/net9.0/
+

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { notesSchema } from "./notes.schema.js";
 import { audioSchema } from "./audio.schema.js";
 import { videoSchema } from "./video.schema.js";
+import {bibleReferenceSchema } from "./bibleReference.schema.js";
 
 extendZodWithOpenApi(z);
 
@@ -13,5 +14,6 @@ export const messageSchema = z.object({
     seriesId: z.number().min(1, "Series is required").default(0),
     notes: notesSchema.nullable().default(null),
     audio: audioSchema.nullable().default(null),
-    video: videoSchema.nullable().default(null)
+    video: videoSchema.nullable().default(null),
+    bibleReferences: z.array(bibleReferenceSchema).default([])
 });

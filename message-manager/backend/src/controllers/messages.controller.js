@@ -20,6 +20,21 @@ const deleteSubRecord = async (messageId, table, transaction) => {
     }
 };
 
+const deleteSubRecords = async (messageId, table, transaction) => {
+    const oldRecords = await table.findAll({ where: { messageId: messageId }, transaction });
+    if (oldRecords) {
+        for (const oldRecord of oldRecords) {
+            const deletedCount = await table.destroy({
+                where: { id: oldRecord.id },
+                transaction
+            });
+            if (deletedCount !== 1) {
+                throw new Error(`Failed to delete ${table.name}`);
+            }
+        }
+    }
+};
+
 /**
  * Updates a sub-record in the specified table.
  * 
@@ -65,6 +80,63 @@ const updateSubRecord = async (messageId, record, table, transaction) => {
 };
 
 /**
+ * Updates Bible references for a message. Only additions and deletions are supported.
+ * 
+ * @param {*} messageId 
+ * @param {*} records
+ * @param {*} table
+ * @param {*} transaction 
+ */
+const updateBibleReferences = async (messageId, records, table, transaction) => {
+    const oldRecords = await table.findAll({ where: { messageId: messageId }, transaction });
+    if (oldRecords && records) {
+        // Update records
+        // First delete any old records that are not in the new records
+        for (const oldRecord of oldRecords) {
+            if (!records.find(r => r.id === oldRecord.id)) {
+                const deletedCount = await table.destroy({
+                    where: { id: oldRecord.id },
+                    transaction
+                });
+                if (deletedCount !== 1) {
+                    throw new Error(`Failed to delete ${table.name}`);
+                }
+            }
+        }
+        // Then create the new records
+        for (const record of records) {
+            record.messageId = messageId;
+            const created = await table.create(record, { transaction });
+            if (!created.id) {
+                throw new Error(`Failed to create ${table.name}`);
+            }
+        }
+    }
+    else if (oldRecords && !records) {
+        // Delete all old records
+        for (const oldRecord of oldRecords) {
+            const deletedCount = await table.destroy({
+                where: { id: oldRecord.id },
+                transaction
+            });
+            if (deletedCount !== 1) {
+                throw new Error(`Failed to delete ${table.name}`);
+            }
+        }
+    }
+    else if (!oldRecords && records) {
+        // Create all new records
+        for (const record of records) {
+            record.messageId = messageId;
+            const created = await table.create(record, { transaction });
+            if (!created.id) {
+                throw new Error(`Failed to create ${table.name}`);
+            }
+        }
+    }
+};
+
+/**
  * Get the list of included models for a message.
  * @returns {Array} The list of included models.
  */
@@ -73,7 +145,8 @@ function getMessageIncludes() {
         { model: messageDb.tables.Audio, as: "audio" },
         { model: messageDb.tables.Notes, as: "notes" },
         { model: messageDb.tables.Video, as: "video" },
-        { model: messageDb.tables.Series, as: "series" }
+        { model: messageDb.tables.Series, as: "series" },
+        { model: messageDb.tables.BibleReferences, as: "bibleReferences" }
     ];
 }
 
@@ -118,6 +191,7 @@ export const createMessage = async (req, res) => {
             await updateSubRecord(message.id, message.notes, messageDb.tables.Notes, t);
             await updateSubRecord(message.id, message.audio, messageDb.tables.Audio, t);
             await updateSubRecord(message.id, message.video, messageDb.tables.Video, t);
+            await updateBibleReferences(message.id, message.bibleReferences, messageDb.tables.BibleReferences, t);
             // No need to call commit/rollback explicitly — Sequelize handles it
             return res.status(201).json(message);
         });
@@ -143,6 +217,7 @@ export const deleteMessage = async (req, res) => {
             await deleteSubRecord(id, messageDb.tables.Notes, t);
             await deleteSubRecord(id, messageDb.tables.Audio, t);
             await deleteSubRecord(id, messageDb.tables.Video, t);
+            await deleteSubRecords(id, messageDb.tables.BibleReferences, t);
 
             const result = await messageDb.tables.Message.destroy({ where: { id }, transaction: t });
             if (!result) return res.sendStatus(404);
@@ -170,6 +245,7 @@ export const updateMessage = async (req, res) => {
             await updateSubRecord(id, message.notes, messageDb.tables.Notes, t);
             await updateSubRecord(id, message.audio, messageDb.tables.Audio, t);
             await updateSubRecord(id, message.video, messageDb.tables.Video, t);
+            await updateBibleReferences(id, message.bibleReferences, messageDb.tables.BibleReferences, t);
 
             // Update message
             const [affectedCount] = await messageDb.tables.Message.update(message, {
